@@ -50,26 +50,27 @@ ALTER TABLE OrderProducts ADD CONSTRAINT fk_product
 -- MISC Queries, to show functionality:
 -- list in stock ingredients 
 SELECT ingredientName
-FROM Ingredient
+FROM Ingredients
 WHERE quantity > 0;
 
 -- list low stock ingredients
 SELECT ingredientName
-FROM Ingredient
+FROM Ingredients
 WHERE quantity < 10;
 
 -- see most profitable 3 days
-SELECT dateId, profit
+SELECT reportDate, profit
 FROM Finances
 ORDER BY profit DESC
 LIMIT 3;
 
+<<<<<<< HEAD
 -- see least profitable 3 days
-SELECT dateId, profit,
+SELECT reportDate, profit,
 FROM Finances
 ORDER BY profit ASC
 LIMIT 3;
 
 -- list Employees currently in database
 SELECT firstName, lastName
-FROM Employee;
+FROM Employees;
