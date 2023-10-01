@@ -61,4 +61,4 @@ ALTER TABLE OrderProducts ADD CONSTRAINT fk_order
 
 -- Assuming you have a Products table:
 ALTER TABLE OrderProducts ADD CONSTRAINT fk_product 
-  FOREIGN KEY (productID) REFERENCES Products(productID
+  FOREIGN KEY (productID) REFERENCES Products(productID);
