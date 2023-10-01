@@ -33,3 +33,19 @@ CREATE TABLE IF NOT EXISTS Finances(
   expenses FLOAT,
   orders VARCHAR(50)[] -- FK with orderIDs
 );
+
+-- list in stock ingredients 
+SELECT ingredientName
+FROM Ingredient
+WHERE quantity > 0;
+
+-- list low stock ingredients
+SELECT ingredientName
+FROM Ingredient
+WHERE quantity < 10;
+
+-- see most profitable 3 days
+SELECT dateId, profit
+FROM Finances
+ORDER BY profit DESC
+LIMIT 3;
