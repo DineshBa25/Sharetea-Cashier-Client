@@ -26,23 +26,6 @@ CREATE TABLE IF NOT EXISTS Finances(
   orders VARCHAR(50)[] -- FK with orderIDs
 );
 
--- list in stock ingredients 
-SELECT ingredientName
-FROM Ingredients
-WHERE quantity > 0;
-
--- list low stock ingredients
-SELECT ingredientName
-FROM Ingredients
-WHERE quantity < 10;
-
--- see most profitable 3 days
-SELECT dateId, profit
-FROM Finances
-ORDER BY profit DESC
-LIMIT 3;
-
-
 CREATE TABLE IF NOT EXISTS Orders(
   orderID SERIAL PRIMARY KEY,
   cashier VARCHAR(50), -- employeeID of employee
@@ -62,3 +45,31 @@ ALTER TABLE OrderProducts ADD CONSTRAINT fk_order
 -- Assuming you have a Products table:
 ALTER TABLE OrderProducts ADD CONSTRAINT fk_product 
   FOREIGN KEY (productID) REFERENCES Products(productID);
+
+
+-- MISC Queries, to show functionality:
+-- list in stock ingredients 
+SELECT ingredientName
+FROM Ingredients
+WHERE quantity > 0;
+
+-- list low stock ingredients
+SELECT ingredientName
+FROM Ingredients
+WHERE quantity < 10;
+
+-- see most profitable 3 days
+SELECT reportDate, profit
+FROM Finances
+ORDER BY profit DESC
+LIMIT 3;
+
+-- see least profitable 3 days
+SELECT reportDate, profit,
+FROM Finances
+ORDER BY profit ASC
+LIMIT 3;
+
+-- list Employees currently in database
+SELECT firstName, lastName
+FROM Employees;
