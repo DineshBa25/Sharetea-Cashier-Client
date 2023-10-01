@@ -1,18 +1,18 @@
-CREATE TABLE IF NOT EXISTS Employee(
+CREATE TABLE IF NOT EXISTS Employees(
   employeeID SERIAL PRIMARY KEY,
   isManager BOOLEAN,
   firstName VARCHAR(20),
   lastName VARCHAR(20)
 );
 
-CREATE TABLE IF NOT EXISTS Ingredient(
+CREATE TABLE IF NOT EXISTS Ingredients(
   ingredientID SERIAL PRIMARY KEY,
   ingredientName VARCHAR(50),
   quantity INT,
   cost FLOAT
 );
 
-CREATE TABLE IF NOT EXISTS Product(
+CREATE TABLE IF NOT EXISTS Products(
   productID SERIAL PRIMARY KEY,
   ingredientIDs VARCHAR(50)[], -- FK with ingredientIDs
   price FLOAT
@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS Finances(
 
 -- list in stock ingredients 
 SELECT ingredientName
-FROM Ingredient
+FROM Ingredients
 WHERE quantity > 0;
 
 -- list low stock ingredients
 SELECT ingredientName
-FROM Ingredient
+FROM Ingredients
 WHERE quantity < 10;
 
 -- see most profitable 3 days
