@@ -49,3 +49,17 @@ SELECT dateId, profit
 FROM Finances
 ORDER BY profit DESC
 LIMIT 3;
+
+-- see least profitable 3 days
+SELECT dateId, profit,
+FROM Finances
+ORDER BY profit ASC
+LIMIT 3;
+
+-- see recent 5 orders from a specific cashier
+SELECT o.orderId, o.dateTime, p.productName, o.price
+FROM Order o
+JOIN Product p ON o.product = p.productId
+WHERE o.cashier = {{cashier_id}}
+ORDER BY o.dateTime DESC
+LIMIT 3;
