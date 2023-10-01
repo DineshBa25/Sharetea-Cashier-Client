@@ -64,7 +64,6 @@ FROM Finances
 ORDER BY profit DESC
 LIMIT 3;
 
-<<<<<<< HEAD
 -- see least profitable 3 days
 SELECT reportDate, profit,
 FROM Finances
