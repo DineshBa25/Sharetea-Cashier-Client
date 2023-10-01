@@ -18,14 +18,6 @@ CREATE TABLE IF NOT EXISTS Product(
   price FLOAT
 );
 
-CREATE TABLE IF NOT EXISTS Order(
-  orderID SERIAL PRIMARY KEY,
-  cashier VARCHAR(50), -- employeeID of employee
-  transactionID TIMESTAMP,
-  products VARCHAR(50)[], -- FK with productIDs
-  price FLOAT
-);
-
 CREATE TABLE IF NOT EXISTS Finances(
   reportDate DATE PRIMARY KEY,
   revenue FLOAT,
