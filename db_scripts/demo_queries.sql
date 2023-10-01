@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Ingredients(
   cost FLOAT
 );
 
-CREATE TABLE IF NOT EXISTS tempProducts(
+CREATE TABLE IF NOT EXISTS Products(
   productID SERIAL PRIMARY KEY,
   ingredientIDs VARCHAR(50)[], -- FK with ingredientIDs
   price FLOAT
@@ -43,7 +43,7 @@ ALTER TABLE OrderProducts ADD CONSTRAINT fk_order
   FOREIGN KEY (orderID) REFERENCES Orders(orderID);
 
 ALTER TABLE OrderProducts ADD CONSTRAINT fk_product 
-  FOREIGN KEY (productID) REFERENCES tempProducts(productID);
+  FOREIGN KEY (productID) REFERENCES Products(productID);
 
 -- MISC Queries, to show functionality:
 -- list in stock ingredients 
@@ -72,5 +72,5 @@ LIMIT 3;
 SELECT firstName, lastName
 FROM Employees;
 
-GRANT ALL PRIVILEGES ON Employees, Ingredients, tempProducts, Finances, Orders, OrderProducts TO csce331_970_mohsin, csce331_970_dineshb, csce331_970_ia601612
+GRANT ALL PRIVILEGES ON Employees, Ingredients, Products, Finances, Orders, OrderProducts TO csce331_970_mohsin, csce331_970_dineshb, csce331_970_ia601612
 , csce331_970_gpresent, csce331_970_nicholasdienstbier;
