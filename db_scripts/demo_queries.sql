@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Ingredients(
   cost FLOAT
 );
 
-CREATE TABLE IF NOT EXISTS Products(
+CREATE TABLE IF NOT EXISTS tempProducts(
   productID SERIAL PRIMARY KEY,
   ingredientIDs VARCHAR(50)[], -- FK with ingredientIDs
   price FLOAT
@@ -35,17 +35,15 @@ CREATE TABLE IF NOT EXISTS Orders(
 
 CREATE TABLE IF NOT EXISTS OrderProducts(
   orderID INT,
-  productID VARCHAR(50),
+  productID SERIAL,
   PRIMARY KEY (orderID, productID)
 );
 
 ALTER TABLE OrderProducts ADD CONSTRAINT fk_order 
   FOREIGN KEY (orderID) REFERENCES Orders(orderID);
 
--- Assuming you have a Products table:
 ALTER TABLE OrderProducts ADD CONSTRAINT fk_product 
-  FOREIGN KEY (productID) REFERENCES Products(productID);
-
+  FOREIGN KEY (productID) REFERENCES tempProducts(productID);
 
 -- MISC Queries, to show functionality:
 -- list in stock ingredients 
@@ -65,7 +63,7 @@ ORDER BY profit DESC
 LIMIT 3;
 
 -- see least profitable 3 days
-SELECT reportDate, profit,
+SELECT reportDate, profit
 FROM Finances
 ORDER BY profit ASC
 LIMIT 3;
@@ -73,3 +71,6 @@ LIMIT 3;
 -- list Employees currently in database
 SELECT firstName, lastName
 FROM Employees;
+
+GRANT ALL PRIVILEGES ON Employees, Ingredients, tempProducts, Finances, Orders, OrderProducts TO csce331_970_mohsin, csce331_970_dineshb, csce331_970_ia601612
+, csce331_970_gpresent, csce331_970_nicholasdienstbier;
