@@ -66,7 +66,7 @@ toppings = [
     ["Red Bean", 0.75],
     ["Herb Jelly", 0.75],
     ["Aiyu Jelly", 0.75],
-    ["Lychee Jelly", 0.64],
+    ["Lychee Jelly", 0.75],
 ]
 
 topping_popularity = [
@@ -105,29 +105,57 @@ day_popularity_total = sum(day_popularity)
 
 topping_chance = 0.4
 order_id = 0
-# Order format: [id, item (name, price), topping (name, price), worker (name)]
+# Order format: [id, timestamp, [item] (name, price), [[toppings (names)], price], worker (name)]
 def generate_order():
     global order_id
     order = [order_id]
     order_id += 1
+    minutes = str(random.randint(0, 59))
+    timestamp = str(random.randint(11, 22)) + ":" + minutes.zfill(2)
+    order.append(timestamp)
     ordernum = random.randint(1, item_popularity_total)
-    toppingnum = random.randint(1, topping_popularity_total)
     workernum = random.randint(0, len(workers) - 1)
     for i in range(len(item_popularity)):
         ordernum -= item_popularity[i]
         if ordernum <= 0:
             order.append(items[i])
             break
-    for i in range(len(topping_popularity)):
-        toppingnum -= topping_popularity[i]
-        if toppingnum <= 0:
-            if random.random() < topping_chance:
-                order.append(toppings[i])
-            break
-    if len(order) == 2:
-        order.append(["None", 0])
+    # Toppings are optional, so we need to check if we should add one or not
+    # Create temporary copies of the toppings and their popularity
+    top = toppings.copy()
+    pop = topping_popularity.copy()
+    pop_tot = sum(pop)
+    top_chance = topping_chance
+    order.append([[]])
+    top_tot = 0
+    while random.random() < top_chance and len(top) > 0:
+        toppingnum = random.randint(1, pop_tot)
+        for i in range(len(pop)):
+            toppingnum -= pop[i]
+            if toppingnum <= 0:
+                order[3][0].append(top[i][0])
+                top_tot += top[i][1]
+                top.pop(i)
+                pop.pop(i)
+                break
+        pop_tot = sum(pop)
+        top_chance *= 0.75
+    order[3][0].sort()
+    order[3].append(top_tot)
+    if len(order[3][0]) == 0:
+        order[3][0].append("None")
     order.append(workers[workernum])
     return order
+
+def order_string(order):
+    string = str(order[0]) + ", " + order[1] + ", " + order[2][0] + ", " + str(order[2][1]) + ", "
+    for i in range(0, len(order[3][0])):
+        if i == len(order[3][0]) - 1:
+            string += order[3][0][i] + ", "
+        else:
+            string += order[3][0][i] + "; "
+    string += str(order[3][1]) + ", " + order[4]
+    return string
 
 weekly_total = 19300
 
@@ -143,9 +171,9 @@ def generate_day(week, weekday):
     while daily_earnings < target:
         order = generate_order()
         orders.append(order)
-        daily_earnings += order[1][1]
-        if order[2][1] != "None":
-            daily_earnings += order[2][1]
+        daily_earnings += order[2][1]
+        daily_earnings += order[3][1]
+    day.append(daily_earnings)
     return day
 
 def generate_week(week):
@@ -162,13 +190,13 @@ def generate_week(week):
 
 if __name__ == "__main__":
     year = []
-    for i in range(1, 52):
+    for i in range(1, 53):
         year.append(generate_week(i))
     results = open("orders.csv", "w")
-    results.write("Week, Day, Order ID, Item, Item Price, Topping, Topping Price, Worker\n")
+    results.write("Week, Day, Order ID, Timestamp, Item, Item Price, Topping(s), Topping Price, Worker\n")
     for week in year:
         for day in week:
             for order in day[2]:
-                results.write(str(day[0]) + ", " + days[day[1]] + ", " + str(order[0]) + ", " + order[1][0] + ", " + str(order[1][1]) + ", " + order[2][0] + ", " + str(order[2][1]) + ", " + order[3] + "\n")
+                results.write(str(day[0]) + ", " + days[day[1]] + ", " + order_string(order) + "\n")
         
     
