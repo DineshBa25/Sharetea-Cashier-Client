@@ -75,6 +75,7 @@ LIMIT 3;
 SELECT firstName, lastName
 FROM Employees;
 
+
 -- list Employees last names sorted alphabetically - Query 6
 SELECT lastName
 FROM Employees
@@ -155,7 +156,6 @@ LIMIT 10;
 -- 4. 20 Items in Invetory
 SELECT COUNT(*) AS row_count
 FROM ingredients;
-
 
 GRANT ALL PRIVILEGES ON Employees, Ingredients, Products, Finances, Orders, OrderProducts TO csce331_970_mohsin, csce331_970_dineshb, csce331_970_ia601612
 , csce331_970_gpresent, csce331_970_nicholasdienstbier;

@@ -1,0 +1,60 @@
+productName,ingredientIDs,price
+Classic Milk Tea (Black),"[0, 7]",3.5
+Honey Milk Tea(Black),"[0, 3, 7]",3.75
+Classic Coffee,[4],2.5
+Ginger Milk Tea,"[0, 5, 7]",3.6
+Classic Pearl Milk Tea(Black),"[0, 6, 7]",3.7
+Hokkaido Pearl Milk Tea,"[0, 6, 8]",4.0
+Okinawa Pearl Milk Tea,"[0, 6, 9]",4.0
+Thai Pearl Milk Tea,"[0, 6, 10]",4.0
+Taro Pearl Milk Tea,"[0, 6, 11]",4.2
+Mango Green Milk Tea,"[1, 12, 7]",4.25
+Classic Tea (Black),[0],2.0
+Wintermelon Tea,"[0, 15]",2.5
+Honey Tea (Black),"[0, 3]",2.5
+Ginger Tea,"[0, 5]",2.5
+Mango Green Tea,"[1, 12]",3.0
+Wintermelon Lemonade,"[15, 17]",3.5
+Strawberry Tea,"[0, 18]",3.5
+Peach Tea with Aiyu Jelly,"[0, 19, 16]",3.75
+Honey Lemonade with Aloe Vera,"[3, 17, 33]",3.5
+Peach Kiwi Tea with Aiyu Jelly,"[0, 19, 20, 16]",4.0
+Kiwi Fruit Tea with Aiyu Jelly,"[0, 20, 16]",4.0
+Mango & Passion Fruit Tea,"[12, 21]",4.25
+Tropical Fruit Tea,"[0, 12, 20, 21]",4.5
+Hawaii Fruit Tea with Aiyu Jelly,"[0, 12, 16]",4.5
+"Passion Fruit, Orange and Grapefruit Tea","[0, 21, 22, 23]",4.75
+Fresh Milk Tea (Black),"[0, 24]",3.75
+Wintermelon with Fresh Milk,"[15, 24]",4.0
+Cocoa Lover with Fresh Milk,"[25, 24]",4.25
+Matcha with Fresh Milk,"[0, 13, 24]",4.5
+Handmade Taro with Fresh Milk,"[0, 11, 24]",4.75
+Oreo Ice Blended with Pearl,"[26, 6, 7]",4.5
+Milk Tea Ice Blended with Pearl,"[0, 6, 7]",4.75
+Taro Ice Blended with Pudding,"[0, 11, 27]",4.75
+Thai Tea Ice Blended with Pearl,"[0, 6, 7]",5.0
+Matcha Red Bean Ice Blended with Ice Cream,"[0, 13, 14, 30]",5.25
+Coffee Ice Blended with Ice Cream,"[4, 30]",5.0
+Mango Ice Blended with Ice Cream,"[12, 30]",5.25
+Strawberry Ice Blended with Lychee Jelly & Ice Cream,"[0, 18, 29, 30]",5.5
+Peach Tea Ice Blended with Lychee Jelly,"[0, 19, 29]",5.0
+Lime Mojito,"[0, 31]",4.0
+Mango Mojito,"[0, 12]",4.25
+Peach Mojito,"[0, 19]",4.5
+Strawberry Mojito,"[0, 18]",4.75
+Creama Tea (Black),"[0, 32]",4.0
+Wintermelon Creama,"[0, 15, 32]",4.5
+Coffee Creama,"[4, 32]",4.75
+Cocoa Creama,"[25, 32]",4.75
+Mango Creama,"[0, 12, 32]",5.0
+Matcha Creama,"[0, 13, 32]",5.25
+Pearl,[6],0.50
+Aloe Vera,[35],0.60
+Lychee Jelly,[36],0.60
+Mini Pearl,[37],0.50
+Red Bean Creama,[38],0.70
+Ice Cream,[39],1.00
+Herb Jelly,[40],0.50
+Crystal Bobal,[41],0.60
+Pudding,[42],0.60
+Aiyu Jelly,[43],0.60
