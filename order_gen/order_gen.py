@@ -83,23 +83,23 @@ topping_popularity = [
 topping_popularity_total = sum(topping_popularity)
 
 days = [
+    "Sunday",
     "Monday",
     "Tuesday",
     "Wednesday",
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday",
 ]
 
 day_popularity = [
+    16, # Sunday
     10, # Monday
     12, # Tuesday
     13, # Wednesday
     15, # Thursday
     19, # Friday
     18, # Saturday
-    16, # Sunday
 ]
 day_popularity_total = sum(day_popularity)
 
