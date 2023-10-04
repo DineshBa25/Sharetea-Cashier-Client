@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS Finances(
   revenue FLOAT,
   profit FLOAT,
   expenses FLOAT,
-  orders VARCHAR(50)[] -- FK with orderIDs
+  ordercount INT
 );
 
 CREATE TABLE IF NOT EXISTS Orders(
