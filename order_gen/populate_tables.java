@@ -1,6 +1,4 @@
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,42 +204,30 @@ public class populate_tables {
 
             insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
             csvFilePath = "products.csv";
-
+            /*
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
                 String line = reader.readLine();
                 int id = 0;
                 while ((line = reader.readLine()) != null) {
-                    String[] fields = line.split(",");
+                    List<String> fields = parseCsvLine(line);
                     preparedStatement.setInt(1, id);
-                    preparedStatement.setString(2, fields[0]);
-
-                    List<String> ingredientIds = new ArrayList<>();
-
-                    int i = 0;
-                    while(fields[1].charAt(i) != ',' && fields[1].charAt(i) != ']') {
-                        i++;
-                        System.out.println(fields[1].charAt(i));
+                    preparedStatement.setString(2, fields.get(0));
+                
+                    // Extracting the ingredientIds
+                    String ingredientList = fields.get(1);
+                    if (ingredientList.startsWith("\"") && ingredientList.endsWith("\"")) {
+                        ingredientList = ingredientList.substring(1, ingredientList.length() - 1);
                     }
-                    ingredientIds.add(fields[1].substring(i-1, i));
-
-                    i = 1;
-                    while(!fields[i].contains("]"))
-                        i++;
-                    for(int j = 2; j <= i; j++)
-                    {
-                        int k = 1;
-                        while(fields[j].charAt(k) != ',' || fields[j].charAt(k) != ',')
-                            k++;
-                        ingredientIds.add(fields[j].substring(1, k));
-                    }
-                    i++;
-
+                    ingredientList = ingredientList.substring(1, ingredientList.length() - 1); // remove [ and ]
+                    String[] ingredientArray = ingredientList.split(",\s*");
+                    List<String> ingredientIds = Arrays.asList(ingredientArray);
+                
                     Array ingredients = conn.createArrayOf("Varchar", ingredientIds.toArray());
                     preparedStatement.setArray(3, ingredients);
-                    preparedStatement.setDouble(4, Double.parseDouble(fields[i]));
-
+                    preparedStatement.setDouble(4, Double.parseDouble(fields.get(2)));
+                
                     preparedStatement.executeUpdate();
                     id++;
                 }
@@ -253,19 +239,40 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }
+            }*/
         } 
-    catch (Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-    try {
-        conn.close();
-        System.out.println("Connection Closed.");
-    } 
-    catch(Exception e) {
-        System.out.println("Connection NOT Closed.");
+        try {
+            conn.close();
+            System.out.println("Connection Closed.");
+        } 
+        catch(Exception e) {
+            System.out.println("Connection NOT Closed.");
         }
     }
+
+    private static List<String> parseCsvLine(String line) {
+        List<String> result = new ArrayList<>();
+        boolean inQuotes = false;
+        StringBuilder field = new StringBuilder();
+    
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                result.add(field.toString().trim());
+                field.setLength(0); // reset field
+            } else {
+                field.append(c);
+            }
+        }
+        result.add(field.toString().trim()); // add last field
+        return result;
+    }
 }
+
