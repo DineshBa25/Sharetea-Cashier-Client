@@ -204,7 +204,7 @@ public class populate_tables {
 
             insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
             csvFilePath = "products.csv";
-            /*
+            
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
@@ -223,8 +223,11 @@ public class populate_tables {
                     ingredientList = ingredientList.substring(1, ingredientList.length() - 1); // remove [ and ]
                     String[] ingredientArray = ingredientList.split(",\s*");
                     List<String> ingredientIds = Arrays.asList(ingredientArray);
+                    List<Integer> ingredientIdsInteger = new ArrayList<Integer>();
+                    for(int i = 0; i < ingredientIds.size(); i++)
+                        ingredientIdsInteger.add(Integer.parseInt(ingredientIds.get(i)));
                 
-                    Array ingredients = conn.createArrayOf("Varchar", ingredientIds.toArray());
+                    Array ingredients = conn.createArrayOf("INTEGER", ingredientIdsInteger.toArray());
                     preparedStatement.setArray(3, ingredients);
                     preparedStatement.setDouble(4, Double.parseDouble(fields.get(2)));
                 
@@ -239,7 +242,7 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }*/
+            }
         } 
         catch (Exception e) {
             e.printStackTrace();
