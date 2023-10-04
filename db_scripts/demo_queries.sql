@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Ingredients(
 
 CREATE TABLE IF NOT EXISTS Products(
   productID SERIAL PRIMARY KEY,
-  ingredientIDs VARCHAR(50)[], -- FK with ingredientIDs
+  ingredientIDs INTEGER[], -- FK with ingredientIDs
   price FLOAT
 );
 
