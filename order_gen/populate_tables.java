@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
+
 
 public class populate_tables {
 
@@ -34,7 +36,7 @@ public class populate_tables {
 
             String insertSQL = "INSERT INTO employees(employeeid, ismanager, firstname, lastname) VALUES (?, ?, ?, ?)";
 
-            /*try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
+            try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
 
                 List<String> firstnames = Arrays.asList("Dinesh", "Mohsin", "Nicholas", "Cole", "Ilham");
                 List<String> lastnames = Arrays.asList("Balakrishnan", "Khan", "Dienstbier", "Broberg", "Aryawan");
@@ -56,44 +58,56 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }*/
+            }
 
-            insertSQL = "INSERT INTO finances(reportdate, revenue, profit, expenses, orders) VALUES (?, ?, ?, ?, ?)";
-            /*
+            insertSQL = "INSERT INTO finances(reportdate, revenue, profit, expenses, ordercount) VALUES (?, ?, ?, ?, ?)";
+            
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
                 String line = reader.readLine();
+                line = reader.readLine();
                 String[] fields = line.split(", ");
                 String weekday = fields[0] + fields[1];
-                float revenue = 0;
-                float expenses = 0;
-                float profit = 0;
+                float revenue = Float.parseFloat(fields[5]);
+                float expenses = Float.parseFloat(fields[7]);
+                float profit = revenue - expenses;
+                int orders = 0;
+                String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
+                String csvDay = fields[1];      // Example: Tuesday
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E");
+                java.util.Date date = sdf.parse(csvWeek + " " + csvDay);
                 while ((line = reader.readLine()) != null) {
                     fields = line.split(", ");
                     String currday = fields[0] + fields[1];
-                    if(weekday == currday)
+                    if(weekday.equals(currday))
                     {
+                        revenue += Float.parseFloat(fields[5]);
+                        expenses += expenses = Float.parseFloat(fields[7]);
+                        profit = revenue - expenses;
+                        orders++;
+                        continue;
+                    }
+                    else
+                    {
+                        preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
+                        preparedStatement.setFloat(2, revenue);
+                        preparedStatement.setFloat(4, expenses);
+                        preparedStatement.setFloat(3, profit);
+                        
+                        preparedStatement.setInt(5, orders);
+
+                        preparedStatement.executeUpdate();
+                        weekday = currday;
                         revenue = Float.parseFloat(fields[5]);
                         expenses = Float.parseFloat(fields[7]);
                         profit = revenue - expenses;
+                        orders = 0;
+                        csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
+                        csvDay = fields[1];      // Example: Tuesday
+                        sdf = new SimpleDateFormat("yyyy'W'ww E");
+                        date = sdf.parse(csvWeek + " " + csvDay);
                     }
-                    String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
-                    String csvDay = fields[1];      // Example: Tuesday
-                    String csvTime = fields[3];
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E HH:mm:ss");
-                    java.util.Date date = sdf.parse(csvWeek + " " + csvDay + " " + csvTime);
-                    preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
-                    preparedStatement.setFloat(2, Float.parseFloat(fields[5]));
-                    preparedStatement.setFloat(4, Float.parseFloat(fields[7]));
-                    revenue = Float.parseFloat(fields[5]);
-                    expenses = Float.parseFloat(fields[7]);
-                    profit = revenue - expenses;
-                    preparedStatement.setFloat(3, profit);
-                    Array orders = null;
-                    preparedStatement.setArray(5, orders);
-
-                    preparedStatement.executeUpdate();
                 }
                 reader.close();
 
@@ -103,10 +117,10 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }*/
+            }
 
             insertSQL = "INSERT INTO orderproducts(productid, ingredientids, price) VALUES (?, ?, ?)";
-            /*
+            
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
@@ -128,10 +142,10 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }*/
+            }
 
             insertSQL = "INSERT INTO orders(orderid, cashier, transactiontime, price) VALUES (?, ?, ?, ?)";
-            /*
+            
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
@@ -171,11 +185,11 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }*/
+            }
 
             insertSQL = "INSERT INTO ingredients(ingredientid, ingredientname, quantity, cost) VALUES (?, ?, ?, ?)";
             csvFilePath = "ingredients.csv";
-            /*
+            
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
@@ -200,8 +214,9 @@ public class populate_tables {
                 e.printStackTrace();
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
-            }*/
+            }
 
+            
             insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
             csvFilePath = "products.csv";
             
