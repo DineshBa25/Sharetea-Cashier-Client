@@ -12,16 +12,14 @@ public class populate_tables {
     public static void main(String args[]) {
 
         // Credentials
-        Connection conn = null;
+        Connection connection = null;
         String teamNumber = "07c";
         String dbName = "csce315331" + "_" + teamNumber + "_db";
         String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
 
-        String csvFilePath = "orders.csv";
-
         // Connecting to the database
         try {
-            conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
+            connection = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -33,50 +31,80 @@ public class populate_tables {
 
         // Inserting into tables
         try {
+            populate_employees(connection);
+            populate_finances(connection);
+            populate_ingredients(connection);
+            populate_orders(connection);
+            populate_products(connection);
+            
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
 
-            String insertSQL = "INSERT INTO employees(employeeid, ismanager, firstname, lastname) VALUES (?, ?, ?, ?)";
+        // Ensure connection closes
+        try {
+            connection.close();
+            System.out.println("Connection Closed.");
+        } 
+        catch(Exception e) {
+            System.out.println("Connection NOT Closed.");
+        }
+    }
 
-            try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
+    public static void populate_employees(Connection conn) {
 
-                List<String> firstnames = Arrays.asList("Dinesh", "Mohsin", "Nicholas", "Cole", "Ilham");
-                List<String> lastnames = Arrays.asList("Balakrishnan", "Khan", "Dienstbier", "Broberg", "Aryawan");
-                for(int i = 0; i < 5; i++) {
-                    String firstname = firstnames.get(i);
-                    String lastname = lastnames.get(i);
+        String insertSQL = "INSERT INTO employees(employeeid, ismanager, firstname, lastname) VALUES (?, ?, ?, ?)";
 
-                    preparedStatement.setInt(1, i);
-                    preparedStatement.setBoolean(2, false);
-                    preparedStatement.setString(3, firstname);
-                    preparedStatement.setString(4, lastname);
+        try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
+            List<String> firstnames = Arrays.asList("Dinesh", "Mohsin", "Nicholas", "Cole", "Ilham");
+            List<String> lastnames = Arrays.asList("Balakrishnan", "Khan", "Dienstbier", "Broberg", "Aryawan");
 
-                    preparedStatement.executeUpdate();
-                }
+            for(int i = 0; i < 5; i++) {
+                String firstname = firstnames.get(i);
+                String lastname = lastnames.get(i);
 
-                System.out.println("Data inserted successfully.");
-            } 
-            catch (Exception e) {
-                e.printStackTrace();
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
+                preparedStatement.setInt(1, i);
+                preparedStatement.setBoolean(2, false);
+                preparedStatement.setString(3, firstname);
+                preparedStatement.setString(4, lastname);
+
+                preparedStatement.executeUpdate();
             }
 
-            insertSQL = "INSERT INTO finances(reportdate, revenue, profit, expenses, ordercount) VALUES (?, ?, ?, ?, ?)";
+            System.out.println("Data inserted successfully.");
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    public static void populate_finances(Connection conn) {
+
+        String insertSQL = "INSERT INTO finances(reportdate, revenue, profit, expenses, ordercount) VALUES (?, ?, ?, ?, ?)";
+        String csvFilePath = "orders.csv";
             
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
-
                 String line = reader.readLine();
                 line = reader.readLine();
                 String[] fields = line.split(", ");
+
                 String weekday = fields[0] + fields[1];
                 float revenue = Float.parseFloat(fields[5]);
                 float expenses = Float.parseFloat(fields[7]);
-                float profit = revenue - expenses;
+                float profit = revenue + expenses;
+
                 int orders = 0;
                 String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
                 String csvDay = fields[1];      // Example: Tuesday
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E");
                 java.util.Date date = sdf.parse(csvWeek + " " + csvDay);
+
                 while ((line = reader.readLine()) != null) {
                     fields = line.split(", ");
                     String currday = fields[0] + fields[1];
@@ -94,10 +122,9 @@ public class populate_tables {
                         preparedStatement.setFloat(2, revenue);
                         preparedStatement.setFloat(4, expenses);
                         preparedStatement.setFloat(3, profit);
-                        
                         preparedStatement.setInt(5, orders);
-
                         preparedStatement.executeUpdate();
+
                         weekday = currday;
                         revenue = Float.parseFloat(fields[5]);
                         expenses = Float.parseFloat(fields[7]);
@@ -110,7 +137,6 @@ public class populate_tables {
                     }
                 }
                 reader.close();
-
                 System.out.println("Data inserted successfully.");
             } 
             catch (Exception e) {
@@ -118,77 +144,11 @@ public class populate_tables {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
             }
+    }
 
-            insertSQL = "INSERT INTO orderproducts(productid, ingredientids, price) VALUES (?, ?, ?)";
-            
-            try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
-                BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
-
-                String line = reader.readLine();
-                while ((line = reader.readLine()) != null) {
-                    String[] fields = line.split(", ");
-                    preparedStatement.setInt(1, Integer.parseInt(fields[2]));
-                    Array ingredients = null;
-                    preparedStatement.setArray(2, ingredients);
-                    preparedStatement.setFloat(3, Float.parseFloat(fields[4]));
-
-                    preparedStatement.executeUpdate();
-                }
-                reader.close();
-
-                System.out.println("Data inserted successfully.");
-            } 
-            catch (Exception e) {
-                e.printStackTrace();
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
-            }
-
-            insertSQL = "INSERT INTO orders(orderid, cashier, transactiontime, price) VALUES (?, ?, ?, ?)";
-            
-            try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
-                BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
-
-                String line = reader.readLine();
-                int batch = 0;
-                while ((line = reader.readLine()) != null) {
-                    String[] fields = line.split(", ");
-                    preparedStatement.setInt(1, Integer.parseInt(fields[2]));
-                    preparedStatement.setString(2, fields[8]);
-
-                    String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
-                    String csvDay = fields[1];      // Example: Tuesday
-                    String csvTime = fields[3];
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E HH:mm");
-                    java.util.Date date = sdf.parse(csvWeek + " " + csvDay + " " + csvTime);
-                    preparedStatement.setTimestamp(3, new Timestamp(date.getTime()));
-                    preparedStatement.setFloat(4, Float.parseFloat(fields[5]) + Float.parseFloat(fields[7]));
-
-                    if(batch < 1000)
-                    {
-                        preparedStatement.addBatch();
-                        batch++;
-                    }
-                    else {
-                        preparedStatement.executeBatch();
-                        preparedStatement.clearBatch();
-                        batch = 0;
-                    }
-                }
-                preparedStatement.executeBatch();
-                preparedStatement.clearBatch();
-                reader.close();
-
-                System.out.println("Data inserted successfully.");
-            } 
-            catch (Exception e) {
-                e.printStackTrace();
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
-            }
-
-            insertSQL = "INSERT INTO ingredients(ingredientid, ingredientname, quantity, cost) VALUES (?, ?, ?, ?)";
-            csvFilePath = "ingredients.csv";
+    public static void populate_ingredients(Connection conn) {
+        String insertSQL = "INSERT INTO ingredients(ingredientid, ingredientname, quantity, cost) VALUES (?, ?, ?, ?)";
+        String csvFilePath = "ingredients.csv";
             
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
@@ -207,7 +167,6 @@ public class populate_tables {
                     id++;
                 }
                 reader.close();
-
                 System.out.println("Data inserted successfully.");
             } 
             catch (Exception e) {
@@ -215,61 +174,95 @@ public class populate_tables {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
                 System.exit(0);
             }
+    }
 
+    public static void populate_orders(Connection conn) {
+        String insertSQL = "INSERT INTO orders(orderid, cashier, transactiontime, price) VALUES (?, ?, ?, ?)";
+        String csvFilePath = "orders.csv";
             
-            insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
-            csvFilePath = "products.csv";
-            
-            try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
-                BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+        try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
+            BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
 
-                String line = reader.readLine();
-                int id = 0;
-                while ((line = reader.readLine()) != null) {
-                    List<String> fields = parseCsvLine(line);
-                    preparedStatement.setInt(1, id);
-                    preparedStatement.setString(2, fields.get(0));
-                
-                    // Extracting the ingredientIds
-                    String ingredientList = fields.get(1);
-                    if (ingredientList.startsWith("\"") && ingredientList.endsWith("\"")) {
-                        ingredientList = ingredientList.substring(1, ingredientList.length() - 1);
-                    }
-                    ingredientList = ingredientList.substring(1, ingredientList.length() - 1); // remove [ and ]
-                    String[] ingredientArray = ingredientList.split(",\s*");
-                    List<String> ingredientIds = Arrays.asList(ingredientArray);
-                    List<Integer> ingredientIdsInteger = new ArrayList<Integer>();
-                    for(int i = 0; i < ingredientIds.size(); i++)
-                        ingredientIdsInteger.add(Integer.parseInt(ingredientIds.get(i)));
-                
-                    Array ingredients = conn.createArrayOf("INTEGER", ingredientIdsInteger.toArray());
-                    preparedStatement.setArray(3, ingredients);
-                    preparedStatement.setDouble(4, Double.parseDouble(fields.get(2)));
-                
-                    preparedStatement.executeUpdate();
-                    id++;
+            String line = reader.readLine();
+            int batch = 0;
+            while ((line = reader.readLine()) != null) {
+                String[] fields = line.split(", ");
+                preparedStatement.setInt(1, Integer.parseInt(fields[2]));
+                preparedStatement.setString(2, fields[8]);
+
+                String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
+                String csvDay = fields[1];      // Example: Tuesday
+                String csvTime = fields[3];
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E HH:mm");
+                java.util.Date date = sdf.parse(csvWeek + " " + csvDay + " " + csvTime);
+                preparedStatement.setTimestamp(3, new Timestamp(date.getTime()));
+                preparedStatement.setFloat(4, Float.parseFloat(fields[5]) + Float.parseFloat(fields[7]));
+
+                if(batch < 1000)
+                {
+                    preparedStatement.addBatch();
+                    batch++;
                 }
-                reader.close();
-
-                System.out.println("Data inserted successfully.");
-            } 
-            catch (Exception e) {
-                e.printStackTrace();
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                System.exit(0);
+                else {
+                    preparedStatement.executeBatch();
+                    preparedStatement.clearBatch();
+                    batch = 0;
+                }
             }
+            preparedStatement.executeBatch();
+            preparedStatement.clearBatch();
+            
+            reader.close();
+            System.out.println("Data inserted successfully.");
         } 
         catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        try {
-            conn.close();
-            System.out.println("Connection Closed.");
+    }
+
+    public static void populate_products(Connection conn) {
+        String insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
+        String csvFilePath = "products.csv";
+            
+        try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
+            BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+
+            String line = reader.readLine();
+            int id = 0;
+            while ((line = reader.readLine()) != null) {
+                List<String> fields = parseCsvLine(line);
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, fields.get(0));
+            
+                // Extracting the ingredientIds
+                String ingredientList = fields.get(1);
+                if (ingredientList.startsWith("\"") && ingredientList.endsWith("\"")) {
+                    ingredientList = ingredientList.substring(1, ingredientList.length() - 1);
+                }
+                ingredientList = ingredientList.substring(1, ingredientList.length() - 1); // remove [ and ]
+                String[] ingredientArray = ingredientList.split(",\s*");
+                List<String> ingredientIds = Arrays.asList(ingredientArray);
+                List<Integer> ingredientIdsInteger = new ArrayList<Integer>();
+                for(int i = 0; i < ingredientIds.size(); i++)
+                    ingredientIdsInteger.add(Integer.parseInt(ingredientIds.get(i)));
+            
+                Array ingredients = conn.createArrayOf("INTEGER", ingredientIdsInteger.toArray());
+                preparedStatement.setArray(3, ingredients);
+                preparedStatement.setDouble(4, Double.parseDouble(fields.get(2)));
+            
+                preparedStatement.executeUpdate();
+                id++;
+            }
+
+            reader.close();
+            System.out.println("Data inserted successfully.");
         } 
-        catch(Exception e) {
-            System.out.println("Connection NOT Closed.");
+        catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
         }
     }
 
