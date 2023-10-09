@@ -96,8 +96,6 @@ public class populate_tables {
                 line = reader.readLine();
                 String[] fields = line.split(", ");
 
-                Statement stmt = conn.createStatement();
-
                 String weekday = fields[0] + fields[1];
                 double revenue = Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]);
                 double expenses = productPrices.get(fields[4]);
@@ -111,19 +109,15 @@ public class populate_tables {
 
                 while ((line = reader.readLine()) != null) {
                     fields = line.split(", ");
-
                     String currday = fields[0] + fields[1];
-                    System.out.println(Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]) + " " + productPrices.get(fields[4]) + " " + profit);
-                    if(weekday.equals(currday))
-                    {
+                    if(weekday.equals(currday)) {
                         revenue += Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]);
                         expenses += productPrices.get(fields[4]);
                         profit = revenue - expenses;
                         orders++;
                         continue;
                     }
-                    else
-                    {
+                    else {
                         preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
                         preparedStatement.setDouble(2, revenue);
 
@@ -211,8 +205,7 @@ public class populate_tables {
                 preparedStatement.setTimestamp(3, new Timestamp(date.getTime()));
                 preparedStatement.setFloat(4, Float.parseFloat(fields[5]) + Float.parseFloat(fields[7]));
 
-                if(batch < 1000)
-                {
+                if(batch < 1000) {
                     preparedStatement.addBatch();
                     batch++;
                 }
@@ -251,9 +244,8 @@ public class populate_tables {
             
                 // Extracting the ingredientIds
                 String ingredientList = fields.get(1);
-                if (ingredientList.startsWith("\"") && ingredientList.endsWith("\"")) {
+                if (ingredientList.startsWith("\"") && ingredientList.endsWith("\""))
                     ingredientList = ingredientList.substring(1, ingredientList.length() - 1);
-                }
                 ingredientList = ingredientList.substring(1, ingredientList.length() - 1); // remove [ and ]
                 String[] ingredientArray = ingredientList.split(",\s*");
                 List<String> ingredientIds = Arrays.asList(ingredientArray);
@@ -295,7 +287,8 @@ public class populate_tables {
                     productPriceMap.put(productName, price);
                 }
             }
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
         }
         return productPriceMap;
@@ -308,14 +301,14 @@ public class populate_tables {
     
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
-            if (c == '"') {
+            if (c == '"')
                 inQuotes = !inQuotes;
-            } else if (c == ',' && !inQuotes) {
+            else if (c == ',' && !inQuotes) {
                 result.add(field.toString().trim());
                 field.setLength(0); // reset field
-            } else {
+            } 
+            else
                 field.append(c);
-            }
         }
         result.add(field.toString().trim()); // add last field
         return result;
