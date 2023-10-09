@@ -31,11 +31,11 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            populate_employees(connection);
+            // populate_employees(connection);
             populate_finances(connection);
-            populate_ingredients(connection);
-            populate_orders(connection);
-            populate_products(connection);
+            // populate_ingredients(connection);
+            // populate_orders(connection);
+            // populate_products(connection);
             
         } 
         catch (Exception e) {
