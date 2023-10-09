@@ -53,3 +53,18 @@
 .red-btn:pressed {
     -fx-background-color: #ab4d4d;
 }
+
+.black-btn-sm{
+    -fx-font-size: 10px;
+    -fx-background-color: #6b6b6b;
+    -fx-text-fill: white;  /* Text color */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+.black-btn-sm:hover {
+    -fx-background-color: #4d4d4d;
+}
+
+.black-btn-sm:pressed {
+    -fx-background-color: #2f2f2f;
+}

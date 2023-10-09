@@ -11,4 +11,5 @@
     </padding>
     <Button text="Start order" onAction="#onLogin1Click" styleClass="red-btn" prefWidth="200" prefHeight="60"/>
     <Button text="Supervisor Tools" onAction="#onLogin2Click" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+    <Button text="Back"  styleClass="black-btn-sm" onAction="#handleBackButton" />
 </VBox>

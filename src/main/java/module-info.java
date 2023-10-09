@@ -8,6 +8,7 @@ module com.goattechnologies.pos {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
 
     opens com.goattechnologies.pos to javafx.fxml;
     exports com.goattechnologies.pos;

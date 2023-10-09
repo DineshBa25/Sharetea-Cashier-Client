@@ -9,10 +9,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+    private final DatabaseManager dbManager = new DatabaseManager();
     private static MainController mainController;
 
     @Override
     public void start(Stage stage) throws IOException {
+        dbManager.connect();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("main-view.fxml"));
         Scene scene = new Scene(loader.load(), 320, 240);
         scene.getStylesheets().add(getClass().getResource("/com/goattechnologies/pos/main.css").toExternalForm());
@@ -28,11 +30,16 @@ public class Main extends Application {
         mainController.setView(node);
     }
 
+    @Override
+    public void stop() {
+        dbManager.disconnect();
+    }
+
     public static MainController getMainController() {
         return mainController;
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
