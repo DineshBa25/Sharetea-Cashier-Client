@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<VBox alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.goattechnologies.pos.MainController">
+
+    <!-- Wrapper StackPane to center the ImageView -->
+    <StackPane VBox.vgrow="ALWAYS" alignment="CENTER">
+        <!-- ShareTea Logo ImageView -->
+        <ImageView fx:id="logoImageView" fitHeight="100" fitWidth="300" />
+    </StackPane>
+
+    <!-- Main content container -->
+    <StackPane fx:id="mainContainer" VBox.vgrow="ALWAYS">
+        <!-- Your main content will be loaded here -->
+    </StackPane>
+
+</VBox>
