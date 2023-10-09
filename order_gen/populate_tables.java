@@ -5,7 +5,8 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
-
+import java.io.IOException;
+import java.util.HashMap;
 
 public class populate_tables {
 
@@ -87,6 +88,7 @@ public class populate_tables {
 
         String insertSQL = "INSERT INTO finances(reportdate, revenue, profit, expenses, ordercount) VALUES (?, ?, ?, ?, ?)";
         String csvFilePath = "orders.csv";
+        HashMap<String, Double> productPrices = getProducts("products.csv");
             
             try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
                 BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
@@ -94,10 +96,12 @@ public class populate_tables {
                 line = reader.readLine();
                 String[] fields = line.split(", ");
 
+                Statement stmt = conn.createStatement();
+
                 String weekday = fields[0] + fields[1];
-                float revenue = Float.parseFloat(fields[5]);
-                float expenses = Float.parseFloat(fields[7]);
-                float profit = revenue + expenses;
+                double revenue = Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]);
+                double expenses = productPrices.get(fields[4]);
+                double profit = revenue - expenses;
 
                 int orders = 0;
                 String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
@@ -107,11 +111,13 @@ public class populate_tables {
 
                 while ((line = reader.readLine()) != null) {
                     fields = line.split(", ");
+
                     String currday = fields[0] + fields[1];
+                    System.out.println(Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]) + " " + productPrices.get(fields[4]) + " " + profit);
                     if(weekday.equals(currday))
                     {
-                        revenue += Float.parseFloat(fields[5]);
-                        expenses += expenses = Float.parseFloat(fields[7]);
+                        revenue += Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]);
+                        expenses += productPrices.get(fields[4]);
                         profit = revenue - expenses;
                         orders++;
                         continue;
@@ -119,15 +125,22 @@ public class populate_tables {
                     else
                     {
                         preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
-                        preparedStatement.setFloat(2, revenue);
-                        preparedStatement.setFloat(4, expenses);
-                        preparedStatement.setFloat(3, profit);
+                        preparedStatement.setDouble(2, revenue);
+
+                        String formattedNumber = String.format("%.2f", expenses);
+                        double roundedNumber = Double.parseDouble(formattedNumber);
+                        preparedStatement.setDouble(4, roundedNumber);
+
+                        formattedNumber = String.format("%.2f", profit);
+                        roundedNumber = Double.parseDouble(formattedNumber);
+                        preparedStatement.setDouble(3, roundedNumber);
+
                         preparedStatement.setInt(5, orders);
                         preparedStatement.executeUpdate();
 
                         weekday = currday;
-                        revenue = Float.parseFloat(fields[5]);
-                        expenses = Float.parseFloat(fields[7]);
+                        revenue = Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]);
+                        expenses = productPrices.get(fields[4]);
                         profit = revenue - expenses;
                         orders = 0;
                         csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
@@ -264,6 +277,28 @@ public class populate_tables {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+
+    private static HashMap<String, Double> getProducts(String csvFile) {
+        HashMap<String, Double> productPriceMap = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            String line;
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                // Split the CSV line by comma
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    String productName = parts[0].trim();
+                    double price = Double.parseDouble(parts[parts.length-1].trim());
+                    // Add the product name and price to the HashMap
+                    productPriceMap.put(productName, price);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return productPriceMap;
     }
 
     private static List<String> parseCsvLine(String line) {
