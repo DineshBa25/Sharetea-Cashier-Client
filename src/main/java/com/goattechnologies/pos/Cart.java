@@ -22,6 +22,10 @@ public class Cart {
         items.remove(item);
     }
 
+    public void removeAllItemsInCart(){
+        items.clear();
+    }
+
     public List<CartItem> getItems() {
         return items;
     }

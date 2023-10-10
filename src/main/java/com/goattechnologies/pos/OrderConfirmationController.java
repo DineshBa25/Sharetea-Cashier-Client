@@ -69,6 +69,7 @@ public class OrderConfirmationController {
             // ...
         }
 
+        Main.cart.removeAllItemsInCart();
         // Load the order confirmation view
         Node backToStart = FXMLLoader.load(getClass().getResource("login2-view.fxml"));
 
