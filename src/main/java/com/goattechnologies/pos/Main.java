@@ -16,6 +16,8 @@ public class Main extends Application {
 
     public static MenuController menuController;
 
+    public static InventoryController inventoryController;
+
     public static Cart cart = new Cart();
 
     @Override

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queries>
+    <query id="viewInventory">
+        SELECT ingredientid, ingredientname, quantity
+        FROM ingredients;
+    </query>
+    <query id="updateInventory">
+        UPDATE ingredients
+        SET quantity = ?
+        WHERE ingredientid = ?;
+    </query>
+</queries>
