@@ -17,7 +17,6 @@ public class Login2Controller {
         Main.getMainController().setView(node);
     }
 
-
     @FXML
     protected void onLogin2Click() {
         // TODO: Implement
