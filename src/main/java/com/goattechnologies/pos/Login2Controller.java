@@ -12,8 +12,9 @@ import java.io.IOException;
 
 public class Login2Controller {
     @FXML
-    protected void onLogin1Click() {
-        // TODO: Implement
+    protected void onLogin1Click() throws IOException {
+        Node node = FXMLLoader.load(getClass().getResource("menu-view.fxml"));
+        Main.getMainController().setView(node);
     }
 
     @FXML

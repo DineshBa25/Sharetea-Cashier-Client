@@ -9,8 +9,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+  
     private final DatabaseManager dbManager = new DatabaseManager();
+  
     private static MainController mainController;
+
+    public static MenuController menuController;
+
+    public static Cart cart = new Cart();
 
     @Override
     public void start(Stage stage) throws IOException {

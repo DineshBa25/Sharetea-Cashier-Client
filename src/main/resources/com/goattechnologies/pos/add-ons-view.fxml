@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.AddOnsController">
+    <Label text="Select Add-ons"/>
+    <ListView fx:id="addOnsListView"/>
+    <Label text="Select Sweetness"/>
+    <ComboBox fx:id="sweetnessComboBox" />
+    <Label text="Select Ice Level"/>
+    <ComboBox fx:id="iceComboBox" />
+    <Button text="Add to Cart" onAction="#addToCart" styleClass="black-btn"/>
+    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
+</VBox>
+

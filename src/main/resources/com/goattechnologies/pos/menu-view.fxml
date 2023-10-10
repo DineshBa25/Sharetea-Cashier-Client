@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.MenuController">
+    <Label text="Cart">
+        <graphic>
+            <FontIcon iconLiteral="fas-shopping-cart" iconSize="32"/>
+        </graphic>
+    </Label>    <ListView fx:id="cartListView" />
+    <Label text="Menu">
+        <graphic>
+            <FontIcon iconLiteral="far-list-alt" iconSize="32"/>
+        </graphic>
+    </Label>
+    <ListView fx:id="menuListView" />
+    <Button text="Proceed to Checkout" onAction="#proceedToCheckout" styleClass="black-btn"/>
+</VBox>

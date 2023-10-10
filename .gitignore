@@ -2,3 +2,4 @@
 src/main/java/com/goattechnologies/pos/dbSetup.java
 .vscode
 target
+dbSetup.java
