@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.util.HashMap;
 
+
 public class populate_tables {
 
     public static void main(String args[]) {
@@ -33,11 +34,10 @@ public class populate_tables {
         // Inserting into tables
         try {
             // populate_employees(connection);
-            populate_finances(connection);
-            // populate_ingredients(connection);
-            // populate_orders(connection);
-            // populate_products(connection);
-            
+            //populate_finances(connection);
+            populate_ingredients(connection);
+            //populate_orders(connection);
+            //populate_products(connection);
         } 
         catch (Exception e) {
             e.printStackTrace();
