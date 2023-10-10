@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.OrderConfirmationController">
+
+    <!-- Order Confirmation Message -->
+    <Label text="Customer order has been placed!" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <!-- Tip Selection -->
+    <HBox spacing="10" alignment="CENTER">
+        <Region HBox.hgrow="ALWAYS"/> <!-- Spacer on the left -->
+        <Label text="Select Tip Amount:"/>
+        <ComboBox fx:id="tipComboBox">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="10%"/>
+                    <String fx:value="15%"/>
+                    <String fx:value="20%"/>
+                    <String fx:value="Custom"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <TextField fx:id="customTipField" promptText="Enter custom tip" visible="false"/>
+        <Region HBox.hgrow="ALWAYS"/> <!-- Spacer on the right -->
+    </HBox>
+    <!-- Receipt Option -->
+    <CheckBox text="Print Receipt" fx:id="printReceiptCheckBox"/>
+
+    <!-- Complete Order Button -->
+    <Button text="Complete Order" onAction="#completeOrder" styleClass="red-btn"/>
+
+</VBox>
+
+

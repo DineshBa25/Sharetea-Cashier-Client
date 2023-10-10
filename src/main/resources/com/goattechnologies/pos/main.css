@@ -1,0 +1,104 @@
+.btn-primary {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;  /* Text color */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.red-btn {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-color: #FF4136;  /* Red color */
+    -fx-text-fill: white;  /* Text color */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.blue-btn {
+    -fx-background-color: #0074D9;  /* Blue color */
+}
+
+
+.button {
+    -fx-text-fill: white;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20 10 20;
+}
+
+.black-btn{
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-color: #282828;
+    -fx-text-fill: white;  /* Text color */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+.black-btn:hover {
+    -fx-background-color: #181818;
+}
+
+.black-btn:pressed {
+    -fx-background-color: #000000;
+}
+
+.red-btn{
+    -fx-background-color: #c92828;
+}
+.red-btn:hover {
+    -fx-background-color: #9d3434;
+}
+
+.red-btn:pressed {
+    -fx-background-color: #ab4d4d;
+}
+
+.black-btn-sm{
+    -fx-font-size: 10px;
+    -fx-background-color: #6b6b6b;
+    -fx-text-fill: white;  /* Text color */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+.black-btn-sm:hover {
+    -fx-background-color: #4d4d4d;
+}
+
+.black-btn-sm:pressed {
+    -fx-background-color: #2f2f2f;
+}
+
+
+/* Specific styling for the Cart ListView */
+#cartListView {
+    -fx-background-color: #f3f3f3; /* A shade lighter than the menu's ListView */
+}/* Define background and foreground colors */
+.root {
+    -fx-background-color: #f3f3f3; /* Dark gray background */
+    -fx-base: #ffffff; /* Base color for controls (Red) */
+    -fx-accent: #8d8d8d; /* Accent color for controls (Dark gray) */
+    -fx-default-button: -fx-base; /* Button color when it's the default */
+    -fx-focus-color: -fx-accent;
+    -fx-faint-focus-color: #28282833; /* A transparent version of the accent color */
+}
+
+/* Style the labels */
+.Label {
+    -fx-text-fill: #ff0000; /* Red color */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Style the ListViews */
+.ListView {
+    -fx-background-color: #ffffff; /* Slightly darker gray than the background */
+    -fx-border-color: #ffffff; /* Red border color */
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Specific styling for the Cart ListView */
+#cartListView {
+    -fx-background-color: #ffffff; /* A shade lighter than the menu's ListView */
+}
