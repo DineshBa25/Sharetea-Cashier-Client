@@ -23,7 +23,7 @@
                 </FXCollections>
             </items>
         </ComboBox>
-        <TextField fx:id="customTipField" promptText="Enter custom tip" visible="false"/>
+        <TextField fx:id="customTipField" promptText="Enter custom tip" visible="false" managed="false"/>
         <Region HBox.hgrow="ALWAYS"/> <!-- Spacer on the right -->
     </HBox>
     <!-- Receipt Option -->

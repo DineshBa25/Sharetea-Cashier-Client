@@ -1,9 +1,13 @@
 package com.goattechnologies.pos;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
 
 public class OrderConfirmationController {
 
@@ -20,17 +24,23 @@ public class OrderConfirmationController {
         tipComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if ("Custom".equals(newValue)) {
                 customTipField.setVisible(true);
+                customTipField.setManaged(true);
             } else {
                 customTipField.setVisible(false);
+                customTipField.setManaged(false);
             }
         });
     }
 
     @FXML
-    protected void completeOrder() {
+    protected void completeOrder() throws IOException {
         double tipPercentage = 0.0;
 
         String selectedTip = tipComboBox.getSelectionModel().getSelectedItem();
+        if (selectedTip == null) {
+            // Handle the case where no tip is selected, e.g., show an alert to the user
+            return;
+        }
         switch (selectedTip) {
             case "10%":
                 tipPercentage = 0.10;
@@ -59,7 +69,10 @@ public class OrderConfirmationController {
             // ...
         }
 
-        // Navigate to "Thank You" page or return to the main menu
-        // ...
+        // Load the order confirmation view
+        Node backToStart = FXMLLoader.load(getClass().getResource("login2-view.fxml"));
+
+        // Replace the current view with the order confirmation view
+        Main.getMainController().setView(backToStart);
     }
 }
