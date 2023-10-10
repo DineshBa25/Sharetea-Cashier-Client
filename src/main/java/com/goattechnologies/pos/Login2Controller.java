@@ -18,8 +18,9 @@ public class Login2Controller {
     }
 
     @FXML
-    protected void onLogin2Click() {
-        // TODO: Implement
+    protected void onLogin2Click() throws IOException {
+        Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
+        Main.getMainController().setView(node);
     }
 
     public void handleBackButton(ActionEvent event) throws IOException {
