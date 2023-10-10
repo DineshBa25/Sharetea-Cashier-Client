@@ -73,7 +73,9 @@
 /* Specific styling for the Cart ListView */
 #cartListView {
     -fx-background-color: #f3f3f3; /* A shade lighter than the menu's ListView */
-}/* Define background and foreground colors */
+}
+
+/* Define background and foreground colors */
 .root {
     -fx-background-color: #f3f3f3; /* Dark gray background */
     -fx-base: #ffffff; /* Base color for controls (Red) */
