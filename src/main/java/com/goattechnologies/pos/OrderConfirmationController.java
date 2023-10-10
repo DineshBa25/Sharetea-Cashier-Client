@@ -36,6 +36,7 @@ public class OrderConfirmationController {
     protected void completeOrder() throws IOException {
         double tipPercentage = 0.0;
 
+
         String selectedTip = tipComboBox.getSelectionModel().getSelectedItem();
         if (selectedTip == null) {
             // Handle the case where no tip is selected, e.g., show an alert to the user
