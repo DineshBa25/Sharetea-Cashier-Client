@@ -33,11 +33,11 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            //populate_employees(connection);
+            populate_employees(connection);
             //populate_finances(connection);
             //populate_ingredients(connection);
             //populate_orders(connection);
-            populate_products(connection);
+            //populate_products(connection);
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -62,13 +62,15 @@ public class populate_tables {
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
             List<String> firstnames = Arrays.asList("Dinesh", "Mohsin", "Nicholas", "Cole", "Ilham");
             List<String> lastnames = Arrays.asList("Balakrishnan", "Khan", "Dienstbier", "Broberg", "Aryawan");
+            List<Integer> ids = Arrays.asList(17901, 74203, 63951, 48702, 32387);
+            List<Boolean> managers = Arrays.asList(true, false, false, false, false);
 
-            for(int i = 0; i < 5; i++) {
+            for(int i = 0; i < firstnames.size(); i++) {
                 String firstname = firstnames.get(i);
                 String lastname = lastnames.get(i);
 
-                preparedStatement.setInt(1, i);
-                preparedStatement.setBoolean(2, false);
+                preparedStatement.setInt(1, ids.get(i));
+                preparedStatement.setBoolean(2, managers.get(i));
                 preparedStatement.setString(3, firstname);
                 preparedStatement.setString(4, lastname);
 
