@@ -9,6 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +27,15 @@ public class AddOnsController {
     @FXML
     public void initialize() {
         // Load the add-ons, sweetness levels, and ice levels
-        // Again, these should ideally be fetched from the database
+        // Add-ons are fetched from db, other values are not
+        List<String> addOns = new ArrayList<>();
+
+        // Getting menu items from the database
+        addOns = Main.dbManager.getAddOnNames();
 
         addOnsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        addOnsListView.getItems().addAll("Boba", "Jelly", "Pudding"); // Sample data
+        addOnsListView.getItems().addAll(addOns); // Sample data
         sweetnessComboBox.getItems().addAll("50%", "70%", "100%");
         iceComboBox.getItems().addAll("Less Ice", "Regular Ice", "More Ice");
 

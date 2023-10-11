@@ -9,4 +9,14 @@
         SET quantity = ?
         WHERE ingredientid = ?;
     </query>
+    <query id="getProducts">
+        SELECT productname
+        FROM products
+        WHERE array_length(ingredientids, 1) &gt; 1;
+    </query>
+    <query id="getAddOns">
+        SELECT productname
+        FROM products
+        WHERE array_length(ingredientids, 1) &lt;= 1;
+    </query>
 </queries>

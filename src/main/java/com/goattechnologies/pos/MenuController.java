@@ -8,6 +8,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuController {
 
@@ -21,7 +25,13 @@ public class MenuController {
     public void initialize() {
         Main.menuController = this;
         // Load the menu items (you should fetch these from the database)
-        menuListView.getItems().addAll("Drink1", "Drink2", "Drink3"); // Sample data
+        List<String> products = new ArrayList<>();
+
+        // Getting menu items from the database
+        products = Main.dbManager.getProductNames();
+
+
+        menuListView.getItems().addAll(products); // Sample data
 
         menuListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null) {
