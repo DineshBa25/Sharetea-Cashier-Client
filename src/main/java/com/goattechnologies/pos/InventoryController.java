@@ -1,12 +1,10 @@
 package com.goattechnologies.pos;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
-import java.util.List;
 import javafx.scene.control.Button;
 import java.io.IOException;
 import javafx.beans.property.BooleanProperty;
@@ -19,8 +17,6 @@ public class InventoryController {
     private TableView<Ingredient> ingredientTableView;
     @FXML
     private Button updateButton;
-    @FXML
-    private Button addButton;
 
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
 
@@ -41,24 +37,30 @@ public class InventoryController {
                 isRowSelected.set(newValue != null);
             }
         });
-
     }
 
     @FXML
-    private void updateIngredient(ActionEvent event) throws IOException{
-        // Handle the "Update" button click here
+    private void editSelectedIngredient(ActionEvent event) throws IOException {
         Ingredient selectedIngredient = ingredientTableView.getSelectionModel().getSelectedItem();
+
         if (selectedIngredient != null) {
-            // TODO
-            System.out.println("We are gonna update selected ingredient");
-            Node node = FXMLLoader.load(getClass().getResource("update-ingredient-view.fxml"));
-            Main.getMainController().setView(node);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("update-ingredient-view.fxml"));
+                Node updateView = loader.load();
+
+                UpdateIngredientController updateIngredientController = loader.getController();
+                updateIngredientController.setSelectedIngredient(selectedIngredient);
+                System.out.println("We are gonna update selected ingredient");
+                Main.getMainController().setView(updateView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+
     @FXML
     private void addIngredient(ActionEvent event) throws IOException {
-    // TODO
         System.out.println("We gonna go add an ingredient");
         Node node = FXMLLoader.load(getClass().getResource("add-ingredient-view.fxml"));
         Main.getMainController().setView(node);

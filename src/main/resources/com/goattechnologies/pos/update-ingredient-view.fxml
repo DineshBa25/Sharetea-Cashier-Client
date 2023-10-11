@@ -6,9 +6,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.goattechnologies.pos.UpdateIngredientController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.UpdateIngredientController">
+    <Label text="Update Ingredient" />
+    <Label text="Name:" />
+    <TextField fx:id="ingredientNameField" />
+    <Label text="Quantity:" />
+    <TextField fx:id="quantityField" />
+    <Label text="Cost:" />
+    <TextField fx:id="costField" />
+    <HBox alignment="CENTER" spacing="10">
+        <Button text="Update" onAction="#updateIngredient" styleClass="black-btn"/>
+        <Button text="Delete" onAction="#deleteIngredient" styleClass="red-btn"/>
+    </HBox>
+    <Button text="Back" onAction="#backToInventory" styleClass="black-btn-sm"/>
+</VBox>

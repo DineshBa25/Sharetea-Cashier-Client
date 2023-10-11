@@ -5,13 +5,15 @@
         FROM ingredients;
     </query>
     <query id="updateInventory">
-        UPDATE ingredients
-        SET quantity = ?
+        UPDATE ingredients SET ingredientname = ?, quantity = ?, cost = ?
         WHERE ingredientid = ?;
     </query>
     <query id="addIngredient">
         INSERT INTO ingredients(ingredientname, quantity, cost)
         VALUES (?, ?, ?);
+    </query>
+    <query id="deleteIngredient">
+        DELETE FROM ingredients WHERE ingredientid = ?;
     </query>
     <query id="getProducts">
         SELECT productname
