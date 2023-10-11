@@ -34,4 +34,13 @@
         ORDER BY orderid DESC
         LIMIT 1;
     </query>
+    <query id="useIngredients">
+        UPDATE ingredients AS i
+        SET quantity = i.quantity - 1
+        WHERE i.ingredientid IN (
+        SELECT unnest(p.ingredientids)
+        FROM products AS p
+        WHERE p.productname = ?
+        );
+    </query>
 </queries>
