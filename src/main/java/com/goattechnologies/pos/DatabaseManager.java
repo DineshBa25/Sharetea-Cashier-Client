@@ -1,4 +1,5 @@
 package com.goattechnologies.pos;
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +84,29 @@ public class DatabaseManager {
         }
         return names;
     }
+
+    public List<Ingredient> getIngredients() {
+        List<Ingredient> ingredientsList = new ArrayList<>();
+        ResultSet resultSet = this.query("getIngredients");
+        try {
+            while (resultSet.next()) {
+                int ingredientId = resultSet.getInt("ingredientid");
+                String ingredientName = resultSet.getString("ingredientname");
+                int quantity = resultSet.getInt("quantity");
+                double cost = resultSet.getDouble("cost");
+
+                Ingredient ingredient = new Ingredient(ingredientId, ingredientName, quantity, cost);
+                ingredientsList.add(ingredient);
+                System.out.println(ingredient.getIngredientId() + ", " + ingredient.getQuantity());
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get ingredients");
+            throw new RuntimeException();
+        }
+        return ingredientsList;
+    }
 }
+
+
+
 

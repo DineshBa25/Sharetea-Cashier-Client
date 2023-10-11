@@ -6,8 +6,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.goattechnologies.pos.InventoryController">
     <Button text="Back" onAction="#handleBackButton" styleClass="black-btn"/>
+
+<!--    <TableView fx:id="ingredientTable">-->
+<!--        <columns>-->
+<!--            <TableColumn text="ID" prefWidth="100">-->
+<!--                <cellValueFactory>-->
+<!--                    <PropertyValueFactory property="ingredientID" />-->
+<!--                </cellValueFactory>-->
+<!--            </TableColumn>-->
+<!--            <TableColumn text="Name" prefWidth="200">-->
+<!--                <cellValueFactory>-->
+<!--                    <PropertyValueFactory property="ingredientName" />-->
+<!--                </cellValueFactory>-->
+<!--            </TableColumn>-->
+<!--            <TableColumn text="Quantity" prefWidth="100">-->
+<!--                <cellValueFactory>-->
+<!--                    <PropertyValueFactory property="quantity" />-->
+<!--                </cellValueFactory>-->
+<!--            </TableColumn>-->
+<!--            <TableColumn text="Cost" prefWidth="100">-->
+<!--                <cellValueFactory>-->
+<!--                    <PropertyValueFactory property="cost" />-->
+<!--                </cellValueFactory>-->
+<!--            </TableColumn>-->
+<!--        </columns>-->
+<!--    </TableView>-->
 </VBox>
