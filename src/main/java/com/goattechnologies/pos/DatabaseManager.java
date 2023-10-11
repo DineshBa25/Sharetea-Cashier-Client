@@ -166,5 +166,25 @@ public class DatabaseManager {
         }
         return;
     }
+
+    public List<Ingredient> getIngredients() {
+        List<Ingredient> ingredientsList = new ArrayList<>();
+        ResultSet resultSet = this.query("getIngredients");
+        try {
+            while (resultSet.next()) {
+                int ingredientId = resultSet.getInt("ingredientid");
+                String ingredientName = resultSet.getString("ingredientname");
+                int quantity = resultSet.getInt("quantity");
+                double cost = resultSet.getDouble("cost");
+
+                Ingredient ingredient = new Ingredient(ingredientId, ingredientName, quantity, cost);
+                ingredientsList.add(ingredient);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get ingredients");
+            throw new RuntimeException();
+        }
+        return ingredientsList;
+    }
 }
 

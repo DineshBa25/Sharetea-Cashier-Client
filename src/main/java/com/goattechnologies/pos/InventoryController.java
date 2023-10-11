@@ -1,65 +1,63 @@
 package com.goattechnologies.pos;
-
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
 import java.util.List;
-import javafx.collections.ObservableList;
-import javafx.scene.control.cell.PropertyValueFactory;
-
-
-
+import javafx.scene.control.Button;
 import java.io.IOException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
+
 
 public class InventoryController {
     @FXML
-    private TableView<Ingredient> ingredientTable;
-
+    private TableView<Ingredient> ingredientTableView;
     @FXML
-    private TableColumn<Ingredient, Integer> idColumn;
-
+    private Button updateButton;
     @FXML
-    private TableColumn<Ingredient, String> nameColumn;
+    private Button addButton;
 
-    @FXML
-    private TableColumn<Ingredient, Integer> quantityColumn;
-
-    @FXML
-    private TableColumn<Ingredient, Double> costColumn;
+    private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
 
     @FXML
     public void initialize() {
         Main.inventoryController = this;
 
-        List<Ingredient> ingredients = Main.dbManager.getIngredients();
+        Main.ingredients = Main.dbManager.getIngredients();
+        ingredientTableView.getItems().addAll(Main.ingredients);
 
-//        // Create PropertyValueFactory instances for each column
-//        PropertyValueFactory<Ingredient, Integer> idCellValueFactory = new PropertyValueFactory<>("ingredientID");
-//        PropertyValueFactory<Ingredient, String> nameCellValueFactory = new PropertyValueFactory<>("ingredientName");
-//        PropertyValueFactory<Ingredient, Integer> quantityCellValueFactory = new PropertyValueFactory<>("quantity");
-//        PropertyValueFactory<Ingredient, Double> costCellValueFactory = new PropertyValueFactory<>("cost");
-//
-//        // Set the cell value factories for each column
-//        idColumn.setCellValueFactory(idCellValueFactory);
-//        nameColumn.setCellValueFactory(nameCellValueFactory);
-//        quantityColumn.setCellValueFactory(quantityCellValueFactory);
-//        costColumn.setCellValueFactory(costCellValueFactory);
-//
-//        // Convert the list to an ObservableList and set it as the table's data
-//        ObservableList<Ingredient> data = FXCollections.observableArrayList(ingredients);
-//        ingredientTable.setItems(data);
+        // Bind the "Update" button's disable property to the row selection state
+        updateButton.disableProperty().bind(isRowSelected.not());
+
+        // Add a listener to update the row selection state
+        ingredientTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Ingredient>() {
+            @Override
+            public void changed(ObservableValue<? extends Ingredient> observable, Ingredient oldValue, Ingredient newValue) {
+                isRowSelected.set(newValue != null);
+            }
+        });
+
     }
 
-    public void addIngredient(ActionEvent event) throws IOException {
-    // TODO
+    @FXML
+    private void updateIngredient(ActionEvent event) throws IOException{
+        // Handle the "Update" button click here
+        Ingredient selectedIngredient = ingredientTableView.getSelectionModel().getSelectedItem();
+        if (selectedIngredient != null) {
+            // TODO
+            System.out.println("yoo did we make it");
+        }
     }
 
-    public void updateIngredient(ActionEvent event) throws IOException {
+    @FXML
+    private void addIngredient(ActionEvent event) throws IOException {
     // TODO
+        System.out.println("We gonna go add an order or summ");
     }
 
     public void handleBackButton(ActionEvent event) throws IOException {
