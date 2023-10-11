@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Main extends Application {
   
@@ -19,6 +20,9 @@ public class Main extends Application {
     public static InventoryController inventoryController;
 
     public static Cart cart = new Cart();
+
+    // Used in supervisor tools to modify ingredients
+    public static List<Ingredient> ingredients;
 
     @Override
     public void start(Stage stage) throws IOException {
