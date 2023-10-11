@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS Products(
   productID SERIAL PRIMARY KEY,
   productName VARCHAR(200),
   ingredientIDs INTEGER[], -- FK with ingredientIDs
-  price FLOAT
+  price FLOAT,
+  saleprice FLOAT
 );
 
 CREATE TABLE IF NOT EXISTS Finances(
