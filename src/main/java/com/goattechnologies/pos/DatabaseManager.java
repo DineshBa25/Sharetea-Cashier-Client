@@ -1,5 +1,7 @@
 package com.goattechnologies.pos;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DatabaseManager {
@@ -52,12 +54,34 @@ public class DatabaseManager {
         }
     }
 
-    public ResultSet getProductNames() {
-        return this.query("getProducts");
+    public List<String> getProductNames() {
+        List<String> names = new ArrayList<String>();
+        ResultSet resultSet = this.query("getProducts");
+        try {
+            while (resultSet.next()) {
+                String addOnName = resultSet.getString("productname");
+                names.add(addOnName);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get product names");
+            throw new RuntimeException();
+        }
+        return names;
     }
 
-    public ResultSet getAddOnNames() {
-        return this.query("getAddOns");
+    public List<String> getAddOnNames() {
+        List<String> names = new ArrayList<String>();
+        ResultSet resultSet = this.query("getAddOns");
+        try {
+            while (resultSet.next()) {
+                String addOnName = resultSet.getString("productname");
+                names.add(addOnName);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get addon names");
+            throw new RuntimeException();
+        }
+        return names;
     }
 }
 

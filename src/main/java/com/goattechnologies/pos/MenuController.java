@@ -26,19 +26,9 @@ public class MenuController {
         Main.menuController = this;
         // Load the menu items (you should fetch these from the database)
         List<String> products = new ArrayList<>();
-        try {
-            // Getting menu items from the database
-            ResultSet resultSet = Main.dbManager.getProductNames();
 
-            // Fetch the results and store them in the list
-            while (resultSet.next()) {
-                String productName = resultSet.getString("productname");
-                products.add(productName);
-            }
-        } catch (SQLException e) {
-            System.out.println("Could not get menu items from database");
-            e.printStackTrace();
-        }
+        // Getting menu items from the database
+        products = Main.dbManager.getProductNames();
 
 
         menuListView.getItems().addAll(products); // Sample data

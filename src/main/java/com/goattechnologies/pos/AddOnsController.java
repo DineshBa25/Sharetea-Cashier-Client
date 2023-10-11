@@ -29,19 +29,10 @@ public class AddOnsController {
         // Load the add-ons, sweetness levels, and ice levels
         // Add-ons are fetched from db, other values are not
         List<String> addOns = new ArrayList<>();
-        try {
-            // Getting menu items from the database
-            ResultSet resultSet = Main.dbManager.getAddOnNames();
 
-            // Fetch the results and store them in the list
-            while (resultSet.next()) {
-                String addOnName = resultSet.getString("productname");
-                addOns.add(addOnName);
-            }
-        } catch (SQLException e) {
-            System.out.println("Could not get menu items from database");
-            e.printStackTrace();
-        }
+        // Getting menu items from the database
+        addOns = Main.dbManager.getAddOnNames();
+
         addOnsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         addOnsListView.getItems().addAll(addOns); // Sample data
