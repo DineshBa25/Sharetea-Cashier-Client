@@ -71,9 +71,9 @@ public class OrderConfirmationController {
             // ...
         }
         List<CartItem> items = Main.cart.getItems();
-        for (CartItem item : items) {
-            // TODO: add order to order DB
-        }
+
+        Main.dbManager.addOrder(items, tipPercentage);
+
         Main.cart.removeAllItemsInCart();
         // Load the order confirmation view
         Node backToStart = FXMLLoader.load(getClass().getResource("login2-view.fxml"));

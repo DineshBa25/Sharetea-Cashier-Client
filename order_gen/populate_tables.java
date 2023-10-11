@@ -33,9 +33,9 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            // populate_employees(connection);
+            populate_employees(connection);
             //populate_finances(connection);
-            populate_ingredients(connection);
+            //populate_ingredients(connection);
             //populate_orders(connection);
             //populate_products(connection);
         } 
@@ -62,13 +62,15 @@ public class populate_tables {
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
             List<String> firstnames = Arrays.asList("Dinesh", "Mohsin", "Nicholas", "Cole", "Ilham");
             List<String> lastnames = Arrays.asList("Balakrishnan", "Khan", "Dienstbier", "Broberg", "Aryawan");
+            List<Integer> ids = Arrays.asList(17901, 74203, 63951, 48702, 32387);
+            List<Boolean> managers = Arrays.asList(true, false, false, false, false);
 
-            for(int i = 0; i < 5; i++) {
+            for(int i = 0; i < firstnames.size(); i++) {
                 String firstname = firstnames.get(i);
                 String lastname = lastnames.get(i);
 
-                preparedStatement.setInt(1, i);
-                preparedStatement.setBoolean(2, false);
+                preparedStatement.setInt(1, ids.get(i));
+                preparedStatement.setBoolean(2, managers.get(i));
                 preparedStatement.setString(3, firstname);
                 preparedStatement.setString(4, lastname);
 
@@ -229,7 +231,7 @@ public class populate_tables {
     }
 
     public static void populate_products(Connection conn) {
-        String insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO products(productid, productname, ingredientids, price, saleprice) VALUES (?, ?, ?, ?, ?)";
         String csvFilePath = "products.csv";
             
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
@@ -256,6 +258,7 @@ public class populate_tables {
                 Array ingredients = conn.createArrayOf("INTEGER", ingredientIdsInteger.toArray());
                 preparedStatement.setArray(3, ingredients);
                 preparedStatement.setDouble(4, Double.parseDouble(fields.get(2)));
+                preparedStatement.setDouble(5, 0);
             
                 preparedStatement.executeUpdate();
                 id++;

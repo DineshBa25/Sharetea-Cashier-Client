@@ -1,6 +1,6 @@
 package com.goattechnologies.pos;
-import javax.xml.transform.Result;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +46,20 @@ public class DatabaseManager {
     }
 
     // Add other database methods here, such as executing queries, etc.
-    public ResultSet query(String queryId) {
+    private ResultSet query(String queryId) {
         try {
             return conn.createStatement().executeQuery(queryLoader.getQuery(queryId));
+        } catch (SQLException e) {
+            System.out.println("database query failed: " + queryId);
+            throw new RuntimeException();
+        }
+    }
+
+    private ResultSet query(String queryId, String alt) {
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery(queryId));
+            preparedStatement.setString(1, alt);
+            return preparedStatement.executeQuery();
         } catch (SQLException e) {
             System.out.println("database query failed: " + queryId);
             throw new RuntimeException();
@@ -85,28 +96,75 @@ public class DatabaseManager {
         return names;
     }
 
-    public List<Ingredient> getIngredients() {
-        List<Ingredient> ingredientsList = new ArrayList<>();
-        ResultSet resultSet = this.query("getIngredients");
+    private double getProductPrice(String product) {
+        double price = 0;
         try {
-            while (resultSet.next()) {
-                int ingredientId = resultSet.getInt("ingredientid");
-                String ingredientName = resultSet.getString("ingredientname");
-                int quantity = resultSet.getInt("quantity");
-                double cost = resultSet.getDouble("cost");
-
-                Ingredient ingredient = new Ingredient(ingredientId, ingredientName, quantity, cost);
-                ingredientsList.add(ingredient);
-                System.out.println(ingredient.getIngredientId() + ", " + ingredient.getQuantity());
-            }
+            ResultSet resultSet = this.query("getProductPrice", product);
+            resultSet.next();
+            price = resultSet.getDouble("price");
         } catch (SQLException e) {
-            System.out.println("Unable to get ingredients");
+            System.out.println("Unable to get product price");
             throw new RuntimeException();
         }
-        return ingredientsList;
+        return price;
+    }
+    
+    private double getItemPrice(CartItem item) {
+        double price = 0;
+        price += getProductPrice(item.getDrinkName());
+        for (String addon : item.getAddOns()) {
+            price += getProductPrice(addon);
+        }
+        return price;
+    }
+    
+    private double getOrderPrice(List<CartItem> items) {
+        double price = 0;
+        for (CartItem item : items) {
+            price += getItemPrice(item);
+        }
+        return price;
+    }
+
+    private int getNextOrderId() {
+        int id = 0;
+        try {
+            ResultSet resultSet = this.query("getLastOrderId");
+            resultSet.next();
+            id = resultSet.getInt("orderid") + 1;
+        } catch (SQLException e) {
+            System.out.println("Unable to get next id");
+            throw new RuntimeException();
+        }
+        return id;
+    }
+
+    private Timestamp getOrderTime() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    public void addOrder(List<CartItem> items, double tipPercentage /* TODO: deal with real worker in the future*/) {
+
+        int id = getNextOrderId();
+        String cashier = "Cole";
+        Timestamp time = getOrderTime();
+        double orderPrice = getOrderPrice(items);
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("insertOrder"));
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, cashier);
+            preparedStatement.setTimestamp(3, time);
+
+            preparedStatement.setFloat(4, Float.parseFloat(df.format(orderPrice * (1 + tipPercentage))));
+            preparedStatement.execute();
+            System.out.println("Order added to db");
+        } catch (SQLException e) {
+            System.out.println("could not add order to database");
+            throw new RuntimeException();
+        }
+        return;
     }
 }
-
-
-
 
