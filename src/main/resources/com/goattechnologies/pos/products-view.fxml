@@ -5,10 +5,29 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.goattechnologies.pos.ProductsController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
-</AnchorPane>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.goattechnologies.pos.ProductsController">
+    <TableView fx:id="productTable" prefWidth="600" prefHeight="400">
+        <columns>
+            <TableColumn text="Product Name" prefWidth="200">
+                <cellValueFactory><PropertyValueFactory property="productName" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Ingredients" prefWidth="200">
+                <cellValueFactory><PropertyValueFactory property="ingredients" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Sale Price" prefWidth="100">
+                <cellValueFactory><PropertyValueFactory property="salePrice" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Edit" prefWidth="50">
+                <cellValueFactory><PropertyValueFactory property="editButton" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Delete" prefWidth="50">
+                <cellValueFactory><PropertyValueFactory property="deleteButton" /></cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn"/>
+</VBox>
