@@ -139,6 +139,29 @@ public class DatabaseManager {
         return id;
     }
 
+    private void useOrderIngredients(List<CartItem> items) {
+        for (CartItem item : items) {
+            try {
+                PreparedStatement preparedStatement = conn.prepareStatement(
+                        queryLoader.getQuery("useIngredients")
+                );
+                preparedStatement.setString(1, item.getDrinkName());
+                preparedStatement.execute();
+                for (String addOnName : item.getAddOns()) {
+                    preparedStatement = conn.prepareStatement(
+                            queryLoader.getQuery("useIngredients")
+                    );
+                    preparedStatement.setString(1, addOnName);
+                    preparedStatement.execute();
+                }
+            } catch (SQLException e) {
+                System.out.println("could not use ingredients");
+                throw new RuntimeException();
+            }
+
+        }
+    }
+
     private Timestamp getOrderTime() {
         return new Timestamp(System.currentTimeMillis());
     }
@@ -157,9 +180,11 @@ public class DatabaseManager {
             preparedStatement.setString(2, cashier);
             preparedStatement.setTimestamp(3, time);
 
-            preparedStatement.setFloat(4, Float.parseFloat(df.format(orderPrice * (1 + tipPercentage))));
+            preparedStatement.setDouble(4, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
             preparedStatement.execute();
             System.out.println("Order added to db");
+            useOrderIngredients(items);
+            System.out.println("Ingredients consumed");
         } catch (SQLException e) {
             System.out.println("could not add order to database");
             throw new RuntimeException();
