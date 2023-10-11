@@ -215,7 +215,33 @@ public class DatabaseManager {
     }
 
     public void addIngredient(Ingredient ingredient) {
-        //TODO
+        if (!ingredient.getIngredientName().isEmpty() && ingredient.getQuantity() > -1 && ingredient.getCost() > -1)
+        {
+            System.out.println("This new ingredient meets requirements, inserting now.");
+        }
+        else {
+            System.out.println("This ingredient does not meet requirements.");
+        }
+
+        try {
+            String insertQuery = queryLoader.getQuery("addIngredient");
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+            preparedStatement.setString(1, ingredient.getIngredientName());
+            preparedStatement.setInt(2, ingredient.getQuantity());
+            preparedStatement.setDouble(3, ingredient.getCost());
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Ingredient inserted successfully.");
+            } else {
+                System.out.println("Insertion failed.");
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("Unable to add ingredient");
+            throw new RuntimeException();
+        }
     }
 }
 

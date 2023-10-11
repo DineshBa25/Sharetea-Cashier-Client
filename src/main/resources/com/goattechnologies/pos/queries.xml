@@ -10,8 +10,8 @@
         WHERE ingredientid = ?;
     </query>
     <query id="addIngredient">
-        INSERT INTO ingredients(ingredientid, ingredientname, quantity, cost)
-        VALUES (?, ?, ?, ?);
+        INSERT INTO ingredients(ingredientname, quantity, cost)
+        VALUES (?, ?, ?);
     </query>
     <query id="getProducts">
         SELECT productname
