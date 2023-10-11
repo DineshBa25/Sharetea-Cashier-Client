@@ -43,11 +43,11 @@ public class DatabaseManager {
     }
 
     // Add other database methods here, such as executing queries, etc.
-    public ResultSet query(String queryString) {
+    public ResultSet query(String queryId) {
         try {
-            return conn.createStatement().executeQuery(queryString);
+            return conn.createStatement().executeQuery(queryLoader.getQuery(queryId));
         } catch (SQLException e) {
-            System.out.println("database query failed: " + queryString);
+            System.out.println("database query failed: " + queryId);
             throw new RuntimeException();
         }
     }

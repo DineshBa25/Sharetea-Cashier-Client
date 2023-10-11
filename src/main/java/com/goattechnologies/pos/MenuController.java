@@ -28,7 +28,7 @@ public class MenuController {
         List<String> products = new ArrayList<>();
         try {
             // Getting menu items from the database
-            ResultSet resultSet = Main.dbManager.query(Main.dbManager.queryLoader.getQuery("getProducts"));
+            ResultSet resultSet = Main.dbManager.query("getProducts");
 
             // Fetch the results and store them in the list
             while (resultSet.next()) {
