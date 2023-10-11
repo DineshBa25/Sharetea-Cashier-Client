@@ -192,7 +192,6 @@ public class DatabaseManager {
             System.out.println("could not add order to database");
             throw new RuntimeException();
         }
-        return;
     }
 }
 
