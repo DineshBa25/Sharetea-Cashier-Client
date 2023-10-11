@@ -31,7 +31,7 @@ public class AddOnsController {
         List<String> addOns = new ArrayList<>();
         try {
             // Getting menu items from the database
-            ResultSet resultSet = Main.dbManager.query("getAddOns");
+            ResultSet resultSet = Main.dbManager.getAddOnNames();
 
             // Fetch the results and store them in the list
             while (resultSet.next()) {

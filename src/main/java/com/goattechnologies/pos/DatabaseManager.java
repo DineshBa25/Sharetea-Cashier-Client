@@ -51,5 +51,13 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+
+    public ResultSet getProductNames() {
+        return this.query("getProducts");
+    }
+
+    public ResultSet getAddOnNames() {
+        return this.query("getAddOns");
+    }
 }
 
