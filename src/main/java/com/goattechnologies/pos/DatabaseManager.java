@@ -108,6 +108,7 @@ public class DatabaseManager {
         }
         return price;
     }
+    
     private double getItemPrice(CartItem item) {
         double price = 0;
         price += getProductPrice(item.getDrinkName());
@@ -116,6 +117,7 @@ public class DatabaseManager {
         }
         return price;
     }
+    
     private double getOrderPrice(List<CartItem> items) {
         double price = 0;
         for (CartItem item : items) {
