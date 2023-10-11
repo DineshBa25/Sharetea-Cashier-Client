@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class Main extends Application {
   
-    private final DatabaseManager dbManager = new DatabaseManager();
+    public static DatabaseManager dbManager = new DatabaseManager();
   
     private static MainController mainController;
 

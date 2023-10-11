@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.List;
 
 public class OrderConfirmationController {
 
@@ -69,7 +70,10 @@ public class OrderConfirmationController {
             // Print the receipt (add your logic here)
             // ...
         }
-
+        List<CartItem> items = Main.cart.getItems();
+        for (CartItem item : items) {
+            // TODO: add order to order DB
+        }
         Main.cart.removeAllItemsInCart();
         // Load the order confirmation view
         Node backToStart = FXMLLoader.load(getClass().getResource("login2-view.fxml"));
