@@ -175,6 +175,7 @@ public class DatabaseManager {
         DecimalFormat df = new DecimalFormat("0.00");
 
         try {
+            // SQL to add order to orders database, currently uses cost for price
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("insertOrder"));
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, cashier);
@@ -183,6 +184,8 @@ public class DatabaseManager {
             preparedStatement.setDouble(4, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
             preparedStatement.execute();
             System.out.println("Order added to db");
+
+            // Decrements ingredient quantities for each item and addon in the order
             useOrderIngredients(items);
             System.out.println("Ingredients consumed");
         } catch (SQLException e) {
