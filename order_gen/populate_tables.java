@@ -1,3 +1,11 @@
+/**
+ * The `populate_tables` class is responsible for populating tables in a PostgreSQL database
+ * with data from CSV files. It establishes a database connection and provides methods to insert
+ * data into tables for employees, finances, ingredients, orders, and products.
+ *
+ * @author ilham
+ */
+
 import java.sql.*;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -11,6 +19,11 @@ import java.util.HashMap;
 
 public class populate_tables {
 
+    /**
+     * Main method that establishes a database connection and populates various tables.
+     *
+     * @param args Command-line arguments (not used in this application).
+     */
     public static void main(String args[]) {
 
         // Credentials
@@ -55,6 +68,11 @@ public class populate_tables {
         }
     }
 
+    /**
+     * Populates the "employees" table with sample data.
+     *
+     * @param conn A database connection object.
+     */
     public static void populate_employees(Connection conn) {
 
         String insertSQL = "INSERT INTO employees(employeeid, ismanager, firstname, lastname) VALUES (?, ?, ?, ?)";
@@ -86,6 +104,11 @@ public class populate_tables {
         }
     }
 
+    /**
+     * Populates the "finances" table with data from a CSV file.
+     *
+     * @param conn A database connection object.
+     */
     public static void populate_finances(Connection conn) {
 
         String insertSQL = "INSERT INTO finances(reportdate, revenue, profit, expenses, ordercount) VALUES (?, ?, ?, ?, ?)";
@@ -155,6 +178,11 @@ public class populate_tables {
             }
     }
 
+    /**
+     * Populates the "ingredients" table with data from a CSV file.
+     *
+     * @param conn A database connection object.
+     */
     public static void populate_ingredients(Connection conn) {
         String insertSQL = "INSERT INTO ingredients(ingredientid, ingredientname, quantity, cost) VALUES (?, ?, ?, ?)";
         String csvFilePath = "ingredients.csv";
@@ -185,6 +213,11 @@ public class populate_tables {
             }
     }
 
+    /**
+     * Populates the "orders" table with data from a CSV file.
+     *
+     * @param conn A database connection object.
+     */
     public static void populate_orders(Connection conn) {
         String insertSQL = "INSERT INTO orders(orderid, cashier, transactiontime, price) VALUES (?, ?, ?, ?)";
         String csvFilePath = "orders.csv";
@@ -230,6 +263,11 @@ public class populate_tables {
         }
     }
 
+    /**
+     * Populates the "products" table with data from a CSV file.
+     *
+     * @param conn A database connection object.
+     */
     public static void populate_products(Connection conn) {
         String insertSQL = "INSERT INTO products(productid, productname, ingredientids, price, saleprice) VALUES (?, ?, ?, ?, ?)";
         String csvFilePath = "products.csv";
@@ -274,6 +312,12 @@ public class populate_tables {
         }
     }
 
+    /**
+     * Retrieves product prices from a CSV file and returns them as a map.
+     *
+     * @param csvFile The path to the CSV file containing product prices.
+     * @return A map of product names to their respective prices.
+     */
     private static HashMap<String, Double> getProducts(String csvFile) {
         HashMap<String, Double> productPriceMap = new HashMap<>();
 
@@ -297,6 +341,12 @@ public class populate_tables {
         return productPriceMap;
     }
 
+    /**
+     * Parses a CSV line into a list of fields.
+     *
+     * @param line The CSV line to be parsed.
+     * @return A list of fields extracted from the CSV line.
+     */
     private static List<String> parseCsvLine(String line) {
         List<String> result = new ArrayList<>();
         boolean inQuotes = false;
