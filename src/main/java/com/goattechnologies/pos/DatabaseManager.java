@@ -186,5 +186,10 @@ public class DatabaseManager {
         }
         return ingredientsList;
     }
+
+    public void addIngredient(Ingredient ingredient) {
+        //TODO
+    }
 }
+
 

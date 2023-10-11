@@ -10,14 +10,13 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.goattechnologies.pos.InventoryController">
-<!--    <ListView fx:id="ingredientListView"/>-->
     <TableView fx:id="ingredientTableView" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="ID" prefWidth="50">
-                <cellValueFactory>
-                    <PropertyValueFactory property="ingredientId" />
-                </cellValueFactory>
-            </TableColumn>
+<!--            <TableColumn text="ID" prefWidth="50">-->
+<!--                <cellValueFactory>-->
+<!--                    <PropertyValueFactory property="ingredientId" />-->
+<!--                </cellValueFactory>-->
+<!--            </TableColumn>-->
             <TableColumn text="Name" prefWidth="150">
                 <cellValueFactory>
                     <PropertyValueFactory property="ingredientName" />

@@ -9,6 +9,10 @@
         SET quantity = ?
         WHERE ingredientid = ?;
     </query>
+    <query id="addIngredient">
+        INSERT INTO ingredients(ingredientid, ingredientname, quantity, cost)
+        VALUES (?, ?, ?, ?);
+    </query>
     <query id="getProducts">
         SELECT productname
         FROM products

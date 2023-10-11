@@ -50,14 +50,18 @@ public class InventoryController {
         Ingredient selectedIngredient = ingredientTableView.getSelectionModel().getSelectedItem();
         if (selectedIngredient != null) {
             // TODO
-            System.out.println("yoo did we make it");
+            System.out.println("We are gonna update selected ingredient");
+            Node node = FXMLLoader.load(getClass().getResource("update-ingredient-view.fxml"));
+            Main.getMainController().setView(node);
         }
     }
 
     @FXML
     private void addIngredient(ActionEvent event) throws IOException {
     // TODO
-        System.out.println("We gonna go add an order or summ");
+        System.out.println("We gonna go add an ingredient");
+        Node node = FXMLLoader.load(getClass().getResource("add-ingredient-view.fxml"));
+        Main.getMainController().setView(node);
     }
 
     public void handleBackButton(ActionEvent event) throws IOException {
