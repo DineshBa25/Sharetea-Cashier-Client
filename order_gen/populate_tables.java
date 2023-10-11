@@ -33,11 +33,11 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            // populate_employees(connection);
+            //populate_employees(connection);
             //populate_finances(connection);
-            populate_ingredients(connection);
+            //populate_ingredients(connection);
             //populate_orders(connection);
-            //populate_products(connection);
+            populate_products(connection);
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -229,7 +229,7 @@ public class populate_tables {
     }
 
     public static void populate_products(Connection conn) {
-        String insertSQL = "INSERT INTO products(productid, productname, ingredientids, price) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO products(productid, productname, ingredientids, price, saleprice) VALUES (?, ?, ?, ?, ?)";
         String csvFilePath = "products.csv";
             
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
@@ -256,6 +256,7 @@ public class populate_tables {
                 Array ingredients = conn.createArrayOf("INTEGER", ingredientIdsInteger.toArray());
                 preparedStatement.setArray(3, ingredients);
                 preparedStatement.setDouble(4, Double.parseDouble(fields.get(2)));
+                preparedStatement.setDouble(5, 0);
             
                 preparedStatement.executeUpdate();
                 id++;
