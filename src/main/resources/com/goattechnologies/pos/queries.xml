@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <queries>
-    <query id="viewInventory">
-        SELECT ingredientid, ingredientname, quantity
+    <query id="getIngredients">
+        SELECT *
         FROM ingredients;
     </query>
     <query id="updateInventory">
         UPDATE ingredients
         SET quantity = ?
         WHERE ingredientid = ?;
+    </query>
+    <query id="addIngredient">
+        INSERT INTO ingredients(ingredientname, quantity, cost)
+        VALUES (?, ?, ?);
     </query>
     <query id="getProducts">
         SELECT productname

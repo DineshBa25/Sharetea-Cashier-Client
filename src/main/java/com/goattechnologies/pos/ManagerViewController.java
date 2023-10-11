@@ -9,11 +9,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ManagerViewController {
     @FXML
     protected void onInventoryClick() throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
         Main.getMainController().setView(node);
     }
 

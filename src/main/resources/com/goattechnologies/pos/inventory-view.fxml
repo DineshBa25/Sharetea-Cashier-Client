@@ -6,8 +6,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.goattechnologies.pos.InventoryController">
-    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn"/>
+    <TableView fx:id="ingredientTableView" VBox.vgrow="ALWAYS">
+        <columns>
+<!--            <TableColumn text="ID" prefWidth="50">-->
+<!--                <cellValueFactory>-->
+<!--                    <PropertyValueFactory property="ingredientId" />-->
+<!--                </cellValueFactory>-->
+<!--            </TableColumn>-->
+            <TableColumn text="Name" prefWidth="150">
+                <cellValueFactory>
+                    <PropertyValueFactory property="ingredientName" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Quantity" prefWidth="100">
+                <cellValueFactory>
+                    <PropertyValueFactory property="quantity" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Cost" prefWidth="100">
+                <cellValueFactory>
+                    <PropertyValueFactory property="cost" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="addButton" text="Add" onAction="#addIngredient" styleClass="black-btn"/>
+        <Button text="Back" onAction="#handleBackButton" styleClass="black-btn"/>
+        <Button fx:id="updateButton" text="Update" onAction="#updateIngredient" styleClass="black-btn" disable="true" />
+    </HBox>
 </VBox>

@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 CREATE TABLE IF NOT EXISTS Employees(
   employeeID SERIAL PRIMARY KEY,
   isManager BOOLEAN,
