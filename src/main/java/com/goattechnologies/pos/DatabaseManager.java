@@ -1,10 +1,7 @@
 package com.goattechnologies.pos;
 import java.sql.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class DatabaseManager {
@@ -229,7 +226,7 @@ public class DatabaseManager {
 
     public void addIngredient(Ingredient ingredient) {
         // Do not need to check name because controller checks if it is empty
-        if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0)
+        if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0 || Objects.equals(ingredient.getIngredientName(), ""))
         {
             AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Cost and Quantity must be greater than or equal to 0.");
             return;
@@ -251,6 +248,35 @@ public class DatabaseManager {
             preparedStatement.close();
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to Add Ingredient", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    public void addProduct(Product product) {
+        // Do not need to check name because controller checks if it is empty
+        if (product.getSalePrice() < 0 || Objects.equals(product.getProductName(), ""))
+        {
+            AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Sale Price must be greater than or equal to 0, and name must not be empty");
+            return;
+        }
+
+        try {
+            String insertQuery = queryLoader.getQuery("addProduct");
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+            preparedStatement.setString(1, product.getProductName());
+            Integer[] integerArray = product.getIngredients().toArray(new Integer[0]);
+            preparedStatement.setArray(2, conn.createArrayOf("integer",integerArray));
+            preparedStatement.setDouble(3, product.getSalePrice());
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted <= 0) {
+                System.out.println("Insertion failed.");
+                AlertUtil.showWarning("Warning!", "Product insertion failed for: ", product.getProductName());
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Add Product", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -385,6 +411,8 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+
+
 }
 
 

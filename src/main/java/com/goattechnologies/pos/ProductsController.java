@@ -7,15 +7,20 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 public class ProductsController {
+    @FXML
+    private TableColumn<Ingredient, String> productNameColumn;
+    @FXML
+    private TableColumn<Ingredient, Array> productIngredientsColumn;
+    @FXML
+    private TableColumn<Ingredient, Double> productSalePriceColumn;
     @FXML
     private TableView<Product> productTableView;
     @FXML
@@ -29,10 +34,9 @@ public class ProductsController {
     public void initialize() {
         Main.productsController = this;
 
-        productTableView.setColumnResizePolicy(productTableView.CONSTRAINED_RESIZE_POLICY);
-
         Main.products = Main.dbManager.getProductsList();
         productTableView.getItems().addAll(Main.products);
+        productTableView.setColumnResizePolicy(productTableView.CONSTRAINED_RESIZE_POLICY);
 
         // Bind the "Update" button's disable property to the row selection state
         updateButton.disableProperty().bind(isRowSelected.not());
@@ -44,6 +48,9 @@ public class ProductsController {
                 isRowSelected.set(newValue != null);
             }
         });
+
+        centerTextInStringColumn(productNameColumn);
+        centerTextInDoubleColumn(productSalePriceColumn);
     }
 
     @FXML
@@ -70,4 +77,46 @@ public class ProductsController {
         Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
         Main.getMainController().setView(node);
     }
+
+    private void centerTextInStringColumn(TableColumn<Ingredient, String> column) {
+        column.setCellFactory(tc -> {
+            TableCell<Ingredient, String> cell = new TableCell<Ingredient, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                    }
+                }
+            };
+            cell.setAlignment(Pos.CENTER);
+
+            return cell;
+        });
+    }
+    private void centerTextInDoubleColumn(TableColumn<Ingredient, Double> column) {
+        column.setCellFactory(tc -> {
+            TableCell<Ingredient, Double> cell = new TableCell<Ingredient, Double>() {
+                @Override
+                protected void updateItem(Double item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(item.toString());
+                    }
+                }
+            };
+            cell.setAlignment(Pos.CENTER);
+
+            return cell;
+        });
+    }
 }
+
+
+

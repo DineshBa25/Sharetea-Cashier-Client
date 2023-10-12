@@ -14,21 +14,17 @@
 
 
     <Label text="Ingredients:" />
-    <VBox>
-        <!-- This is the container for selected ingredients -->
-        <HBox>
-            <!-- The list of currently selected ingredients -->
-            <ListView fx:id="selectedIngredientsListView" prefHeight="100.0" />
-            <!-- Button to remove selected ingredient(s) -->
-            <Button text="Remove" onAction="#removeSelectedIngredients" />
-        </HBox>
+    <ListView fx:id="selectedIngredientsListView" prefHeight="100.0" />
+    <HBox alignment="CENTER" spacing="10.0">
+        <!-- Button to remove selected ingredient(s) -->
+        <Button fx:id="removeIngredientButton" text="Remove" onAction="#removeSelectedIngredients" styleClass="black-btn"/>
         <!-- Button to add a new ingredient -->
-        <Button text="Add Ingredient" onAction="#openAddIngredientDialog" />
-    </VBox>
+        <Button text="Add Ingredient" onAction="#openAddIngredientDialog" styleClass="black-btn"/>
+    </HBox>
 
 
-
-    <Label text="Sale Price:" />
+    <Label text="Sale Price($):" />
     <TextField fx:id="salePriceField" />
     <Button text="Add" onAction="#addProduct" styleClass="black-btn"/>
+    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
 </VBox>

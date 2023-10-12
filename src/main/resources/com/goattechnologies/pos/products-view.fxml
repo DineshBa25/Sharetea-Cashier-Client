@@ -17,17 +17,17 @@
             <!--                    <PropertyValueFactory property="ingredientId" />-->
             <!--                </cellValueFactory>-->
             <!--            </TableColumn>-->
-            <TableColumn text="Name">
+            <TableColumn fx:id="productNameColumn" text="Name">
                 <cellValueFactory>
                     <PropertyValueFactory property="productName" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Ingredients">
+            <TableColumn fx:id="productIngredientsColumn" text="Ingredients">
                 <cellValueFactory>
                     <PropertyValueFactory property="ingredientNames" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Sale Price">
+            <TableColumn fx:id="productSalePriceColumn" text="Sale Price ($)">
                 <cellValueFactory>
                     <PropertyValueFactory property="salePrice" />
                 </cellValueFactory>
