@@ -1,8 +1,7 @@
 package com.goattechnologies.pos;
 import java.sql.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class DatabaseManager {
@@ -227,7 +226,7 @@ public class DatabaseManager {
 
     public void addIngredient(Ingredient ingredient) {
         // Do not need to check name because controller checks if it is empty
-        if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0)
+        if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0 || Objects.equals(ingredient.getIngredientName(), ""))
         {
             AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Cost and Quantity must be greater than or equal to 0.");
             return;
@@ -249,6 +248,35 @@ public class DatabaseManager {
             preparedStatement.close();
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to Add Ingredient", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    public void addProduct(Product product) {
+        // Do not need to check name because controller checks if it is empty
+        if (product.getSalePrice() < 0 || Objects.equals(product.getProductName(), ""))
+        {
+            AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Sale Price must be greater than or equal to 0, and name must not be empty");
+            return;
+        }
+
+        try {
+            String insertQuery = queryLoader.getQuery("addProduct");
+            PreparedStatement preparedStatement = conn.prepareStatement(insertQuery);
+            preparedStatement.setString(1, product.getProductName());
+            Integer[] integerArray = product.getIngredients().toArray(new Integer[0]);
+            preparedStatement.setArray(2, conn.createArrayOf("integer",integerArray));
+            preparedStatement.setDouble(3, product.getSalePrice());
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted <= 0) {
+                System.out.println("Insertion failed.");
+                AlertUtil.showWarning("Warning!", "Product insertion failed for: ", product.getProductName());
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Add Product", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -279,7 +307,35 @@ public class DatabaseManager {
             AlertUtil.showWarning("Warning!", "Unable to Update Ingredient", e.getMessage());
             throw new RuntimeException();
         }
+    }
 
+    public void updateProduct(Product editedProduct) {
+        // Do not need to check name because controller checks if it is empty
+        if (editedProduct.getSalePrice() < 0 || Objects.equals(editedProduct.getProductName(), ""))
+        {
+            AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Cost and Quantity must be greater than or equal to 0.");
+            return;
+        }
+
+        try {
+            String updateQuery = queryLoader.getQuery("updateProduct");
+            PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+            preparedStatement.setString(1, editedProduct.getProductName());
+            Integer[] integerArray = editedProduct.getIngredients().toArray(new Integer[0]);
+            preparedStatement.setArray(2, conn.createArrayOf("integer",integerArray));
+            preparedStatement.setDouble(3, editedProduct.getSalePrice());
+            preparedStatement.setInt(4, editedProduct.getProductid());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated <= 0) {
+                AlertUtil.showWarning("Warning!", "Product update failed for: ", editedProduct.getProductName());
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Update Product", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     public void deleteIngredient(int ingredientID) {
@@ -296,6 +352,24 @@ public class DatabaseManager {
             preparedStatement.close();
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to delete Ingredient", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    public void deleteProduct(int productID) {
+        try {
+            String deleteQuery = queryLoader.getQuery("deleteProduct");
+            PreparedStatement preparedStatement = conn.prepareStatement(deleteQuery);
+            preparedStatement.setInt(1, productID);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted <= 0) {
+                AlertUtil.showWarning("Warning!", "Product deletion failed.", "The product may not exist.");
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to delete product", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -325,6 +399,67 @@ public class DatabaseManager {
         }
         return employeeName;
     }
+
+    public List<Product> getProductsList() {
+        HashMap<Integer, String> ingredientNameMap = new HashMap<>();
+        ResultSet resultSet2 = this.query("getIngredients");
+        try {
+            while(resultSet2.next()) {
+                ingredientNameMap.put(resultSet2.getInt("ingredientid"),resultSet2.getString("ingredientname"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get ingredients within getProductsList()");
+            throw new RuntimeException();
+        }
+
+
+        List<Product> productsList = new ArrayList<>();
+        ResultSet resultSet = this.query("getProductsList");
+        try {
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productid");
+                String productName = resultSet.getString("productname");
+                List<Integer> ingredients = new ArrayList<>();
+                Array array = resultSet.getArray("ingredientids");
+                List<String> ingredientNames = new ArrayList();
+                if (array != null){
+                    Integer[] arrayData = (Integer[]) array.getArray();
+                    ingredients.addAll(Arrays.asList(arrayData));
+                    for(Integer x : ingredients) {
+                        ingredientNames.add(ingredientNameMap.get(x));
+                    }
+                }
+                double price = resultSet.getDouble("price");
+                double salePrice = resultSet.getDouble("saleprice");
+                Product product = new Product(productId, productName, ingredients, price, salePrice, ingredientNames);
+                productsList.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get products");
+            throw new RuntimeException();
+        }
+        return productsList;
+    }
+
+    public String getIngredientNameByID(int ingredientId) {
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getIngredientNameByID"));
+            preparedStatement.setInt(1, ingredientId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("ingredientname");
+            } else {
+                return "Ingredient not found"; // Change this to your desired behavior.
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Unable to get ingredient name from id");
+            throw new RuntimeException();
+        }
+    }
+
+
+
 }
 
 

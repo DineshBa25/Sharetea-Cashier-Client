@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.UpdateProductController">
+    <Label text="Edit Product" />
+    <Label text="Name:" />
+    <TextField fx:id="productNameField" />
+
+    <Label text="Ingredients:" />
+    <ListView fx:id="selectedIngredientsListView" prefHeight="100.0" />
+    <HBox alignment="CENTER" spacing="10.0">
+        <!-- Button to remove selected ingredient(s) -->
+        <Button fx:id="removeIngredientButton" text="Remove" onAction="#removeSelectedIngredients" styleClass="black-btn"/>
+        <!-- Button to add a new ingredient -->
+        <Button text="Add Ingredient" onAction="#openAddIngredientDialog" styleClass="black-btn"/>
+    </HBox>
+
+    <Label text="Sale Price($):" />
+    <TextField fx:id="salePriceField" />
+    <HBox alignment="CENTER" spacing="10">
+        <Button text="Update" onAction="#updateProduct" styleClass="black-btn"/>
+        <Button text="Delete" onAction="#deleteProduct" styleClass="red-btn"/>
+    </HBox>
+    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
+</VBox>

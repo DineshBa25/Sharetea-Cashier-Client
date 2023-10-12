@@ -16,9 +16,11 @@ public class UpdateIngredientController {
     private TextField costField;
 
     private Ingredient selectedIngredient;
+    private String oldName;
 
     public void setSelectedIngredient(Ingredient ingredient) {
         this.selectedIngredient = ingredient;
+        this.oldName = ingredient.getIngredientName();
 
         // Populate the text fields with the current data
         ingredientNameField.setText(selectedIngredient.getIngredientName());
@@ -31,7 +33,7 @@ public class UpdateIngredientController {
         int newQuantity = Integer.parseInt(quantityField.getText());
         double newCost = Double.parseDouble(costField.getText());
 
-        if (ingredientExists(Main.ingredients, newName)) {
+        if (!oldName.equals(newName) && ingredientExists(Main.ingredients, newName)) {
             AlertUtil.showWarning("Ingredient Warning", "Unable to Update Ingredient", "This ingredient name already exists!");
             backToInventory();
             return;

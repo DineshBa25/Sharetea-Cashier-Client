@@ -4,6 +4,20 @@
         SELECT *
         FROM ingredients;
     </query>
+    <query id="getProductsList">
+        SELECT *
+        FROM products;
+    </query>
+    <query id="getIngredientNameByID">
+        SELECT *
+        FROM ingredients
+        WHERE ingredientid = ?;
+    </query>
+    <query id="getIngredientNamesByIDList">
+        SELECT ingredientname
+        FROM ingredients
+        WHERE ingredientid IN (SELECT unnest(?));
+    </query>
     <query id="updateInventory">
         UPDATE ingredients SET ingredientname = ?, quantity = ?, cost = ?
         WHERE ingredientid = ?;
@@ -14,6 +28,17 @@
     </query>
     <query id="deleteIngredient">
         DELETE FROM ingredients WHERE ingredientid = ?;
+    </query>
+    <query id="updateProduct">
+        UPDATE products SET productname = ?, ingredientids = ?, saleprice = ?
+        WHERE productid = ?;
+    </query>
+    <query id="addProduct">
+        INSERT INTO products(productname, ingredientids, saleprice)
+        VALUES (?, ?, ?);
+    </query>
+    <query id="deleteProduct">
+        DELETE FROM products WHERE productid = ?;
     </query>
     <query id="getProducts">
         SELECT productname
