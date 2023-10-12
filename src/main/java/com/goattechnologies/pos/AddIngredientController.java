@@ -27,4 +27,9 @@ public class AddIngredientController {
         Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
         Main.getMainController().setView(node);
     }
+
+    public void handleBackButton(ActionEvent event) throws IOException {
+        Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
+        Main.getMainController().setView(node);
+    }
 }

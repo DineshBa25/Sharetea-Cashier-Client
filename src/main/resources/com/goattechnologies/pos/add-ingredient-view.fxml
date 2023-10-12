@@ -16,4 +16,5 @@
     <Label text="Cost:" />
     <TextField fx:id="costField" />
     <Button text="Add" onAction="#addIngredient" styleClass="black-btn"/>
+    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
 </VBox>

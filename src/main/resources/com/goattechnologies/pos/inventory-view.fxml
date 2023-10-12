@@ -8,17 +8,17 @@
       fx:controller="com.goattechnologies.pos.InventoryController">
     <TableView fx:id="ingredientTableView" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="Name" prefWidth="150">
+            <TableColumn fx:id="ingredientNameColumn" text="Name" prefWidth="150">
                 <cellValueFactory>
                     <PropertyValueFactory property="ingredientName" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Quantity" prefWidth="100">
+            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100">
                 <cellValueFactory>
                     <PropertyValueFactory property="quantity" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Cost" prefWidth="100">
+            <TableColumn fx:id="costColumn" text="Cost" prefWidth="100">
                 <cellValueFactory>
                     <PropertyValueFactory property="cost" />
                 </cellValueFactory>
