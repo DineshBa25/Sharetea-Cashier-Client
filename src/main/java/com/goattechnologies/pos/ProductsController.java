@@ -66,6 +66,24 @@ public class ProductsController {
     }
 
     @FXML
+    private void editSelectedProduct(ActionEvent event) throws IOException {
+        Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedProduct != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("update-product-view.fxml"));
+                Node updateView = loader.load();
+
+                UpdateProductController updateProductController = loader.getController();
+                updateProductController.setSelectedProduct(selectedProduct);
+                Main.getMainController().setView(updateView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
     private void addProduct(ActionEvent event) throws IOException {
         // TODO
         System.out.println("We gonna go add a product");
