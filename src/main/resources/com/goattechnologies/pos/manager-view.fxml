@@ -9,7 +9,7 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-    <Button text="Inventory" onAction="#onInventoryClick" styleClass="red-btn" prefWidth="200" prefHeight="60"/>
+    <Button text="Inventory" onAction="#onInventoryClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
     <Button text="Products" onAction="#onProductsClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
-    <Button text="Back"  styleClass="black-btn-sm" onAction="#handleBackButton"/>
+    <Button text="Back" styleClass="black-btn-sm" onAction="#handleBackButton"/>
 </VBox>
