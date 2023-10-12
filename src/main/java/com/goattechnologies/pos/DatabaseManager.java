@@ -68,6 +68,17 @@ public class DatabaseManager {
         }
     }
 
+    private ResultSet query(String queryId, int alt) {
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery(queryId));
+            preparedStatement.setInt(1, alt);
+            return preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("database query failed: " + queryId);
+            throw new RuntimeException();
+        }
+    }
+
     public List<String> getProductNames() {
         List<String> names = new ArrayList<String>();
         ResultSet resultSet = this.query("getProducts");
@@ -217,7 +228,7 @@ public class DatabaseManager {
     }
 
     public void addIngredient(Ingredient ingredient) {
-        if (!ingredient.getIngredientName().isEmpty() && ingredient.getQuantity() > -1 && ingredient.getCost() > -1)
+        if (!ingredient.getIngredientName().isEmpty() && ingredient.getQuantity() > -1 && ingredient.getCost() >= 0)
         {
             System.out.println("This new ingredient meets requirements, inserting now.");
         }
@@ -244,6 +255,84 @@ public class DatabaseManager {
             System.out.println("Unable to add ingredient");
             throw new RuntimeException();
         }
+    }
+
+    public void updateIngredient(Ingredient ingredient) {
+        if (!ingredient.getIngredientName().isEmpty() && ingredient.getQuantity() > -1 && ingredient.getCost() >= 0)
+        {
+            System.out.println("This updated ingredient meets requirements, updating now.");
+        }
+        else {
+            System.out.println("This ingredient does not meet requirements.");
+        }
+
+        try {
+            String updateQuery = queryLoader.getQuery("updateInventory");
+            PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+            preparedStatement.setString(1, ingredient.getIngredientName());
+            preparedStatement.setInt(2, ingredient.getQuantity());
+            preparedStatement.setDouble(3, ingredient.getCost());
+            preparedStatement.setInt(4, ingredient.getIngredientId());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Ingredient inserted successfully.");
+            } else {
+                System.out.println("Insertion failed.");
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("Unable to add ingredient");
+            throw new RuntimeException();
+        }
+
+    }
+
+    public void deleteIngredient(int ingredientID) {
+        try {
+            String deleteQuery = queryLoader.getQuery("deleteIngredient");
+            PreparedStatement preparedStatement = conn.prepareStatement(deleteQuery);
+            preparedStatement.setInt(1, ingredientID);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Ingredient deleted successfully.");
+            } else {
+                System.out.println("Deletion failed. Ingredient not found.");
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("Unable to delete ingredient");
+            throw new RuntimeException();
+        }
+    }
+
+    public boolean isManager(int employeeID) {
+        boolean isManager = false;
+        try {
+            ResultSet resultSet = this.query("isManager", employeeID);
+            resultSet.next();
+            isManager = resultSet.getBoolean("ismanager");
+        } catch (SQLException e) {
+            System.out.println("Unable to get product price");
+            throw new RuntimeException();
+        }
+        return isManager;
+    }
+
+    public String getEmployeeName(int employeeID) {
+        String employeeName = "";
+        try {
+            ResultSet resultSet = this.query("getEmployeeName", employeeID);
+            resultSet.next();
+            employeeName = resultSet.getString("firstname");
+        } catch (SQLException e) {
+            System.out.println("Unable to get product price");
+            throw new RuntimeException();
+        }
+        return employeeName;
     }
 
     public List<Product> getProductsList() {

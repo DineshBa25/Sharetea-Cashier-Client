@@ -28,4 +28,16 @@ public class Ingredient {
     public double getCost() {
         return cost;
     }
+
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
 }

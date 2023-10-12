@@ -19,13 +19,15 @@
         WHERE ingredientid IN (SELECT unnest(?));
     </query>
     <query id="updateInventory">
-        UPDATE ingredients
-        SET quantity = ?
+        UPDATE ingredients SET ingredientname = ?, quantity = ?, cost = ?
         WHERE ingredientid = ?;
     </query>
     <query id="addIngredient">
         INSERT INTO ingredients(ingredientname, quantity, cost)
         VALUES (?, ?, ?);
+    </query>
+    <query id="deleteIngredient">
+        DELETE FROM ingredients WHERE ingredientid = ?;
     </query>
     <query id="getProducts">
         SELECT productname
@@ -60,5 +62,15 @@
         FROM products AS p
         WHERE p.productname = ?
         );
+    </query>
+    <query id="isManager">
+        SELECT ismanager
+        FROM employees
+        WHERE employeeid = ?;
+    </query>
+    <query id="getEmployeeName">
+        SELECT firstname
+        FROM employees
+        WHERE employeeid = ?;
     </query>
 </queries>
