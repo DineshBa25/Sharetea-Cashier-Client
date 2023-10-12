@@ -1,5 +1,5 @@
 productName,ingredientIDs,price
-Classic Milk Tea,"[0, 7, 33, 34, 33, 34]",3.5
+Classic Milk Tea,"[0, 7, 33, 34]",3.5
 Honey Milk Tea,"[0, 3, 7, 33, 34]",3.75
 Classic Coffee,"[4, 33, 34]",2.5
 Coffee Milk Tea, "[4, 7, 33, 34]",4.5
@@ -51,12 +51,11 @@ Cocoa Creama,"[25, 32, 33, 34]",4.75
 Mango Creama,"[0, 12, 32, 33, 34]",5.0
 Matcha Creama,"[0, 13, 32, 33, 34]",5.25
 Pearl,[6],0.50
-Aloe Vera,[35],0.60
-Lychee Jelly,[36],0.60
-Mini Pearl,[37],0.50
-Red Bean Creama,[38],0.70
-Ice Cream,[39],1.00
-Herb Jelly,[40],0.50
-Crystal Boba,[41],0.60
-Pudding,[42],0.60
-Aiyu Jelly,[43],0.60
+Aloe Vera,[37],0.60
+Lychee Jelly,[29],0.60
+Mini Pearl,[36],0.50
+Ice Cream,[30],1.00
+Herb Jelly,[28],0.50
+Crystal Boba,[35],0.60
+Pudding,[27],0.60
+Aiyu Jelly,[16],0.60
