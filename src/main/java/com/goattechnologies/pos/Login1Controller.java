@@ -30,14 +30,15 @@ public class Login1Controller {
             String employeeName = Main.dbManager.getEmployeeName(username);
             Employee.getInstance().setEmployeeName(employeeName);
             boolean isManager = Main.dbManager.isManager(username);
+            Employee.getInstance().setManager(isManager);
+            Node node;
             if(isManager) {
-                Node node = FXMLLoader.load(getClass().getResource("login3-view.fxml"));
-                Main.getMainController().setView(node);
+                node = FXMLLoader.load(getClass().getResource("login3-view.fxml"));
             }
             else {
-                Node node = FXMLLoader.load(getClass().getResource("login2-view.fxml"));
-                Main.getMainController().setView(node);
+                node = FXMLLoader.load(getClass().getResource("login2-view.fxml"));
             }
+            Main.getMainController().setView(node);
         } catch (Exception e) {
             e.printStackTrace();
             idPrompt.setText("Incorrect Employee ID");

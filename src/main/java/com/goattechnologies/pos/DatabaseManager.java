@@ -179,10 +179,11 @@ public class DatabaseManager {
     public void addOrder(List<CartItem> items, double tipPercentage /* TODO: deal with real worker in the future*/) {
 
         int id = getNextOrderId();
-        String cashier = "Cole";
+        String cashier = Employee.getInstance().getEmployeeName();
         Timestamp time = getOrderTime();
         double orderPrice = getOrderPrice(items);
         DecimalFormat df = new DecimalFormat("0.00");
+        if (orderPrice == 0) return;
 
         try {
             // SQL to add order to orders database, currently uses cost for price
@@ -381,7 +382,7 @@ public class DatabaseManager {
             resultSet.next();
             isManager = resultSet.getBoolean("ismanager");
         } catch (SQLException e) {
-            System.out.println("Unable to get product price");
+            System.out.println("Unable to get employee manager status");
             throw new RuntimeException();
         }
         return isManager;
@@ -394,7 +395,7 @@ public class DatabaseManager {
             resultSet.next();
             employeeName = resultSet.getString("firstname");
         } catch (SQLException e) {
-            System.out.println("Unable to get product price");
+            System.out.println("Unable to get employee name");
             throw new RuntimeException();
         }
         return employeeName;
