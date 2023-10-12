@@ -4,22 +4,16 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.collections.FXCollections;
-
-
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-
-
 public class AddProductController implements Initializable {
     public Button removeIngredientButton;
     @FXML
@@ -35,7 +29,6 @@ public class AddProductController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         productIngredients = new ArrayList<>();
-
         // Bind the "Update" button's disable property to the row selection state
         removeIngredientButton.disableProperty().bind(isRowSelected.not());
         selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -65,14 +58,11 @@ public class AddProductController implements Initializable {
                 ingredientNames.add(x.getIngredientName());
             }
 
-
             Product newProduct = new Product(0, productName, ingredientIds, 0, productSalePrice, ingredientNames);
-
             Main.dbManager.addProduct(newProduct);
         } catch (Exception e) {
             AlertUtil.showWarning("Product Warning", "Unable to Add Product", "Fields may be empty!");
         }
-
         backToProducts();
     }
 

@@ -27,9 +27,7 @@ public class ProductsController {
     private Button updateButton;
     @FXML
     private Button addButton;
-
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
-
     @FXML
     public void initialize() {
         Main.productsController = this;
@@ -38,10 +36,8 @@ public class ProductsController {
         productTableView.getItems().addAll(Main.products);
         productTableView.setColumnResizePolicy(productTableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Bind the "Update" button's disable property to the row selection state
         updateButton.disableProperty().bind(isRowSelected.not());
 
-        // Add a listener to update the row selection state
         productTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Product>() {
             @Override
             public void changed(ObservableValue<? extends Product> observable, Product oldValue, Product newValue) {
@@ -55,11 +51,9 @@ public class ProductsController {
 
     @FXML
     private void updateProduct(ActionEvent event) throws IOException{
-        // Handle the "Update" button click here
         Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
         if (selectedProduct != null) {
             // TODO
-            System.out.println("We are gonna update selected product");
             Node node = FXMLLoader.load(getClass().getResource("update-product-view.fxml"));
             Main.getMainController().setView(node);
         }
@@ -85,8 +79,6 @@ public class ProductsController {
 
     @FXML
     private void addProduct(ActionEvent event) throws IOException {
-        // TODO
-        System.out.println("We gonna go add a product");
         Node node = FXMLLoader.load(getClass().getResource("add-product-view.fxml"));
         Main.getMainController().setView(node);
     }
@@ -111,7 +103,6 @@ public class ProductsController {
                 }
             };
             cell.setAlignment(Pos.CENTER);
-
             return cell;
         });
     }
@@ -130,7 +121,6 @@ public class ProductsController {
                 }
             };
             cell.setAlignment(Pos.CENTER);
-
             return cell;
         });
     }

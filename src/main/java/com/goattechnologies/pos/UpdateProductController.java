@@ -13,10 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
 public class UpdateProductController implements Initializable{
     public Button removeIngredientButton;
     @FXML
@@ -39,9 +34,7 @@ public class UpdateProductController implements Initializable{
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
     private Product selectedProduct;
 
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         // Bind the "Update" button's disable property to the row selection state
         removeIngredientButton.disableProperty().bind(isRowSelected.not());
         selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -54,13 +47,11 @@ public class UpdateProductController implements Initializable{
 
     public void setSelectedProduct(Product product) {
         productIngredients = new ArrayList<>();
-        System.out.println("yoyooyoy");
         this.selectedProduct = product;
 
         // Populate the text fields with the current data
         productName = product.getProductName();
         productNameField.setText(selectedProduct.getProductName());
-
 
         List<Ingredient> ingredientsInDatabase = Main.dbManager.getIngredients();
         List<String> selectedProductIngredientNames = product.getIngredientNames();
@@ -70,7 +61,6 @@ public class UpdateProductController implements Initializable{
                 selectedIngredientsListView.getItems().add(x.getIngredientName());
             }
         }
-
         salePriceField.setText(String.valueOf(selectedProduct.getSalePrice()));
     }
 
@@ -112,7 +102,6 @@ public class UpdateProductController implements Initializable{
         backToProducts();
     }
 
-
     public void backToProducts() {
         try {
             Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
@@ -123,16 +112,12 @@ public class UpdateProductController implements Initializable{
     }
 
     public void removeSelectedIngredients(ActionEvent actionEvent) {
-        // Get the selected items from the ListView
         List<String> selectedItems = new ArrayList<>(selectedIngredientsListView.getSelectionModel().getSelectedItems());
 
-        // Remove the selected items from the ListView
         selectedIngredientsListView.getItems().removeAll(selectedItems);
 
-        // Optionally, you can also remove the corresponding items from your productIngredients list
         List<Ingredient> ingredientsToRemove = new ArrayList<>();
         for (String selectedItem : selectedItems) {
-            // You need to map the selected ingredient to your productIngredients list
             Ingredient ingredientToRemove = findIngredientByName(selectedItem);
             if (ingredientToRemove != null) {
                 ingredientsToRemove.add(ingredientToRemove);
