@@ -170,7 +170,7 @@ public class UpdateProductController implements Initializable{
 
     public boolean productExists(List<Product> productList, String productNameToFind) {
         for (Product x : productList) {
-            if (x.getProductName().equals(productNameToFind)) {
+            if (x.getProductName().equalsIgnoreCase(productNameToFind)) {
                 return true;
             }
         }

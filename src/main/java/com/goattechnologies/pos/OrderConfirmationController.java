@@ -69,6 +69,7 @@ public class OrderConfirmationController {
         if (printReceiptCheckBox.isSelected()) {
             // Print the receipt (add your logic here)
             // ...
+            // TODO
         }
         List<CartItem> items = Main.cart.getItems();
 
