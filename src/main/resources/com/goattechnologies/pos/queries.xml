@@ -4,6 +4,10 @@
         SELECT *
         FROM ingredients;
     </query>
+    <query id="getProductsList">
+        SELECT *
+        FROM products;
+    </query>
     <query id="updateInventory">
         UPDATE ingredients
         SET quantity = ?

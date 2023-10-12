@@ -28,7 +28,7 @@ public class ProductsController {
     public void initialize() {
         Main.productsController = this;
 
-        Main.products = Main.dbManager.getProductsForProductsController();
+        Main.products = Main.dbManager.getProductsList();
         productTableView.getItems().addAll(Main.products);
 
         // Bind the "Update" button's disable property to the row selection state

@@ -244,9 +244,9 @@ public class DatabaseManager {
         }
     }
 
-    public List<Product> getProductsForProductsController() {
+    public List<Product> getProductsList() {
         List<Product> productsList = new ArrayList<>();
-        ResultSet resultSet = this.query("getProductsForProductsController");
+        ResultSet resultSet = this.query("getProductsList");
         try {
             while (resultSet.next()) {
                 int productId = resultSet.getInt("productid");
