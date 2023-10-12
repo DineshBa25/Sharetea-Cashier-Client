@@ -37,6 +37,10 @@ public class Main extends Application {
 
         mainController = loader.getController();
 
+        // Set the preferred initial window size
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
+
         stage.setTitle("POS Application");
         stage.setScene(scene);
         stage.show();
