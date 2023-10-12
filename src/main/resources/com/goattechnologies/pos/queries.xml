@@ -8,6 +8,16 @@
         SELECT *
         FROM products;
     </query>
+    <query id="getIngredientNameByID">
+        SELECT *
+        FROM ingredients
+        WHERE ingredientid = ?;
+    </query>
+    <query id="getIngredientNamesByIDList">
+        SELECT ingredientname
+        FROM ingredients
+        WHERE ingredientid IN (SELECT unnest(?));
+    </query>
     <query id="updateInventory">
         UPDATE ingredients
         SET quantity = ?

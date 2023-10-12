@@ -2,6 +2,8 @@ package com.goattechnologies.pos;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -245,17 +247,37 @@ public class DatabaseManager {
     }
 
     public List<Product> getProductsList() {
+        HashMap<Integer, String> ingredientNameMap = new HashMap<>();
+        ResultSet resultSet2 = this.query("getIngredients");
+        try {
+            while(resultSet2.next()) {
+                ingredientNameMap.put(resultSet2.getInt("ingredientid"),resultSet2.getString("ingredientname"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get ingredients within getProductsList()");
+            throw new RuntimeException();
+        }
+
+
         List<Product> productsList = new ArrayList<>();
         ResultSet resultSet = this.query("getProductsList");
         try {
             while (resultSet.next()) {
                 int productId = resultSet.getInt("productid");
                 String productName = resultSet.getString("productname");
-//                List<Ingredient> ingredients = resultSet.get("ingredients"); TODO
+                List<Integer> ingredients = new ArrayList<>();
+                Array array = resultSet.getArray("ingredientids");
+                List<String> ingredientNames = new ArrayList();
+                if (array != null){
+                    Integer[] arrayData = (Integer[]) array.getArray();
+                    ingredients.addAll(Arrays.asList(arrayData));
+                    for(Integer x : ingredients) {
+                        ingredientNames.add(ingredientNameMap.get(x));
+                    }
+                }
                 double price = resultSet.getDouble("price");
                 double salePrice = resultSet.getDouble("saleprice");
-
-                Product product = new Product(productId, productName, null, price, salePrice);
+                Product product = new Product(productId, productName, ingredients, price, salePrice, ingredientNames);
                 productsList.add(product);
             }
         } catch (SQLException e) {
@@ -263,6 +285,23 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
         return productsList;
+    }
+
+    public String getIngredientNameByID(int ingredientId) {
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getIngredientNameByID"));
+            preparedStatement.setInt(1, ingredientId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("ingredientname");
+            } else {
+                return "Ingredient not found"; // Change this to your desired behavior.
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Unable to get ingredient name from id");
+            throw new RuntimeException();
+        }
     }
 }
 

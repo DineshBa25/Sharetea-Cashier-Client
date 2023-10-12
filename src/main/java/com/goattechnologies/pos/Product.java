@@ -1,19 +1,22 @@
 package com.goattechnologies.pos;
+import java.sql.ResultSet;
+import java.util.List;
 
 public class Product {
     private int productid;
     private String productName;
-    private Ingredient[] ingredients;
+    private List<Integer> ingredients;
+    private List<String> ingredientNames;
     private double price;
-
     private double salePrice;
 
-    public Product(int productid, String productName, Ingredient[] ingredients, double price, double salePrice) {
+    public Product(int productid, String productName, List<Integer> ingredients, double price, double salePrice, List<String> ingredientNames) {
         this.productid = productid;
         this.productName = productName;
         this.ingredients = ingredients;
         this.price = price;
         this.salePrice = salePrice;
+        this.ingredientNames = ingredientNames;
     }
 
     public int getProductid() {
@@ -24,7 +27,7 @@ public class Product {
         return productName;
     }
 
-    public Ingredient[] getIngredients() {
+    public List<Integer> getIngredients() {
         return ingredients;
     }
 
@@ -33,4 +36,6 @@ public class Product {
     }
 
     public double getSalePrice() { return salePrice;}
+
+    public List<String> getIngredientNames() { return ingredientNames;}
 }

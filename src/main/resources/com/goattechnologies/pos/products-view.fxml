@@ -17,17 +17,17 @@
             <!--                    <PropertyValueFactory property="ingredientId" />-->
             <!--                </cellValueFactory>-->
             <!--            </TableColumn>-->
-            <TableColumn text="Name" prefWidth="150">
+            <TableColumn text="Name">
                 <cellValueFactory>
                     <PropertyValueFactory property="productName" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Ingredients" prefWidth="100">
+            <TableColumn text="Ingredients">
                 <cellValueFactory>
-                    <PropertyValueFactory property="ingredients" />
+                    <PropertyValueFactory property="ingredientNames" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Sale Price" prefWidth="100">
+            <TableColumn text="Sale Price">
                 <cellValueFactory>
                     <PropertyValueFactory property="salePrice" />
                 </cellValueFactory>

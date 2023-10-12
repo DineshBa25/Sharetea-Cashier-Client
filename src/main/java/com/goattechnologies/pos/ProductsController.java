@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class ProductsController {
     @FXML
     public void initialize() {
         Main.productsController = this;
+
+        productTableView.setColumnResizePolicy(productTableView.CONSTRAINED_RESIZE_POLICY);
 
         Main.products = Main.dbManager.getProductsList();
         productTableView.getItems().addAll(Main.products);
