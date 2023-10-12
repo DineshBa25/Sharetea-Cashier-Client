@@ -18,7 +18,7 @@
                     <PropertyValueFactory property="quantity" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="costColumn" text="Cost" prefWidth="100">
+            <TableColumn fx:id="costColumn" text="Cost ($)" prefWidth="100">
                 <cellValueFactory>
                     <PropertyValueFactory property="cost" />
                 </cellValueFactory>

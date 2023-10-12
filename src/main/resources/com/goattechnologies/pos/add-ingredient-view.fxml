@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -13,7 +10,7 @@
     <TextField fx:id="ingredientNameField" />
     <Label text="Quantity:" />
     <TextField fx:id="quantityField" />
-    <Label text="Cost:" />
+    <Label text="Cost ($):" />
     <TextField fx:id="costField" />
     <Button text="Add" onAction="#addIngredient" styleClass="black-btn"/>
     <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
