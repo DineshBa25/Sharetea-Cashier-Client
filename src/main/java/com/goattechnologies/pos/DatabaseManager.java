@@ -243,6 +243,27 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+
+    public List<Product> getProductsForProductsController() {
+        List<Product> productsList = new ArrayList<>();
+        ResultSet resultSet = this.query("getProductsForProductsController");
+        try {
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productid");
+                String productName = resultSet.getString("productname");
+//                List<Ingredient> ingredients = resultSet.get("ingredients"); TODO
+                double price = resultSet.getDouble("price");
+                double salePrice = resultSet.getDouble("saleprice");
+
+                Product product = new Product(productId, productName, null, price, salePrice);
+                productsList.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to get products");
+            throw new RuntimeException();
+        }
+        return productsList;
+    }
 }
 
 

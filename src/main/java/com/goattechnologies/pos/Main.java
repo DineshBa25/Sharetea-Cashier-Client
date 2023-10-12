@@ -19,10 +19,14 @@ public class Main extends Application {
 
     public static InventoryController inventoryController;
 
+    public static ProductsController productsController;
+
     public static Cart cart = new Cart();
 
     // Used in supervisor tools to modify ingredients
     public static List<Ingredient> ingredients;
+
+    public static List<Product> products;
 
     @Override
     public void start(Stage stage) throws IOException {
