@@ -221,19 +221,18 @@ public class DatabaseManager {
                 ingredientsList.add(ingredient);
             }
         } catch (SQLException e) {
-            System.out.println("Unable to get ingredients");
+            AlertUtil.showWarning("Warning!", "Unable to Get Ingredient", e.getMessage());
             throw new RuntimeException();
         }
         return ingredientsList;
     }
 
     public void addIngredient(Ingredient ingredient) {
-        if (!ingredient.getIngredientName().isEmpty() && ingredient.getQuantity() > -1 && ingredient.getCost() >= 0)
+        // Do not need to check name because controller checks if it is empty
+        if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0)
         {
-            System.out.println("This new ingredient meets requirements, inserting now.");
-        }
-        else {
-            System.out.println("This ingredient does not meet requirements.");
+            AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Cost and Quantity must be greater than or equal to 0.");
+            return;
         }
 
         try {
@@ -244,26 +243,24 @@ public class DatabaseManager {
             preparedStatement.setDouble(3, ingredient.getCost());
 
             int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Ingredient inserted successfully.");
-            } else {
+            if (rowsInserted <= 0) {
                 System.out.println("Insertion failed.");
+                AlertUtil.showWarning("Warning!", "Ingredient insertion failed for: ", ingredient.getIngredientName());
             }
 
             preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("Unable to add ingredient");
+            AlertUtil.showWarning("Warning!", "Unable to Add Ingredient", e.getMessage());
             throw new RuntimeException();
         }
     }
 
     public void updateIngredient(Ingredient ingredient) {
-        if (!ingredient.getIngredientName().isEmpty() && ingredient.getQuantity() > -1 && ingredient.getCost() >= 0)
+        // Do not need to check name because controller checks if it is empty
+        if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0)
         {
-            System.out.println("This updated ingredient meets requirements, updating now.");
-        }
-        else {
-            System.out.println("This ingredient does not meet requirements.");
+            AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Cost and Quantity must be greater than or equal to 0.");
+            return;
         }
 
         try {
@@ -275,15 +272,13 @@ public class DatabaseManager {
             preparedStatement.setInt(4, ingredient.getIngredientId());
 
             int rowsUpdated = preparedStatement.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("Ingredient inserted successfully.");
-            } else {
-                System.out.println("Insertion failed.");
+            if (rowsUpdated <= 0) {
+                AlertUtil.showWarning("Warning!", "Ingredient update failed for: ", ingredient.getIngredientName());
             }
 
             preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("Unable to add ingredient");
+            AlertUtil.showWarning("Warning!", "Unable to Update Ingredient", e.getMessage());
             throw new RuntimeException();
         }
 
@@ -296,15 +291,13 @@ public class DatabaseManager {
             preparedStatement.setInt(1, ingredientID);
 
             int rowsDeleted = preparedStatement.executeUpdate();
-            if (rowsDeleted > 0) {
-                System.out.println("Ingredient deleted successfully.");
-            } else {
-                System.out.println("Deletion failed. Ingredient not found.");
+            if (rowsDeleted <= 0) {
+                AlertUtil.showWarning("Warning!", "Ingredient deletion failed.", "The ingredient may not exist.");
             }
 
             preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("Unable to delete ingredient");
+            AlertUtil.showWarning("Warning!", "Unable to delete Ingredient", e.getMessage());
             throw new RuntimeException();
         }
     }
