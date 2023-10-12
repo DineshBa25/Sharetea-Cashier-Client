@@ -125,7 +125,6 @@ public class InventoryController {
 
                 UpdateIngredientController updateIngredientController = loader.getController();
                 updateIngredientController.setSelectedIngredient(selectedIngredient);
-                System.out.println("We are gonna update selected ingredient");
                 Main.getMainController().setView(updateView);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -136,7 +135,6 @@ public class InventoryController {
 
     @FXML
     private void addIngredient(ActionEvent event) throws IOException {
-        System.out.println("We gonna go add an ingredient");
         Node node = FXMLLoader.load(getClass().getResource("add-ingredient-view.fxml"));
         Main.getMainController().setView(node);
     }

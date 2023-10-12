@@ -16,20 +16,24 @@ public class AddIngredientController {
     private TextField costField;
 
     public void addIngredient(ActionEvent event) throws IOException {
-        String name = ingredientNameField.getText();
-        int quantity = Integer.parseInt(quantityField.getText());
-        double cost = Double.parseDouble(costField.getText());
+        try {
+            String name = ingredientNameField.getText();
+            int quantity = Integer.parseInt(quantityField.getText());
+            double cost = Double.parseDouble(costField.getText());
 
-        Ingredient newIngredient = new Ingredient(0, name, quantity, cost);
+            Ingredient newIngredient = new Ingredient(0, name, quantity, cost);
 
-        Main.dbManager.addIngredient(newIngredient);
+            Main.dbManager.addIngredient(newIngredient);
+        } catch (Exception e) {
+            AlertUtil.showWarning("Ingredient Warning", "Unable to Add Ingredient", "Fields may be empty!");
+        }
 
         Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
         Main.getMainController().setView(node);
     }
 
     public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
+        Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
         Main.getMainController().setView(node);
     }
 }
