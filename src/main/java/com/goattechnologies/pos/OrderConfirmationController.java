@@ -77,6 +77,8 @@ public class OrderConfirmationController {
 
         Main.cart.removeAllItemsInCart();
         // Load the order confirmation view
+
+        // Decide which view to return to depending on manager status
         Node backToStart = (
             Employee.getInstance().isManager() ?
                 FXMLLoader.load(getClass().getResource("login3-view.fxml")) :
