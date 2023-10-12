@@ -6,9 +6,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.goattechnologies.pos.AddProductController"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.AddProductController">
+    <Label text="Add Product" />
+    <Label text="Name:" />
+    <TextField fx:id="productNameField" />
 
-</AnchorPane>
+
+    <Label text="Ingredients:" />
+    <VBox>
+        <!-- This is the container for selected ingredients -->
+        <HBox>
+            <!-- The list of currently selected ingredients -->
+            <ListView fx:id="selectedIngredientsListView" prefHeight="100.0" />
+            <!-- Button to remove selected ingredient(s) -->
+            <Button text="Remove" onAction="#removeSelectedIngredients" />
+        </HBox>
+        <!-- Button to add a new ingredient -->
+        <Button text="Add Ingredient" onAction="#openAddIngredientDialog" />
+    </VBox>
+
+
+
+    <Label text="Sale Price:" />
+    <TextField fx:id="salePriceField" />
+    <Button text="Add" onAction="#addProduct" styleClass="black-btn"/>
+</VBox>
