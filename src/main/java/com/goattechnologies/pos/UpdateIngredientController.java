@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
+import java.util.List;
 
 public class UpdateIngredientController {
     @FXML
@@ -30,11 +31,16 @@ public class UpdateIngredientController {
         int newQuantity = Integer.parseInt(quantityField.getText());
         double newCost = Double.parseDouble(costField.getText());
 
+        if (ingredientExists(Main.ingredients, newName)) {
+            AlertUtil.showWarning("Ingredient Warning", "Unable to Update Ingredient", "This ingredient name already exists!");
+            backToInventory();
+            return;
+        }
+
         selectedIngredient.setIngredientName(newName);
         selectedIngredient.setQuantity(newQuantity);
         selectedIngredient.setCost(newCost);
 
-        // Save the updated ingredient to database
         Main.dbManager.updateIngredient(selectedIngredient);
 
         backToInventory();
@@ -52,5 +58,14 @@ public class UpdateIngredientController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean ingredientExists(List<Ingredient> ingredientList, String ingredientNameToFind) {
+        for (Ingredient ingredient : ingredientList) {
+            if (ingredient.getIngredientName().equals(ingredientNameToFind)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
