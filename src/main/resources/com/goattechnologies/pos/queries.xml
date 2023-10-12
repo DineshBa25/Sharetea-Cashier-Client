@@ -49,4 +49,14 @@
         WHERE p.productname = ?
         );
     </query>
+    <query id="isManager">
+        SELECT ismanager
+        FROM employees
+        WHERE employeeid = ?;
+    </query>
+    <query id="getEmployeeName">
+        SELECT firstname
+        FROM employees
+        WHERE employeeid = ?;
+    </query>
 </queries>
