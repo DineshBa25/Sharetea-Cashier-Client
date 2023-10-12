@@ -66,6 +66,17 @@ public class DatabaseManager {
         }
     }
 
+    private ResultSet query(String queryId, int alt) {
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery(queryId));
+            preparedStatement.setInt(1, alt);
+            return preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("database query failed: " + queryId);
+            throw new RuntimeException();
+        }
+    }
+
     public List<String> getProductNames() {
         List<String> names = new ArrayList<String>();
         ResultSet resultSet = this.query("getProducts");
@@ -294,6 +305,32 @@ public class DatabaseManager {
             System.out.println("Unable to delete ingredient");
             throw new RuntimeException();
         }
+    }
+
+    public boolean isManager(int employeeID) {
+        boolean isManager = false;
+        try {
+            ResultSet resultSet = this.query("isManager", employeeID);
+            resultSet.next();
+            isManager = resultSet.getBoolean("ismanager");
+        } catch (SQLException e) {
+            System.out.println("Unable to get product price");
+            throw new RuntimeException();
+        }
+        return isManager;
+    }
+
+    public String getEmployeeName(int employeeID) {
+        String employeeName = "";
+        try {
+            ResultSet resultSet = this.query("getEmployeeName", employeeID);
+            resultSet.next();
+            employeeName = resultSet.getString("firstname");
+        } catch (SQLException e) {
+            System.out.println("Unable to get product price");
+            throw new RuntimeException();
+        }
+        return employeeName;
     }
 }
 
