@@ -307,7 +307,35 @@ public class DatabaseManager {
             AlertUtil.showWarning("Warning!", "Unable to Update Ingredient", e.getMessage());
             throw new RuntimeException();
         }
+    }
 
+    public void updateProduct(Product editedProduct) {
+        // Do not need to check name because controller checks if it is empty
+        if (editedProduct.getSalePrice() < 0 || Objects.equals(editedProduct.getProductName(), ""))
+        {
+            AlertUtil.showWarning("Warning!", "Invalid Ingredient", "Cost and Quantity must be greater than or equal to 0.");
+            return;
+        }
+
+        try {
+            String updateQuery = queryLoader.getQuery("updateProduct");
+            PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+            preparedStatement.setString(1, editedProduct.getProductName());
+            Integer[] integerArray = editedProduct.getIngredients().toArray(new Integer[0]);
+            preparedStatement.setArray(2, conn.createArrayOf("integer",integerArray));
+            preparedStatement.setDouble(3, editedProduct.getSalePrice());
+            preparedStatement.setInt(4, editedProduct.getProductid());
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated <= 0) {
+                AlertUtil.showWarning("Warning!", "Product update failed for: ", editedProduct.getProductName());
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Update Product", e.getMessage());
+            throw new RuntimeException();
+        }
     }
 
     public void deleteIngredient(int ingredientID) {
@@ -324,6 +352,24 @@ public class DatabaseManager {
             preparedStatement.close();
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to delete Ingredient", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
+    public void deleteProduct(int productID) {
+        try {
+            String deleteQuery = queryLoader.getQuery("deleteProduct");
+            PreparedStatement preparedStatement = conn.prepareStatement(deleteQuery);
+            preparedStatement.setInt(1, productID);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted <= 0) {
+                AlertUtil.showWarning("Warning!", "Product deletion failed.", "The product may not exist.");
+            }
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to delete product", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -411,6 +457,7 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+
 
 
 }

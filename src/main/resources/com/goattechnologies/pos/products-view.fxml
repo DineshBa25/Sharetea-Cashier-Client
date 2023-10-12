@@ -36,7 +36,7 @@
     </TableView>
     <HBox alignment="CENTER" spacing="10">
         <Button fx:id="addButton" text="Add" onAction="#addProduct" styleClass="black-btn"/>
-        <Button text="Back" onAction="#handleBackButton" styleClass="black-btn"/>
         <Button fx:id="updateButton" text="Update" onAction="#editSelectedProduct" styleClass="black-btn" disable="true" />
     </HBox>
+    <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
 </VBox>

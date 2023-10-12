@@ -58,7 +58,9 @@ public class UpdateProductController implements Initializable{
         this.selectedProduct = product;
 
         // Populate the text fields with the current data
+        productName = product.getProductName();
         productNameField.setText(selectedProduct.getProductName());
+
 
         List<Ingredient> ingredientsInDatabase = Main.dbManager.getIngredients();
         List<String> selectedProductIngredientNames = product.getIngredientNames();
@@ -72,13 +74,14 @@ public class UpdateProductController implements Initializable{
         salePriceField.setText(String.valueOf(selectedProduct.getSalePrice()));
     }
 
-    public void addProduct(ActionEvent event) throws IOException {
+    public void updateProduct() {
         try {
-            productName = productNameField.getText();
-            productSalePrice = Double.parseDouble(salePriceField.getText());
+            String newName = productNameField.getText();
 
-            if (productExists(Main.products, productName)) {
-                AlertUtil.showWarning("Product Warning", "Unable to Add Product", "This product already exists!");
+            double newSalePrice = Double.parseDouble(salePriceField.getText());
+
+            if (!productName.equals(newName) && productExists(Main.products, newName)) {
+                AlertUtil.showWarning("Ingredient Warning", "Unable to Update Ingredient", "This ingredient name already exists!");
                 backToProducts();
                 return;
             }
@@ -91,16 +94,24 @@ public class UpdateProductController implements Initializable{
                 ingredientNames.add(x.getIngredientName());
             }
 
+            selectedProduct.setProductName(newName);
+            selectedProduct.setIngredients(ingredientIds);
+            selectedProduct.setIngredientNames(ingredientNames);
+            selectedProduct.setSalePrice(newSalePrice);
 
-            Product newProduct = new Product(0, productName, ingredientIds, 0, productSalePrice, ingredientNames);
+            Main.dbManager.updateProduct(selectedProduct);
 
-            Main.dbManager.addProduct(newProduct);
+            backToProducts();
         } catch (Exception e) {
-            AlertUtil.showWarning("Product Warning", "Unable to Add Product", "Fields may be empty!");
+            AlertUtil.showWarning("Product Warning", "Unable to Edit Product", "Fields may be empty!");
         }
+    }
 
+    public void deleteProduct() {
+        Main.dbManager.deleteProduct(selectedProduct.getProductid());
         backToProducts();
     }
+
 
     public void backToProducts() {
         try {

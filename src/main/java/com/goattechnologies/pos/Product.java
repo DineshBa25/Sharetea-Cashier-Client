@@ -35,7 +35,16 @@ public class Product {
         return price;
     }
 
-    public double getSalePrice() { return salePrice;}
+    public double getSalePrice() {
+        return salePrice;
+    }
 
-    public List<String> getIngredientNames() { return ingredientNames;}
+    public List<String> getIngredientNames() {
+        return ingredientNames;
+    }
+
+    public void setProductName(String name) { productName = name; }
+    public void setIngredients(List<Integer> newIngredients) { ingredients = newIngredients;}
+    public void setIngredientNames(List<String> newIngredientNames) { ingredientNames = newIngredientNames;}
+    public void setSalePrice(Double newSalePrice) { salePrice = newSalePrice;}
 }

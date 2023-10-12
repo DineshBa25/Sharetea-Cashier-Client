@@ -29,9 +29,16 @@
     <query id="deleteIngredient">
         DELETE FROM ingredients WHERE ingredientid = ?;
     </query>
+    <query id="updateProduct">
+        UPDATE products SET productname = ?, ingredientids = ?, saleprice = ?
+        WHERE productid = ?;
+    </query>
     <query id="addProduct">
         INSERT INTO products(productname, ingredientids, saleprice)
         VALUES (?, ?, ?);
+    </query>
+    <query id="deleteProduct">
+        DELETE FROM products WHERE productid = ?;
     </query>
     <query id="getProducts">
         SELECT productname

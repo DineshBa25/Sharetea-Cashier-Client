@@ -25,6 +25,9 @@
 
     <Label text="Sale Price($):" />
     <TextField fx:id="salePriceField" />
-    <Button text="Add" onAction="#addProduct" styleClass="black-btn"/>
+    <HBox alignment="CENTER" spacing="10">
+        <Button text="Update" onAction="#updateProduct" styleClass="black-btn"/>
+        <Button text="Delete" onAction="#deleteProduct" styleClass="red-btn"/>
+    </HBox>
     <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
 </VBox>
