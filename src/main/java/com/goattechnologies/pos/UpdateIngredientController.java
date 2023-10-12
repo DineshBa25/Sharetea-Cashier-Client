@@ -64,7 +64,7 @@ public class UpdateIngredientController {
 
     public boolean ingredientExists(List<Ingredient> ingredientList, String ingredientNameToFind) {
         for (Ingredient ingredient : ingredientList) {
-            if (ingredient.getIngredientName().equals(ingredientNameToFind)) {
+            if (ingredient.getIngredientName().equalsIgnoreCase(ingredientNameToFind)) {
                 return true;
             }
         }
