@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Login2Controller {
 
@@ -27,13 +28,13 @@ public class Login2Controller {
         //empty cart before starting a new order
         Main.cart.removeAllItemsInCart();
 
-        Node node = FXMLLoader.load(getClass().getResource("menu-view.fxml"));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu-view.fxml")));
         Main.getMainController().setView(node);
     }
 
 
     public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("login1-view.fxml"));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login1-view.fxml")));
         Main.getMainController().setView(node);
     }
 

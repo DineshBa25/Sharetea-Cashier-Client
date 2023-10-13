@@ -1,6 +1,5 @@
 package com.goattechnologies.pos;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,10 +8,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddOnsController {
 
@@ -26,9 +24,8 @@ public class AddOnsController {
 
     @FXML
     public void initialize() {
-        // Load the add-ons, sweetness levels, and ice levels
         // Add-ons are fetched from db, other values are not
-        List<String> addOns = new ArrayList<>();
+        List<String> addOns;
 
         // Getting menu items from the database
         addOns = Main.dbManager.getAddOnNames();
@@ -38,9 +35,6 @@ public class AddOnsController {
         addOnsListView.getItems().addAll(addOns); // Sample data
         sweetnessComboBox.getItems().addAll("50%", "70%", "100%");
         iceComboBox.getItems().addAll("Less Ice", "Regular Ice", "More Ice");
-
-        ObservableList<String> selectedAddOns = addOnsListView.getSelectionModel().getSelectedItems();
-
     }
 
     public void setSelectedDrinkName(String drinkName) {
@@ -50,7 +44,6 @@ public class AddOnsController {
     @FXML
     protected void addToCart() throws IOException {
         List<String> selectedAddOns = new ArrayList<>(addOnsListView.getSelectionModel().getSelectedItems());
-        //print items in selectedAddOns in one line
         String selectedSweetness = sweetnessComboBox.getValue();
         String selectedIceLevel = iceComboBox.getValue();
 
@@ -66,16 +59,14 @@ public class AddOnsController {
         {
             CartItem item = new CartItem(selectedDrinkName, selectedAddOns, selectedSweetness, selectedIceLevel);
             Main.cart.addItem(item);
-            //refresh cart
             Main.menuController.refreshCartView();
-            //  navigate back to the menu view or show a confirmation message
             handleBackButton();
         }
     }
 
     @FXML
     protected void handleBackButton() throws IOException {
-        Node menuView = FXMLLoader.load(getClass().getResource("menu-view.fxml"));
+        Node menuView = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu-view.fxml")));
         Main.getMainController().setView(menuView);
     }
 

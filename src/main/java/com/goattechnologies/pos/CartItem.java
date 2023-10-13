@@ -7,7 +7,6 @@ public class CartItem {
     private List<String> addOns;
     private String sweetnessLevel;
     private String iceLevel;
-    // Add other attributes as needed
 
     public CartItem(String drinkName, List<String> addOns, String sweetnessLevel, String iceLevel) {
         this.drinkName = drinkName;

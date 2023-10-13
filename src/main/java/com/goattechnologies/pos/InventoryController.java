@@ -1,7 +1,5 @@
 package com.goattechnologies.pos;
 
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,11 +8,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.Button;
 import java.io.IOException;
-import java.util.List;
+import java.util.Objects;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 
 
@@ -38,18 +35,13 @@ public class InventoryController {
 
         Main.ingredients = Main.dbManager.getIngredients();
         ingredientTableView.getItems().addAll(Main.ingredients);
-        ingredientTableView.setColumnResizePolicy(ingredientTableView.CONSTRAINED_RESIZE_POLICY);
+        ingredientTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Bind the "Update" button's disable property to the row selection state
         updateButton.disableProperty().bind(isRowSelected.not());
 
         // Add a listener to update the row selection state
-        ingredientTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Ingredient>() {
-            @Override
-            public void changed(ObservableValue<? extends Ingredient> observable, Ingredient oldValue, Ingredient newValue) {
-                isRowSelected.set(newValue != null);
-            }
-        });
+        ingredientTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
 
         centerTextInStringColumn(ingredientNameColumn);
         centerTextInIntegerColumn(quantityColumn);
@@ -58,7 +50,7 @@ public class InventoryController {
 
     private void centerTextInStringColumn(TableColumn<Ingredient, String> column) {
         column.setCellFactory(tc -> {
-            TableCell<Ingredient, String> cell = new TableCell<Ingredient, String>() {
+            TableCell<Ingredient, String> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -78,7 +70,7 @@ public class InventoryController {
 
     private void centerTextInIntegerColumn(TableColumn<Ingredient, Integer> column) {
         column.setCellFactory(tc -> {
-            TableCell<Ingredient, Integer> cell = new TableCell<Ingredient, Integer>() {
+            TableCell<Ingredient, Integer> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
@@ -98,7 +90,7 @@ public class InventoryController {
 
     private void centerTextInDoubleColumn(TableColumn<Ingredient, Double> column) {
         column.setCellFactory(tc -> {
-            TableCell<Ingredient, Double> cell = new TableCell<Ingredient, Double>() {
+            TableCell<Ingredient, Double> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(Double item, boolean empty) {
                     super.updateItem(item, empty);
@@ -117,7 +109,7 @@ public class InventoryController {
     }
 
     @FXML
-    private void editSelectedIngredient(ActionEvent event) throws IOException {
+    private void editSelectedIngredient() {
         Ingredient selectedIngredient = ingredientTableView.getSelectionModel().getSelectedItem();
 
         if (selectedIngredient != null) {
@@ -129,20 +121,20 @@ public class InventoryController {
                 updateIngredientController.setSelectedIngredient(selectedIngredient);
                 Main.getMainController().setView(updateView);
             } catch (IOException e) {
-                e.printStackTrace();
+                AlertUtil.showWarning("Inventory Warning", "Unable to Load Update Ingredient View", "Please try again!");
             }
         }
     }
 
 
     @FXML
-    private void addIngredient(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("add-ingredient-view.fxml"));
+    private void addIngredient() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("add-ingredient-view.fxml")));
         Main.getMainController().setView(node);
     }
 
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("manager-view.fxml")));
         Main.getMainController().setView(node);
     }
 }
