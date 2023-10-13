@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
