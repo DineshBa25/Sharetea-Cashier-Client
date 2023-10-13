@@ -5,11 +5,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +17,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 public class UpdateProductController implements Initializable{
+    @FXML
+    private Label editProduct;
+    @FXML
+    private Label name;
+    @FXML
+    private Label ingredients;
+    @FXML
+    private Label price;
     public Button removeIngredientButton;
     @FXML
     private TextField productNameField;
@@ -32,6 +39,31 @@ public class UpdateProductController implements Initializable{
     private Product selectedProduct;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Font customFont = Font.font("Arial", 20);
+        editProduct.setFont(customFont);
+        name.setFont(customFont);
+        ingredients.setFont(customFont);
+        price.setFont(customFont);
+
+        Font largerFont = new Font(28);
+        productNameField.setFont(largerFont);
+        productNameField.setAlignment(Pos.CENTER);
+        salePriceField.setFont(largerFont);
+        salePriceField.setAlignment(Pos.CENTER);
+        selectedIngredientsListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null && !empty) {
+                    setText(item);
+                    setFont(Font.font(20));
+                    setAlignment(Pos.CENTER);
+                } else {
+                    setText(null);
+                }
+            }
+        });
+
         // Bind the "Update" button's disable property to the row selection state
         removeIngredientButton.disableProperty().bind(isRowSelected.not());
         selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));

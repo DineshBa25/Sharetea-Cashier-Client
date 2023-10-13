@@ -2,8 +2,12 @@ package com.goattechnologies.pos;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
+import javafx.scene.control.Label;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +19,30 @@ public class AddIngredientController {
     private TextField quantityField;
     @FXML
     private TextField costField;
+    @FXML
+    private Label addIngredient;
+    @FXML
+    private Label name;
+    @FXML
+    private Label quantity;
+    @FXML
+    private Label cost;
+
+    public void initialize() {
+        Font customFont = Font.font("Arial", 20);
+        addIngredient.setFont(customFont);
+        name.setFont(customFont);
+        quantity.setFont(customFont);
+        cost.setFont(customFont);
+
+        Font largerFont = new Font(28);
+        ingredientNameField.setFont(largerFont);
+        ingredientNameField.setAlignment(Pos.CENTER);
+        quantityField.setFont(largerFont);
+        quantityField.setAlignment(Pos.CENTER);
+        costField.setFont(largerFont);
+        costField.setAlignment(Pos.CENTER);
+    }
 
     public void addIngredient() {
         try {

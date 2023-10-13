@@ -5,13 +5,23 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 public class AddProductController implements Initializable {
+    @FXML
+    private Label addProduct;
+    @FXML
+    private Label name;
+    @FXML
+    private Label ingredients;
+    @FXML
+    private Label price;
     public Button removeIngredientButton;
     @FXML
     private TextField productNameField;
@@ -25,6 +35,31 @@ public class AddProductController implements Initializable {
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Font customFont = Font.font("Arial", 20);
+        addProduct.setFont(customFont);
+        name.setFont(customFont);
+        ingredients.setFont(customFont);
+        price.setFont(customFont);
+
+        Font largerFont = new Font(28);
+        productNameField.setFont(largerFont);
+        productNameField.setAlignment(Pos.CENTER);
+        salePriceField.setFont(largerFont);
+        salePriceField.setAlignment(Pos.CENTER);
+        selectedIngredientsListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null && !empty) {
+                    setText(item);
+                    setFont(Font.font(20));
+                    setAlignment(Pos.CENTER);
+                } else {
+                    setText(null);
+                }
+            }
+        });
+
         productIngredients = new ArrayList<>();
         // Bind the "Update" button's disable property to the row selection state
         removeIngredientButton.disableProperty().bind(isRowSelected.not());
