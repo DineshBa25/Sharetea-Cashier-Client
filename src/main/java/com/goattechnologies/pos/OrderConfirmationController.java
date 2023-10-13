@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderConfirmationController {
 
@@ -44,6 +45,9 @@ public class OrderConfirmationController {
             return;
         }
         switch (selectedTip) {
+            case "0%":
+                tipPercentage = 0.0;
+                break;
             case "10%":
                 tipPercentage = 0.10;
                 break;
@@ -57,19 +61,14 @@ public class OrderConfirmationController {
                 try {
                     tipPercentage = Double.parseDouble(customTipField.getText()) / 100;
                 } catch (NumberFormatException e) {
-                    // Handle incorrect input (e.g., show an error dialog)
+                    AlertUtil.showWarning("Invalid Tip", "Invalid tip percentage", "Please enter a valid tip percentage");
                 }
                 break;
         }
 
-        // Apply the tip to the order (add your logic here)
-        // ...
-
         // Check if receipt should be printed
         if (printReceiptCheckBox.isSelected()) {
-            // Print the receipt (add your logic here)
-            // ...
-            // TODO
+            // TODO Print the receipt if the checkbox is selected (if we have time to implement this)
         }
         List<CartItem> items = Main.cart.getItems();
 
@@ -81,8 +80,8 @@ public class OrderConfirmationController {
         // Decide which view to return to depending on manager status
         Node backToStart = (
             Employee.getInstance().isManager() ?
-                FXMLLoader.load(getClass().getResource("login3-view.fxml")) :
-                FXMLLoader.load(getClass().getResource("login2-view.fxml"))
+                FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login3-view.fxml"))) :
+                FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login2-view.fxml")))
         );
 
         // Replace the current view with the order confirmation view

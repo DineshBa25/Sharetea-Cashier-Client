@@ -20,4 +20,5 @@
     </Label>
     <ListView fx:id="menuListView" />
     <Button text="Proceed to Checkout" onAction="#proceedToCheckout" styleClass="black-btn"/>
+    <Button text="Back"  styleClass="black-btn-sm" onAction="#handleBackButton" />
 </VBox>
