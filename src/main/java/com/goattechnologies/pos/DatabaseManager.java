@@ -27,7 +27,6 @@ public class DatabaseManager {
     public void connect() {
         try {
             conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
-            System.out.println("Opened database successfully");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -38,9 +37,8 @@ public class DatabaseManager {
     public void disconnect() {
         try {
             conn.close();
-            System.out.println("Connection Closed.");
         } catch (Exception e) {
-            System.out.println("Connection NOT Closed.");
+            AlertUtil.showWarning("Warning!", "Unable to disconnect from database", e.getMessage());
         }
     }
 
@@ -60,7 +58,7 @@ public class DatabaseManager {
             preparedStatement.setString(1, alt);
             return preparedStatement.executeQuery();
         } catch (SQLException e) {
-            System.out.println("database query failed: " + queryId);
+            AlertUtil.showWarning("Warning!", "Unable to execute query", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -71,7 +69,7 @@ public class DatabaseManager {
             preparedStatement.setInt(1, alt);
             return preparedStatement.executeQuery();
         } catch (SQLException e) {
-            System.out.println("database query failed: " + queryId);
+            AlertUtil.showWarning("Warning!", "Unable to execute query", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -85,7 +83,7 @@ public class DatabaseManager {
                 names.add(addOnName);
             }
         } catch (SQLException e) {
-            System.out.println("Unable to get product names");
+            AlertUtil.showWarning("Warning!", "Unable to get product names", e.getMessage());
             throw new RuntimeException();
         }
         return names;
@@ -100,7 +98,7 @@ public class DatabaseManager {
                 names.add(addOnName);
             }
         } catch (SQLException e) {
-            System.out.println("Unable to get addon names");
+            AlertUtil.showWarning("Warning!", "Unable to get add-on names", e.getMessage());
             throw new RuntimeException();
         }
         return names;
@@ -113,7 +111,7 @@ public class DatabaseManager {
             resultSet.next();
             price = resultSet.getDouble("price");
         } catch (SQLException e) {
-            System.out.println("Unable to get product price");
+            AlertUtil.showWarning("Warning!", "Unable to get product price", e.getMessage());
             throw new RuntimeException();
         }
         return price;
@@ -143,7 +141,7 @@ public class DatabaseManager {
             resultSet.next();
             id = resultSet.getInt("orderid") + 1;
         } catch (SQLException e) {
-            System.out.println("Unable to get next id");
+            AlertUtil.showWarning("Warning!", "Unable to get next order id", e.getMessage());
             throw new RuntimeException();
         }
         return id;
@@ -165,7 +163,7 @@ public class DatabaseManager {
                     preparedStatement.execute();
                 }
             } catch (SQLException e) {
-                System.out.println("could not use ingredients");
+                AlertUtil.showWarning("Warning!", "Unable to use ingredients", e.getMessage());
                 throw new RuntimeException();
             }
 
@@ -194,13 +192,11 @@ public class DatabaseManager {
 
             preparedStatement.setDouble(4, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
             preparedStatement.execute();
-            System.out.println("Order added to db");
 
             // Decrements ingredient quantities for each item and addon in the order
             useOrderIngredients(items);
-            System.out.println("Ingredients consumed");
         } catch (SQLException e) {
-            System.out.println("could not add order to database");
+            AlertUtil.showWarning("Warning!", "Unable to add order", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -271,7 +267,6 @@ public class DatabaseManager {
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted <= 0) {
-                System.out.println("Insertion failed.");
                 AlertUtil.showWarning("Warning!", "Product insertion failed for: ", product.getProductName());
             }
 
@@ -382,7 +377,7 @@ public class DatabaseManager {
             resultSet.next();
             isManager = resultSet.getBoolean("ismanager");
         } catch (SQLException e) {
-            System.out.println("Unable to get employee manager status");
+            AlertUtil.showWarning("Warning!", "Unable to get employee manager status", e.getMessage());
             throw new RuntimeException();
         }
         return isManager;
@@ -395,7 +390,7 @@ public class DatabaseManager {
             resultSet.next();
             employeeName = resultSet.getString("firstname");
         } catch (SQLException e) {
-            System.out.println("Unable to get employee name");
+            AlertUtil.showWarning("Warning!", "Unable to get employee name", e.getMessage());
             throw new RuntimeException();
         }
         return employeeName;
@@ -409,7 +404,7 @@ public class DatabaseManager {
                 ingredientNameMap.put(resultSet2.getInt("ingredientid"),resultSet2.getString("ingredientname"));
             }
         } catch (SQLException e) {
-            System.out.println("Unable to get ingredients within getProductsList()");
+            AlertUtil.showWarning("Warning!", "Unable to get ingredients", e.getMessage());
             throw new RuntimeException();
         }
 
@@ -436,7 +431,7 @@ public class DatabaseManager {
                 productsList.add(product);
             }
         } catch (SQLException e) {
-            System.out.println("Unable to get products");
+            AlertUtil.showWarning("Warning!", "Unable to get products", e.getMessage());
             throw new RuntimeException();
         }
         return productsList;
@@ -454,7 +449,7 @@ public class DatabaseManager {
             }
 
         } catch (SQLException e) {
-            System.out.println("Unable to get ingredient name from id");
+            AlertUtil.showWarning("Warning!", "Unable to get ingredient name", e.getMessage());
             throw new RuntimeException();
         }
     }

@@ -24,6 +24,9 @@ public class Login2Controller {
 
     @FXML
     protected void onLogin1Click() throws IOException {
+        //empty cart before starting a new order
+        Main.cart.removeAllItemsInCart();
+
         Node node = FXMLLoader.load(getClass().getResource("menu-view.fxml"));
         Main.getMainController().setView(node);
     }

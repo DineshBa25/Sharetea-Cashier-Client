@@ -49,19 +49,28 @@ public class AddOnsController {
 
     @FXML
     protected void addToCart() throws IOException {
-        System.out.println("Add to cart clicked");
         List<String> selectedAddOns = new ArrayList<>(addOnsListView.getSelectionModel().getSelectedItems());
         //print items in selectedAddOns in one line
-        System.out.println("Selected add-ons: " + String.join(", ", selectedAddOns));
         String selectedSweetness = sweetnessComboBox.getValue();
         String selectedIceLevel = iceComboBox.getValue();
 
-        CartItem item = new CartItem(selectedDrinkName, selectedAddOns, selectedSweetness, selectedIceLevel);
-        Main.cart.addItem(item);
-        //refresh cart
-        Main.menuController.refreshCartView();
-        //  navigate back to the menu view or show a confirmation message
-        handleBackButton();
+        if(selectedSweetness == null && selectedIceLevel == null) {
+            AlertUtil.showWarning("Item Warning","Missing sweetness and ice level","Please select a sweetness and ice level");
+        } else if(selectedIceLevel == null) {
+            AlertUtil.showWarning("Item Warning","Missing ice level","Please select an ice level");
+        } else
+        if(selectedSweetness == null) {
+            AlertUtil.showWarning("Item Warning","Missing sweetness level","Please select a sweetness level");
+        }
+        else //only if sweetness and ice level are selected, we can proceed to add to cart
+        {
+            CartItem item = new CartItem(selectedDrinkName, selectedAddOns, selectedSweetness, selectedIceLevel);
+            Main.cart.addItem(item);
+            //refresh cart
+            Main.menuController.refreshCartView();
+            //  navigate back to the menu view or show a confirmation message
+            handleBackButton();
+        }
     }
 
     @FXML
