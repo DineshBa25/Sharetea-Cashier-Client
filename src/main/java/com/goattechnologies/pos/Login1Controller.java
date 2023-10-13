@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Login1Controller {
 
@@ -33,14 +34,14 @@ public class Login1Controller {
             Employee.getInstance().setManager(isManager);
             Node node;
             if(isManager) {
-                node = FXMLLoader.load(getClass().getResource("login3-view.fxml"));
+                node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login3-view.fxml")));
             }
             else {
-                node = FXMLLoader.load(getClass().getResource("login2-view.fxml"));
+                node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login2-view.fxml")));
             }
             Main.getMainController().setView(node);
         } catch (Exception e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Login Warning", "Unable to Login", "Please enter a valid employee ID");
             idPrompt.setText("Incorrect Employee ID");
             idPrompt.setFill(Color.RED);
         }

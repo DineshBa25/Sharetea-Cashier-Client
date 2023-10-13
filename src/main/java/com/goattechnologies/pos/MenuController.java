@@ -10,9 +10,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +25,7 @@ public class MenuController {
     public void initialize() {
         Main.menuController = this;
         // Load the menu items (you should fetch these from the database)
-        List<String> products = new ArrayList<>();
+        List<String> products;
 
         // Getting menu items from the database
         products = Main.dbManager.getProductNames();
@@ -92,29 +89,25 @@ public class MenuController {
 
     @FXML
     protected void proceedToCheckout() throws IOException {
-        // Check if the cart is empty
         if(Main.cart.isEmpty()) {
             AlertUtil.showWarning("Cart Warning", "Cart is empty", "Please add items to the cart before proceeding to checkout");
             return;
         }
 
-        // Load the order confirmation view
         Node orderConfirmationView = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("order-confirmation-view.fxml")));
-
-        // Replace the current view with the order confirmation view
         Main.getMainController().setView(orderConfirmationView);
     }
 
     @FXML
     protected void handleBackButton() throws IOException {
+        Node node;
         if(Employee.getInstance().isManager()) {
-            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login3-view.fxml")));
-            Main.getMainController().setView(node);
+            node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login3-view.fxml")));
         }
         else {
-            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login2-view.fxml")));
-            Main.getMainController().setView(node);
+            node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login2-view.fxml")));
         }
+        Main.getMainController().setView(node);
     }
 
     public void refreshCartView() {

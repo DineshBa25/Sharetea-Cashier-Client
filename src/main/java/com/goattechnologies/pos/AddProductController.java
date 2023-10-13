@@ -2,9 +2,6 @@ package com.goattechnologies.pos;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,15 +28,10 @@ public class AddProductController implements Initializable {
         productIngredients = new ArrayList<>();
         // Bind the "Update" button's disable property to the row selection state
         removeIngredientButton.disableProperty().bind(isRowSelected.not());
-        selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                isRowSelected.set(newValue != null);
-            }
-        });
+        selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
     }
 
-    public void addProduct(ActionEvent event) throws IOException {
+    public void addProduct() {
         try {
             productName = productNameField.getText();
             productSalePrice = Double.parseDouble(salePriceField.getText());
@@ -68,14 +60,14 @@ public class AddProductController implements Initializable {
 
     public void backToProducts() {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
             Main.getMainController().setView(node);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Product Warning", "Unable to Load Products", "Please try again!");
         }
     }
 
-    public void removeSelectedIngredients(ActionEvent actionEvent) {
+    public void removeSelectedIngredients() {
         // Get the selected items from the ListView
         List<String> selectedItems = new ArrayList<>(selectedIngredientsListView.getSelectionModel().getSelectedItems());
 
@@ -96,14 +88,14 @@ public class AddProductController implements Initializable {
 
     public Ingredient findIngredientByName(String name) {
         for(Ingredient x : productIngredients) {
-            if (x.getIngredientName() == name) {
+            if (Objects.equals(x.getIngredientName(), name)) {
                 return x;
             }
         }
         return null;
     }
 
-    public void openAddIngredientDialog(ActionEvent actionEvent) {
+    public void openAddIngredientDialog() {
         List<String> productIngredientNames = new ArrayList<>();
         for(Ingredient x: productIngredients) {
             productIngredientNames.add(x.getIngredientName());
@@ -131,8 +123,8 @@ public class AddProductController implements Initializable {
             }
         });
     }
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
         Main.getMainController().setView(node);
     }
 

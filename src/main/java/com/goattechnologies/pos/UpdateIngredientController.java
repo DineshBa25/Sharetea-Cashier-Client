@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class UpdateIngredientController {
     @FXML
@@ -55,10 +56,10 @@ public class UpdateIngredientController {
 
     public void backToInventory() {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
             Main.getMainController().setView(node);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Error", "Error loading inventory view", "Please try again later: " + e.getMessage());
         }
     }
 

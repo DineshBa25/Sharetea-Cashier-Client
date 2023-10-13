@@ -2,9 +2,6 @@ package com.goattechnologies.pos;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -13,6 +10,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Objects;
 
 public class ProductsController {
     @FXML
@@ -34,33 +32,28 @@ public class ProductsController {
 
         Main.products = Main.dbManager.getProductsList();
         productTableView.getItems().addAll(Main.products);
-        productTableView.setColumnResizePolicy(productTableView.CONSTRAINED_RESIZE_POLICY);
+        productTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         updateButton.disableProperty().bind(isRowSelected.not());
 
-        productTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Product>() {
-            @Override
-            public void changed(ObservableValue<? extends Product> observable, Product oldValue, Product newValue) {
-                isRowSelected.set(newValue != null);
-            }
-        });
+        productTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
 
         centerTextInStringColumn(productNameColumn);
         centerTextInDoubleColumn(productSalePriceColumn);
     }
 
     @FXML
-    private void updateProduct(ActionEvent event) throws IOException{
+    private void updateProduct() throws IOException{
         Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
         if (selectedProduct != null) {
             // TODO
-            Node node = FXMLLoader.load(getClass().getResource("update-product-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("update-product-view.fxml")));
             Main.getMainController().setView(node);
         }
     }
 
     @FXML
-    private void editSelectedProduct(ActionEvent event) throws IOException {
+    private void editSelectedProduct() {
         Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
 
         if (selectedProduct != null) {
@@ -72,25 +65,25 @@ public class ProductsController {
                 updateProductController.setSelectedProduct(selectedProduct);
                 Main.getMainController().setView(updateView);
             } catch (IOException e) {
-                e.printStackTrace();
+                AlertUtil.showWarning("Error", "Error loading update product view", "Please try again later: " + e.getMessage());
             }
         }
     }
 
     @FXML
-    private void addProduct(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("add-product-view.fxml"));
+    private void addProduct() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("add-product-view.fxml")));
         Main.getMainController().setView(node);
     }
 
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("manager-view.fxml")));
         Main.getMainController().setView(node);
     }
 
     private void centerTextInStringColumn(TableColumn<Ingredient, String> column) {
         column.setCellFactory(tc -> {
-            TableCell<Ingredient, String> cell = new TableCell<Ingredient, String>() {
+            TableCell<Ingredient, String> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -108,7 +101,7 @@ public class ProductsController {
     }
     private void centerTextInDoubleColumn(TableColumn<Ingredient, Double> column) {
         column.setCellFactory(tc -> {
-            TableCell<Ingredient, Double> cell = new TableCell<Ingredient, Double>() {
+            TableCell<Ingredient, Double> cell = new TableCell<>() {
                 @Override
                 protected void updateItem(Double item, boolean empty) {
                     super.updateItem(item, empty);

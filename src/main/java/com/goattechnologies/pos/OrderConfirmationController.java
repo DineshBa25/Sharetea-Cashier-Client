@@ -66,10 +66,6 @@ public class OrderConfirmationController {
                 break;
         }
 
-        // Check if receipt should be printed
-        if (printReceiptCheckBox.isSelected()) {
-            // TODO Print the receipt if the checkbox is selected (if we have time to implement this)
-        }
         List<CartItem> items = Main.cart.getItems();
 
         Main.dbManager.addOrder(items, tipPercentage);

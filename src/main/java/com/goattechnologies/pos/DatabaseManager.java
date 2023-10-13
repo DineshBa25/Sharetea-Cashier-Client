@@ -28,8 +28,7 @@ public class DatabaseManager {
         try {
             conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            AlertUtil.showWarning("Warning!", "Unable to connect to database", e.getMessage());
             System.exit(0);
         }
     }
@@ -47,7 +46,7 @@ public class DatabaseManager {
         try {
             return conn.createStatement().executeQuery(queryLoader.getQuery(queryId));
         } catch (SQLException e) {
-            System.out.println("database query failed: " + queryId);
+            AlertUtil.showWarning("Warning!", "Unable to execute query", e.getMessage());
             throw new RuntimeException();
         }
     }
@@ -105,7 +104,7 @@ public class DatabaseManager {
     }
 
     private double getProductPrice(String product) {
-        double price = 0;
+        double price;
         try {
             ResultSet resultSet = this.query("getProductPrice", product);
             resultSet.next();
@@ -238,7 +237,6 @@ public class DatabaseManager {
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted <= 0) {
-                System.out.println("Insertion failed.");
                 AlertUtil.showWarning("Warning!", "Ingredient insertion failed for: ", ingredient.getIngredientName());
             }
 
@@ -390,7 +388,6 @@ public class DatabaseManager {
             resultSet.next();
             employeeName = resultSet.getString("firstname");
         } catch (SQLException e) {
-            AlertUtil.showWarning("Warning!", "Unable to get employee name", e.getMessage());
             throw new RuntimeException();
         }
         return employeeName;

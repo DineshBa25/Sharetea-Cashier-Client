@@ -1,12 +1,12 @@
 package com.goattechnologies.pos;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class AddIngredientController {
     @FXML
@@ -16,7 +16,7 @@ public class AddIngredientController {
     @FXML
     private TextField costField;
 
-    public void addIngredient(ActionEvent event) throws IOException {
+    public void addIngredient() {
         try {
             String name = ingredientNameField.getText();
             int quantity = Integer.parseInt(quantityField.getText());
@@ -40,15 +40,15 @@ public class AddIngredientController {
 
     public void backToInventory() {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
             Main.getMainController().setView(node);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Inventory Warning", "Unable to Load Inventory", "Please try again!");
         }
     }
 
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
         Main.getMainController().setView(node);
     }
 

@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class Main extends Application {
   
@@ -33,7 +34,7 @@ public class Main extends Application {
         dbManager.connect();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("main-view.fxml"));
         Scene scene = new Scene(loader.load(), 320, 240);
-        scene.getStylesheets().add(getClass().getResource("/com/goattechnologies/pos/main.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/goattechnologies/pos/main.css")).toExternalForm());
 
         mainController = loader.getController();
 
@@ -46,7 +47,7 @@ public class Main extends Application {
         stage.show();
 
         // Load initial login view
-        Node node = FXMLLoader.load(getClass().getResource("login1-view.fxml"));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login1-view.fxml")));
         mainController.setView(node);
     }
 
