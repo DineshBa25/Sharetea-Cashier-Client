@@ -2,6 +2,7 @@ package com.goattechnologies.pos;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
@@ -22,6 +23,9 @@ public class Login1Controller {
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
         idPrompt.setFont(customFont);
+        Font largerFont = new Font(28);
+        employeeID.setFont(largerFont);
+        employeeID.setAlignment(Pos.CENTER);
     }
 
     @FXML

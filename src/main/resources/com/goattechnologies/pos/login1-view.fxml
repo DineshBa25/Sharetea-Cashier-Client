@@ -12,6 +12,6 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <Text fx:id="idPrompt" text="Enter your employee ID:"/>
-    <TextField fx:id="employeeID" promptText="Employee ID" prefWidth="200" prefHeight="40"/>
+    <TextField fx:id="employeeID" promptText="Employee ID" maxWidth="220" prefHeight="80"/>
     <Button text="Login" onAction="#onLoginClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
 </VBox>
