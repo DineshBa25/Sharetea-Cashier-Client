@@ -1,5 +1,4 @@
 package com.goattechnologies.pos;
-import java.sql.ResultSet;
 import java.util.List;
 
 public class Product {

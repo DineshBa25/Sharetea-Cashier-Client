@@ -1,11 +1,16 @@
 package com.goattechnologies.pos;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.text.Font;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class UpdateIngredientController {
     @FXML
@@ -14,9 +19,33 @@ public class UpdateIngredientController {
     private TextField quantityField;
     @FXML
     private TextField costField;
+    @FXML
+    private Label updateIngredient;
+    @FXML
+    private Label name;
+    @FXML
+    private Label quantity;
+    @FXML
+    private Label cost;
 
     private Ingredient selectedIngredient;
     private String oldName;
+
+    public void initialize() {
+        Font customFont = Font.font("Arial", 20);
+        updateIngredient.setFont(customFont);
+        name.setFont(customFont);
+        quantity.setFont(customFont);
+        cost.setFont(customFont);
+
+        Font largerFont = new Font(28);
+        ingredientNameField.setFont(largerFont);
+        ingredientNameField.setAlignment(Pos.CENTER);
+        quantityField.setFont(largerFont);
+        quantityField.setAlignment(Pos.CENTER);
+        costField.setFont(largerFont);
+        costField.setAlignment(Pos.CENTER);
+    }
 
     public void setSelectedIngredient(Ingredient ingredient) {
         this.selectedIngredient = ingredient;
@@ -55,10 +84,10 @@ public class UpdateIngredientController {
 
     public void backToInventory() {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("inventory-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
             Main.getMainController().setView(node);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Error", "Error loading inventory view", "Please try again later: " + e.getMessage());
         }
     }
 

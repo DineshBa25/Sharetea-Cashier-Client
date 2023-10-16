@@ -5,12 +5,12 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.goattechnologies.pos.AddProductController">
-    <Label text="Add Product" />
-    <Label text="Name:" />
-    <TextField fx:id="productNameField" />
+    <Label fx:id="addProduct" text="Add Product" />
+    <Label fx:id="name" text="Name:" />
+    <TextField fx:id="productNameField" maxWidth="440" prefHeight="80"/>
 
-    <Label text="Ingredients:" />
-    <ListView fx:id="selectedIngredientsListView" prefHeight="100.0" />
+    <Label fx:id="ingredients" text="Ingredients:" />
+    <ListView fx:id="selectedIngredientsListView" maxWidth="440" prefHeight="400" />
     <HBox alignment="CENTER" spacing="10.0">
         <!-- Button to remove selected ingredient(s) -->
         <Button fx:id="removeIngredientButton" text="Remove" onAction="#removeSelectedIngredients" styleClass="black-btn"/>
@@ -18,8 +18,8 @@
         <Button text="Add Ingredient" onAction="#openAddIngredientDialog" styleClass="black-btn"/>
     </HBox>
 
-    <Label text="Sale Price($):" />
-    <TextField fx:id="salePriceField" />
+    <Label fx:id="price" text="Sale Price($):"/>
+    <TextField fx:id="salePriceField" maxWidth="220" prefHeight="80"/>
     <Button text="Add" onAction="#addProduct" styleClass="black-btn"/>
     <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
 </VBox>

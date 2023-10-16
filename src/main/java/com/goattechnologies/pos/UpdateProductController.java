@@ -2,17 +2,13 @@ package com.goattechnologies.pos;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +17,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 public class UpdateProductController implements Initializable{
+    @FXML
+    private Label editProduct;
+    @FXML
+    private Label name;
+    @FXML
+    private Label ingredients;
+    @FXML
+    private Label price;
     public Button removeIngredientButton;
     @FXML
     private TextField productNameField;
@@ -35,14 +39,34 @@ public class UpdateProductController implements Initializable{
     private Product selectedProduct;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Bind the "Update" button's disable property to the row selection state
-        removeIngredientButton.disableProperty().bind(isRowSelected.not());
-        selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        Font customFont = Font.font("Arial", 20);
+        editProduct.setFont(customFont);
+        name.setFont(customFont);
+        ingredients.setFont(customFont);
+        price.setFont(customFont);
+
+        Font largerFont = new Font(28);
+        productNameField.setFont(largerFont);
+        productNameField.setAlignment(Pos.CENTER);
+        salePriceField.setFont(largerFont);
+        salePriceField.setAlignment(Pos.CENTER);
+        selectedIngredientsListView.setCellFactory(param -> new ListCell<String>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                isRowSelected.set(newValue != null);
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null && !empty) {
+                    setText(item);
+                    setFont(Font.font(20));
+                    setAlignment(Pos.CENTER);
+                } else {
+                    setText(null);
+                }
             }
         });
+
+        // Bind the "Update" button's disable property to the row selection state
+        removeIngredientButton.disableProperty().bind(isRowSelected.not());
+        selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
     }
 
     public void setSelectedProduct(Product product) {
@@ -104,14 +128,14 @@ public class UpdateProductController implements Initializable{
 
     public void backToProducts() {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
             Main.getMainController().setView(node);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Error", "Error loading products view", "Please try again later: " + e.getMessage());
         }
     }
 
-    public void removeSelectedIngredients(ActionEvent actionEvent) {
+    public void removeSelectedIngredients() {
         List<String> selectedItems = new ArrayList<>(selectedIngredientsListView.getSelectionModel().getSelectedItems());
 
         selectedIngredientsListView.getItems().removeAll(selectedItems);
@@ -128,14 +152,14 @@ public class UpdateProductController implements Initializable{
 
     public Ingredient findIngredientByName(String name) {
         for(Ingredient x : productIngredients) {
-            if (x.getIngredientName() == name) {
+            if (Objects.equals(x.getIngredientName(), name)) {
                 return x;
             }
         }
         return null;
     }
 
-    public void openAddIngredientDialog(ActionEvent actionEvent) {
+    public void openAddIngredientDialog() {
         List<String> productIngredientNames = new ArrayList<>();
         for(Ingredient x: productIngredients) {
             productIngredientNames.add(x.getIngredientName());
@@ -163,8 +187,8 @@ public class UpdateProductController implements Initializable{
             }
         });
     }
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
         Main.getMainController().setView(node);
     }
 

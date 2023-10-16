@@ -34,5 +34,7 @@ public class Cart {
         items.clear();
     }
 
-    // Add other cart-related methods as needed
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
 }

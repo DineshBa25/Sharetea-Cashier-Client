@@ -16,12 +16,12 @@ public class ManagerViewController {
 
     @FXML
     protected void onProductsClick() throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
         Main.getMainController().setView(node);
     }
 
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("login3-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login3-view.fxml")));
         Main.getMainController().setView(node);
     }
 

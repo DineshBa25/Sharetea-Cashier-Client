@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Login3Controller {
 
@@ -21,18 +22,21 @@ public class Login3Controller {
 
     @FXML
     protected void onLogin1Click() throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("menu-view.fxml"));
+        //empty cart before starting a new order
+        Main.cart.removeAllItemsInCart();
+
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu-view.fxml")));
         Main.getMainController().setView(node);
     }
 
     @FXML
     protected void onLogin2Click() throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("manager-view.fxml"));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("manager-view.fxml")));
         Main.getMainController().setView(node);
     }
 
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("login1-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login1-view.fxml")));
         Main.getMainController().setView(node);
     }
 

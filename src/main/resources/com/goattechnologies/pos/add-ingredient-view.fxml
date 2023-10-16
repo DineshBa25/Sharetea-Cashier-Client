@@ -5,13 +5,13 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.goattechnologies.pos.AddIngredientController">
-    <Label text="Add Ingredient" />
-    <Label text="Name:" />
-    <TextField fx:id="ingredientNameField" />
-    <Label text="Quantity:" />
-    <TextField fx:id="quantityField" />
-    <Label text="Cost ($):" />
-    <TextField fx:id="costField" />
+    <Label fx:id="addIngredient" text= "Add Ingredient" />
+    <Label fx:id="name" text="Name:" />
+    <TextField fx:id="ingredientNameField" maxWidth="440" prefHeight="80"/>
+    <Label fx:id="quantity" text="Quantity:" />
+    <TextField fx:id="quantityField" maxWidth="220" prefHeight="80"/>
+    <Label fx:id="cost" text="Cost ($):" />
+    <TextField fx:id="costField" maxWidth="220" prefHeight="80"/>
     <Button text="Add" onAction="#addIngredient" styleClass="black-btn"/>
     <Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
 </VBox>

@@ -2,19 +2,26 @@ package com.goattechnologies.pos;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 public class AddProductController implements Initializable {
+    @FXML
+    private Label addProduct;
+    @FXML
+    private Label name;
+    @FXML
+    private Label ingredients;
+    @FXML
+    private Label price;
     public Button removeIngredientButton;
     @FXML
     private TextField productNameField;
@@ -28,18 +35,38 @@ public class AddProductController implements Initializable {
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Font customFont = Font.font("Arial", 20);
+        addProduct.setFont(customFont);
+        name.setFont(customFont);
+        ingredients.setFont(customFont);
+        price.setFont(customFont);
+
+        Font largerFont = new Font(28);
+        productNameField.setFont(largerFont);
+        productNameField.setAlignment(Pos.CENTER);
+        salePriceField.setFont(largerFont);
+        salePriceField.setAlignment(Pos.CENTER);
+        selectedIngredientsListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null && !empty) {
+                    setText(item);
+                    setFont(Font.font(20));
+                    setAlignment(Pos.CENTER);
+                } else {
+                    setText(null);
+                }
+            }
+        });
+
         productIngredients = new ArrayList<>();
         // Bind the "Update" button's disable property to the row selection state
         removeIngredientButton.disableProperty().bind(isRowSelected.not());
-        selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                isRowSelected.set(newValue != null);
-            }
-        });
+        selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
     }
 
-    public void addProduct(ActionEvent event) throws IOException {
+    public void addProduct() {
         try {
             productName = productNameField.getText();
             productSalePrice = Double.parseDouble(salePriceField.getText());
@@ -68,14 +95,14 @@ public class AddProductController implements Initializable {
 
     public void backToProducts() {
         try {
-            Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
             Main.getMainController().setView(node);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtil.showWarning("Product Warning", "Unable to Load Products", "Please try again!");
         }
     }
 
-    public void removeSelectedIngredients(ActionEvent actionEvent) {
+    public void removeSelectedIngredients() {
         // Get the selected items from the ListView
         List<String> selectedItems = new ArrayList<>(selectedIngredientsListView.getSelectionModel().getSelectedItems());
 
@@ -96,14 +123,14 @@ public class AddProductController implements Initializable {
 
     public Ingredient findIngredientByName(String name) {
         for(Ingredient x : productIngredients) {
-            if (x.getIngredientName() == name) {
+            if (Objects.equals(x.getIngredientName(), name)) {
                 return x;
             }
         }
         return null;
     }
 
-    public void openAddIngredientDialog(ActionEvent actionEvent) {
+    public void openAddIngredientDialog() {
         List<String> productIngredientNames = new ArrayList<>();
         for(Ingredient x: productIngredients) {
             productIngredientNames.add(x.getIngredientName());
@@ -131,8 +158,8 @@ public class AddProductController implements Initializable {
             }
         });
     }
-    public void handleBackButton(ActionEvent event) throws IOException {
-        Node node = FXMLLoader.load(getClass().getResource("products-view.fxml"));
+    public void handleBackButton() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
         Main.getMainController().setView(node);
     }
 
