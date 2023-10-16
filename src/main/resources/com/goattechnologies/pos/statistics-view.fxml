@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.StatisticsController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <VBox alignment="CENTER" spacing="20.0">
+        <HBox alignment="CENTER" spacing="20.0">
+            <Button text="Sales Report" onAction="#onSalesReportClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+            <Button text="Excess Report" onAction="#onExcessReportClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="20.0">
+            <Button text="Restock Report" onAction="#onRestockReportClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+            <Button text="Popularity Analysis" onAction="#onPopularityClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+        </HBox>
+        <Button text="What Sells Together" onAction="#onWhatSellsClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+        <Button text="Back" styleClass="black-btn-sm" onAction="#handleBackButton"/>
+    </VBox>
+</VBox>

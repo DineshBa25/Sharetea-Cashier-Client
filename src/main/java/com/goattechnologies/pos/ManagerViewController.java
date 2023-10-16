@@ -1,6 +1,5 @@
 package com.goattechnologies.pos;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,6 +16,12 @@ public class ManagerViewController {
     @FXML
     protected void onProductsClick() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
+        Main.getMainController().setView(node);
+    }
+
+    @FXML
+    protected void onStatisticsClick() throws IOException {
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
         Main.getMainController().setView(node);
     }
 
