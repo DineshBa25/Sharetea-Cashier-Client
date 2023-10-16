@@ -11,5 +11,6 @@
     </padding>
     <Button text="Inventory" onAction="#onInventoryClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
     <Button text="Products" onAction="#onProductsClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
+    <Button text="Statistics" onAction="#onStatisticsClick" styleClass="black-btn" prefWidth="200" prefHeight="60"/>
     <Button text="Back" styleClass="black-btn-sm" onAction="#handleBackButton"/>
 </VBox>
