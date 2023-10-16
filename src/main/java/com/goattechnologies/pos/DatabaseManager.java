@@ -133,19 +133,6 @@ public class DatabaseManager {
         return price;
     }
 
-    private int getNextOrderId() {
-        int id = 0;
-        try {
-            ResultSet resultSet = this.query("getLastOrderId");
-            resultSet.next();
-            if (resultSet.wasNull()) return 1;
-            id = resultSet.getInt("orderid") + 1;
-        } catch (SQLException e) {
-            AlertUtil.showWarning("Warning!", "Unable to get next order id", e.getMessage());
-            throw new RuntimeException();
-        }
-        return id;
-    }
 
     private void useOrderIngredients(List<CartItem> items) {
         for (CartItem item : items) {
@@ -197,7 +184,6 @@ public class DatabaseManager {
 
     public void addOrder(List<CartItem> items, double tipPercentage) {
 
-        int id = getNextOrderId();
         String cashier = Employee.getInstance().getEmployeeName();
         List<Integer> productids = getOrderProductIds(items);
         Timestamp time = getOrderTime();
@@ -208,13 +194,12 @@ public class DatabaseManager {
         try {
             // SQL to add order to orders database, currently uses cost for price
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("insertOrder"));
-            preparedStatement.setInt(1, id);
             Array ingredients = conn.createArrayOf("INTEGER", productids.toArray());
-            preparedStatement.setArray(2, ingredients);
-            preparedStatement.setString(3, cashier);
-            preparedStatement.setTimestamp(4, time);
+            preparedStatement.setArray(1, ingredients);
+            preparedStatement.setString(2, cashier);
+            preparedStatement.setTimestamp(3, time);
 
-            preparedStatement.setDouble(5, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
+            preparedStatement.setDouble(4, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
             preparedStatement.execute();
 
             // Decrements ingredient quantities for each item and addon in the order
