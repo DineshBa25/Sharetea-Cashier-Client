@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.util.HashMap;
 
-
 public class populate_tables {
 
     /**
@@ -46,10 +45,10 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            populate_employees(connection);
+            //populate_employees(connection);
             //populate_finances(connection);
             //populate_ingredients(connection);
-            //populate_orders(connection);
+            populate_orders(connection);
             //populate_products(connection);
         } 
         catch (Exception e) {
@@ -219,8 +218,9 @@ public class populate_tables {
      * @param conn A database connection object.
      */
     public static void populate_orders(Connection conn) {
-        String insertSQL = "INSERT INTO orders(orderid, cashier, transactiontime, price) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO orders(productids, cashier, transactiontime, price) VALUES (?, ?, ?, ?)";
         String csvFilePath = "orders.csv";
+        HashMap<String, Integer> productIDs = getProductIDs("products.csv");
             
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertSQL)) {
             BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
@@ -229,7 +229,21 @@ public class populate_tables {
             int batch = 0;
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(", ");
-                preparedStatement.setInt(1, Integer.parseInt(fields[2]));
+
+                String toppingList = fields[6];
+                String[] toppingArray = toppingList.split("; ");
+                List<String> toppings = Arrays.asList(toppingArray);
+                List<Integer> productIDsInteger = new ArrayList<Integer>();
+
+                productIDsInteger.add(productIDs.get(fields[4]));
+                for (int i = 0; i < toppings.size(); i++) {
+                    if (!(toppings.get(i).equals("None")))
+                        productIDsInteger.add(productIDs.get(toppings.get(i)));
+                }
+
+                Array productIDsArray = conn.createArrayOf("INTEGER", productIDsInteger.toArray());
+                preparedStatement.setArray(1, productIDsArray);
+
                 preparedStatement.setString(2, fields[8]);
 
                 String csvWeek = "2023W" + fields[0]; // Example: Week 40 of 2023
@@ -310,6 +324,34 @@ public class populate_tables {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+
+    /**
+     * Retrieves product prices from a CSV file and returns them as a map.
+     *
+     * @param csvFile The path to the CSV file containing product prices.
+     * @return A map of product names to their respective prices.
+     */
+    private static HashMap<String, Integer> getProductIDs(String csvFile) {
+        HashMap<String, Integer> productIDMap = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            String line;
+            br.readLine();
+            int id = 0;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 2) {
+                    String productName = parts[0].trim();
+                    productIDMap.put(productName, id);
+                    id++;
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return productIDMap;
     }
 
     /**
