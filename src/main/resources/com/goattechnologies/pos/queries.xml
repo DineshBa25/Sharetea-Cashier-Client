@@ -51,13 +51,13 @@
         WHERE array_length(ingredientids, 1) &lt;= 1;
     </query>
     <query id="getProductPrice">
-        SELECT price
+        SELECT saleprice
         FROM products
         WHERE productname = ?;
     </query>
     <query id="insertOrder">
-        INSERT INTO orders(orderid, cashier, transactiontime, price)
-        VALUES (?, ?, ?, ?);
+        INSERT INTO orders(orderid, productids, cashier, transactiontime, price)
+        VALUES (?, ?, ?, ?, ?);
     </query>
     <query id="getLastOrderId">
         SELECT orderid
@@ -83,5 +83,10 @@
         SELECT firstname
         FROM employees
         WHERE employeeid = ?;
+    </query>
+    <query id="getProductId">
+        SELECT productid
+        FROM products
+        WHERE productname = ?;
     </query>
 </queries>

@@ -108,7 +108,7 @@ public class DatabaseManager {
         try {
             ResultSet resultSet = this.query("getProductPrice", product);
             resultSet.next();
-            price = resultSet.getDouble("price");
+            price = resultSet.getDouble("saleprice");
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to get product price", e.getMessage());
             throw new RuntimeException();
@@ -138,6 +138,7 @@ public class DatabaseManager {
         try {
             ResultSet resultSet = this.query("getLastOrderId");
             resultSet.next();
+            if (resultSet.wasNull()) return 1;
             id = resultSet.getInt("orderid") + 1;
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to get next order id", e.getMessage());
@@ -173,10 +174,32 @@ public class DatabaseManager {
         return new Timestamp(System.currentTimeMillis());
     }
 
-    public void addOrder(List<CartItem> items, double tipPercentage /* TODO: deal with real worker in the future*/) {
+    private List<Integer> getOrderProductIds(List<CartItem> items) {
+        List<Integer> productids = new ArrayList<Integer>();
+        for (CartItem item : items) {
+            try {
+                ResultSet resultSet = query("getProductId", item.getDrinkName());
+                resultSet.next();
+                productids.add(resultSet.getInt("productid"));
+                List<String> addOns = item.getAddOns();
+                for (String addOn : addOns) {
+                    resultSet = query("getProductId", addOn);
+                    resultSet.next();
+                    productids.add(resultSet.getInt("productid"));
+                }
+            } catch (SQLException e) {
+                AlertUtil.showWarning("Warning!", "Unable to get order's product ids", e.getMessage());
+                throw new RuntimeException();
+            }
+        }
+        return productids;
+    }
+
+    public void addOrder(List<CartItem> items, double tipPercentage) {
 
         int id = getNextOrderId();
         String cashier = Employee.getInstance().getEmployeeName();
+        List<Integer> productids = getOrderProductIds(items);
         Timestamp time = getOrderTime();
         double orderPrice = getOrderPrice(items);
         DecimalFormat df = new DecimalFormat("0.00");
@@ -186,10 +209,12 @@ public class DatabaseManager {
             // SQL to add order to orders database, currently uses cost for price
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("insertOrder"));
             preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, cashier);
-            preparedStatement.setTimestamp(3, time);
+            Array ingredients = conn.createArrayOf("INTEGER", productids.toArray());
+            preparedStatement.setArray(2, ingredients);
+            preparedStatement.setString(3, cashier);
+            preparedStatement.setTimestamp(4, time);
 
-            preparedStatement.setDouble(4, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
+            preparedStatement.setDouble(5, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
             preparedStatement.execute();
 
             // Decrements ingredient quantities for each item and addon in the order
