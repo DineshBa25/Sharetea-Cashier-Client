@@ -27,7 +27,7 @@ public class StatisticsController {
 
     @FXML
     protected void onPopularityClick() throws IOException {
-        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("popularity-view.fxml")));
         Main.getMainController().setView(node);
     }
 
