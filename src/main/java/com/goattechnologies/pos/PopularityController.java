@@ -56,5 +56,3 @@ public class PopularityController {
         Main.getMainController().setView(node);
     }
 }
-
-
