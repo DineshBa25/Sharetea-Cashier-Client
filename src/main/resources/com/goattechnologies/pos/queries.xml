@@ -100,4 +100,7 @@
         FROM products
         WHERE array_length(ingredientids, 1) > 1;
     </query>
+    <query id="refreshProductCosts">
+        SELECT refresh_product_prices_callable();
+    </query>
 </queries>
