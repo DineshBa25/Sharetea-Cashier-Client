@@ -1,4 +1,5 @@
 package com.goattechnologies.pos;
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -133,19 +134,6 @@ public class DatabaseManager {
         return price;
     }
 
-    private int getNextOrderId() {
-        int id = 0;
-        try {
-            ResultSet resultSet = this.query("getLastOrderId");
-            resultSet.next();
-            if (resultSet.wasNull()) return 1;
-            id = resultSet.getInt("orderid") + 1;
-        } catch (SQLException e) {
-            AlertUtil.showWarning("Warning!", "Unable to get next order id", e.getMessage());
-            throw new RuntimeException();
-        }
-        return id;
-    }
 
     private void useOrderIngredients(List<CartItem> items) {
         for (CartItem item : items) {
@@ -197,7 +185,6 @@ public class DatabaseManager {
 
     public void addOrder(List<CartItem> items, double tipPercentage) {
 
-        int id = getNextOrderId();
         String cashier = Employee.getInstance().getEmployeeName();
         List<Integer> productids = getOrderProductIds(items);
         Timestamp time = getOrderTime();
@@ -208,13 +195,12 @@ public class DatabaseManager {
         try {
             // SQL to add order to orders database, currently uses cost for price
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("insertOrder"));
-            preparedStatement.setInt(1, id);
             Array ingredients = conn.createArrayOf("INTEGER", productids.toArray());
-            preparedStatement.setArray(2, ingredients);
-            preparedStatement.setString(3, cashier);
-            preparedStatement.setTimestamp(4, time);
+            preparedStatement.setArray(1, ingredients);
+            preparedStatement.setString(2, cashier);
+            preparedStatement.setTimestamp(3, time);
 
-            preparedStatement.setDouble(5, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
+            preparedStatement.setDouble(4, Double.parseDouble(df.format(orderPrice * (1 + tipPercentage))));
             preparedStatement.execute();
 
             // Decrements ingredient quantities for each item and addon in the order
@@ -475,9 +461,46 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+    public HashMap<Integer, String> getDrinks() {
+        HashMap<Integer, String> drinks = new HashMap<>();
+        try {
+            ResultSet resultSet = query("getDrinks");
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productid");
+                String productName = resultSet.getString("productname");
+                drinks.put(productId, productName);
+            }
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get ingredient name", e.getMessage());
+            throw new RuntimeException();
+        }
+        return drinks;
+    }
+    public List<List<Integer>> getMultiOrders(Timestamp startTime, Timestamp endTime) {
+        List<List<Integer>> multiOrders = new ArrayList<>();
+        HashMap<Integer, String> drinks = getDrinks();
 
-
-
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getMultiProdOrders"));
+            preparedStatement.setTimestamp(1, startTime);
+            preparedStatement.setTimestamp(2, endTime);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Array prodIds = resultSet.getArray("productids");
+                List<Integer> productIds = Arrays.asList((Integer[]) prodIds.getArray());
+                List<Integer> drinkIds = new ArrayList<>();
+                for (int productId : productIds) {
+                    if (drinks.containsKey(productId)) drinkIds.add(productId);
+                }
+                if (drinkIds.size() >= 2) multiOrders.add(drinkIds);
+            }
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get drinks from orders with multiple drinks",
+                    e.getMessage());
+            throw new RuntimeException();
+        }
+        return multiOrders;
+    }
 }
 
 
