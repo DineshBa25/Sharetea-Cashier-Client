@@ -3,6 +3,8 @@ package com.goattechnologies.pos;
 /**
  * The Employee class represents an employee in the Point of Sale (POS) system.
  * It stores information about the employee's name and whether they are a manager.
+ *
+ * @author Ilham Aryawan
  */
 public class Employee {
     private String employeeName;

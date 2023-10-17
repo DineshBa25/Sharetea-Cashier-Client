@@ -7,6 +7,8 @@ import javafx.stage.StageStyle;
 
 /**
  * A utility class for displaying warning alerts in a Point of Sale (POS) application.
+ *
+ * @author Mohsin Khan
  */
 public class AlertUtil {
 

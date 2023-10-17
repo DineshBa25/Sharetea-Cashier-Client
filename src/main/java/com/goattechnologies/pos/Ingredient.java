@@ -3,6 +3,8 @@ package com.goattechnologies.pos;
 /**
  * The Ingredient class represents an ingredient used in the Point of Sale system.
  * It contains information such as the ingredient ID, name, quantity, and cost.
+ *
+ * @author Mohsin Khan
  */
 public class Ingredient {
     private int ingredientId;

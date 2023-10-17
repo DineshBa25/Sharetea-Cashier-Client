@@ -18,6 +18,8 @@ import javafx.geometry.Pos;
  * This class serves as the controller for the inventory view in a Point of Sale (POS) application.
  * It manages the display and interaction with a table of ingredients and provides functionality for
  * updating, adding, and navigating within the inventory.
+ *
+ * @author Mohsin Khan
  */
 public class InventoryController {
     @FXML

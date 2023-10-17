@@ -9,6 +9,8 @@ import java.util.*;
  * and various database operations for a Point of Sale (POS) application.
  * It provides methods for retrieving and updating product, ingredient,
  * and order information in the database.
+ *
+ * @author Cole Broberg, Ilham Aryawan, Dinesh Balakrishnan, Mohsin Khan, Nicholas Dienstbier
  */
 public class DatabaseManager {
     private Connection conn = null;

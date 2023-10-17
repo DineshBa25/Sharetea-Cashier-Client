@@ -15,6 +15,8 @@ import java.util.Objects;
 /**
  * This class serves as the controller for the add-ingredient view in a Point of Sale (POS) application.
  * It allows users to add a new ingredient to the inventory.
+ *
+ * @author Mohsin Khan
  */
 public class AddIngredientController {
     @FXML

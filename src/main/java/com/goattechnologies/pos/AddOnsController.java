@@ -16,6 +16,8 @@ import java.util.Objects;
  * This class serves as the controller for the add-ons view in a Point of Sale (POS) application.
  * It allows users to select add-ons, sweetness levels, and ice levels for a selected drink
  * and add the customized item to the shopping cart.
+ *
+ * @author Dinesh Balakrishnan
  */
 public class AddOnsController {
 

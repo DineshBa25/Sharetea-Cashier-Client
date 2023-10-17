@@ -5,6 +5,8 @@ import java.util.List;
 /**
  * This class represents an item in a shopping cart within a Point of Sale (POS) application.
  * It includes details about a selected drink, its add-ons, sweetness level, and ice level.
+ *
+ * @author Dinesh Balakrishnan
  */
 public class CartItem {
     private String drinkName;

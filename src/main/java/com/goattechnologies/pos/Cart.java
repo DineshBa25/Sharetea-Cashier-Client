@@ -6,6 +6,8 @@ import java.util.List;
 /**
  * This class represents a shopping cart in a Point of Sale (POS) application.
  * It allows adding, removing, and managing items within the cart.
+ *
+ * @author Dinesh Balakrishnan
  */
 public class Cart {
     private List<CartItem> items;

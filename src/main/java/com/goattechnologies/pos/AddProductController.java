@@ -17,6 +17,8 @@ import java.util.*;
 /**
  * This class serves as the controller for the "Add Product" view in a Point of Sale (POS) application.
  * It allows users to add a new product to the inventory, specifying its name, ingredients, and sale price.
+ *
+ * @author Nicholas Dienstbier, Ilham Aryawan
  */
 public class AddProductController implements Initializable {
     @FXML
