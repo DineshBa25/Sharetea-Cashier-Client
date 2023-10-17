@@ -445,6 +445,18 @@ public class DatabaseManager {
         return productsList;
     }
 
+    public void refreshProductCosts() {
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("refreshProductCosts"));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            preparedStatement.close();
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to refresh product costs", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
+
     public String getIngredientNameByID(int ingredientId) {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getIngredientNameByID"));
