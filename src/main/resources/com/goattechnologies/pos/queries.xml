@@ -89,4 +89,15 @@
         FROM products
         WHERE productname = ?;
     </query>
+    <query id="getMultiProdOrders">
+        SELECT productids
+        FROM orders
+        WHERE transactiontime BETWEEN ? AND ?
+        AND array_length(productids, 1) > 1;
+    </query>
+    <query id="getDrinks">
+        SELECT *
+        FROM products
+        WHERE array_length(ingredientids, 1) > 1;
+    </query>
 </queries>
