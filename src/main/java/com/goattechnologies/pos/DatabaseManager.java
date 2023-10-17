@@ -1,4 +1,5 @@
 package com.goattechnologies.pos;
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -460,9 +461,46 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+    public HashMap<Integer, String> getDrinks() {
+        HashMap<Integer, String> drinks = new HashMap<>();
+        try {
+            ResultSet resultSet = query("getDrinks");
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productid");
+                String productName = resultSet.getString("productname");
+                drinks.put(productId, productName);
+            }
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get ingredient name", e.getMessage());
+            throw new RuntimeException();
+        }
+        return drinks;
+    }
+    public List<List<Integer>> getMultiOrders(Timestamp startTime, Timestamp endTime) {
+        List<List<Integer>> multiOrders = new ArrayList<>();
+        HashMap<Integer, String> drinks = getDrinks();
 
-
-
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getMultiProdOrders"));
+            preparedStatement.setTimestamp(1, startTime);
+            preparedStatement.setTimestamp(2, endTime);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Array prodIds = resultSet.getArray("productids");
+                List<Integer> productIds = Arrays.asList((Integer[]) prodIds.getArray());
+                List<Integer> drinkIds = new ArrayList<>();
+                for (int productId : productIds) {
+                    if (drinks.containsKey(productId)) drinkIds.add(productId);
+                }
+                if (drinkIds.size() >= 2) multiOrders.add(drinkIds);
+            }
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get drinks from orders with multiple drinks",
+                    e.getMessage());
+            throw new RuntimeException();
+        }
+        return multiOrders;
+    }
 }
 
 
