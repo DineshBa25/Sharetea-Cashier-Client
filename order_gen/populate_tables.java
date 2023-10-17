@@ -45,11 +45,11 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            //populate_employees(connection);
-            //populate_finances(connection);
-            //populate_ingredients(connection);
+            populate_employees(connection);
+            populate_finances(connection);
+            populate_ingredients(connection);
             populate_orders(connection);
-            //populate_products(connection);
+            populate_products(connection);
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -258,7 +258,7 @@ public class populate_tables {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E HH:mm");
                 java.util.Date date = sdf.parse(csvWeek + " " + csvDay + " " + csvTime);
                 preparedStatement.setTimestamp(3, new Timestamp(date.getTime()));
-                preparedStatement.setFloat(4, Float.parseFloat(fields[5]) + Float.parseFloat(fields[7]));
+                preparedStatement.setDouble(4, Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]));
 
                 if(batch < 1000) {
                     preparedStatement.addBatch();
