@@ -4,7 +4,12 @@ import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
-
+/**
+ * The DatabaseManager class handles database connections, query execution,
+ * and various database operations for a Point of Sale (POS) application.
+ * It provides methods for retrieving and updating product, ingredient,
+ * and order information in the database.
+ */
 public class DatabaseManager {
     private Connection conn = null;
 
@@ -16,6 +21,9 @@ public class DatabaseManager {
 
     private final dbSetup myCredentials = new dbSetup();
 
+    /**
+     * A class responsible for loading and managing SQL queries from an external XML file.
+     */
     public static QueryLoader queryLoader;
     static {
         try {
@@ -25,6 +33,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Initializes the database connection.
+     * This method connects to the database using the credentials provided.
+     */
     public void connect() {
         try {
             conn = DriverManager.getConnection(dbConnectionString, dbSetup.user, dbSetup.pswd);
@@ -34,6 +46,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Disconnects from the database.
+     * This method closes the connection to the database.
+     */
     public void disconnect() {
         try {
             conn.close();
@@ -42,7 +58,12 @@ public class DatabaseManager {
         }
     }
 
-    // Add other database methods here, such as executing queries, etc.
+    /**
+     * Execute a SQL query and return the result as a ResultSet.
+     *
+     * @param queryId The identifier of the query to execute.
+     * @return The result of the query as a ResultSet.
+     */
     private ResultSet query(String queryId) {
         try {
             return conn.createStatement().executeQuery(queryLoader.getQuery(queryId));
@@ -52,6 +73,13 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Execute a SQL query with a string parameter and return the result as a ResultSet.
+     *
+     * @param queryId The identifier of the query to execute.
+     * @param alt The string parameter for the query.
+     * @return The result of the query as a ResultSet.
+     */
     private ResultSet query(String queryId, String alt) {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery(queryId));
@@ -63,6 +91,13 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Execute a SQL query with an integer parameter and return the result as a ResultSet.
+     *
+     * @param queryId The identifier of the query to execute.
+     * @param alt The integer parameter for the query.
+     * @return The result of the query as a ResultSet.
+     */
     private ResultSet query(String queryId, int alt) {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery(queryId));
@@ -74,6 +109,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves a list of product names from the database.
+     *
+     * @return A list of product names.
+     */
     public List<String> getProductNames() {
         List<String> names = new ArrayList<String>();
         ResultSet resultSet = this.query("getProducts");
@@ -89,6 +129,11 @@ public class DatabaseManager {
         return names;
     }
 
+    /**
+     * Retrieves a list of add-on names from the database.
+     *
+     * @return A list of add-on names.
+     */
     public List<String> getAddOnNames() {
         List<String> names = new ArrayList<String>();
         ResultSet resultSet = this.query("getAddOns");
@@ -104,6 +149,12 @@ public class DatabaseManager {
         return names;
     }
 
+    /**
+     * Retrieves the price of a specific product from the database.
+     *
+     * @param product The name of the product.
+     * @return The price of the product.
+     */
     private double getProductPrice(String product) {
         double price;
         try {
@@ -116,7 +167,13 @@ public class DatabaseManager {
         }
         return price;
     }
-    
+
+    /**
+     * Calculates the total price of a cart item, including drink and add-ons.
+     *
+     * @param item The cart item.
+     * @return The total price of the cart item.
+     */
     private double getItemPrice(CartItem item) {
         double price = 0;
         price += getProductPrice(item.getDrinkName());
@@ -125,7 +182,13 @@ public class DatabaseManager {
         }
         return price;
     }
-    
+
+    /**
+     * Calculates the total price of a list of cart items.
+     *
+     * @param items The list of cart items.
+     * @return The total price of the list of cart items.
+     */
     private double getOrderPrice(List<CartItem> items) {
         double price = 0;
         for (CartItem item : items) {
@@ -134,7 +197,11 @@ public class DatabaseManager {
         return price;
     }
 
-
+    /**
+     * Updates the database to mark ingredients used in a list of cart items.
+     *
+     * @param items The list of cart items.
+     */
     private void useOrderIngredients(List<CartItem> items) {
         for (CartItem item : items) {
             try {
@@ -158,10 +225,21 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves the current timestamp.
+     *
+     * @return The current timestamp.
+     */
     private Timestamp getOrderTime() {
         return new Timestamp(System.currentTimeMillis());
     }
 
+    /**
+     * Retrieves the product IDs for a list of cart items.
+     *
+     * @param items The list of cart items.
+     * @return A list of product IDs.
+     */
     private List<Integer> getOrderProductIds(List<CartItem> items) {
         List<Integer> productids = new ArrayList<Integer>();
         for (CartItem item : items) {
@@ -183,6 +261,12 @@ public class DatabaseManager {
         return productids;
     }
 
+    /**
+     * Adds an order to the database with the specified cart items and tip percentage.
+     *
+     * @param items         The list of cart items.
+     * @param tipPercentage The tip percentage for the order.
+     */
     public void addOrder(List<CartItem> items, double tipPercentage) {
 
         String cashier = Employee.getInstance().getEmployeeName();
@@ -211,6 +295,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves a list of ingredients from the database.
+     *
+     * @return A list of Ingredient objects.
+     */
     public List<Ingredient> getIngredients() {
         List<Ingredient> ingredientsList = new ArrayList<>();
         ResultSet resultSet = this.query("getIngredients");
@@ -231,6 +320,11 @@ public class DatabaseManager {
         return ingredientsList;
     }
 
+    /**
+     * Adds a new ingredient to the database.
+     *
+     * @param ingredient The Ingredient object to be added.
+     */
     public void addIngredient(Ingredient ingredient) {
         // Do not need to check name because controller checks if it is empty
         if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0 || Objects.equals(ingredient.getIngredientName(), ""))
@@ -258,6 +352,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Adds a new product to the database.
+     *
+     * @param product The Product object to be added.
+     */
     public void addProduct(Product product) {
         // Do not need to check name because controller checks if it is empty
         if (product.getSalePrice() < 0 || Objects.equals(product.getProductName(), ""))
@@ -286,6 +385,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Updates an ingredient's information in the database.
+     *
+     * @param ingredient The Ingredient object with updated information.
+     */
     public void updateIngredient(Ingredient ingredient) {
         // Do not need to check name because controller checks if it is empty
         if (ingredient.getQuantity() < 0 || ingredient.getCost() < 0)
@@ -314,6 +418,12 @@ public class DatabaseManager {
         }
     }
 
+
+    /**
+     * Updates a product's information in the database.
+     *
+     * @param editedProduct The Product object with updated information.
+     */
     public void updateProduct(Product editedProduct) {
         // Do not need to check name because controller checks if it is empty
         if (editedProduct.getSalePrice() < 0 || Objects.equals(editedProduct.getProductName(), ""))
@@ -343,6 +453,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Deletes an ingredient from the database.
+     *
+     * @param ingredientID The ID of the ingredient to be deleted.
+     */
     public void deleteIngredient(int ingredientID) {
         try {
             String deleteQuery = queryLoader.getQuery("deleteIngredient");
@@ -361,6 +476,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Deletes a product from the database.
+     *
+     * @param productID The ID of the product to be deleted.
+     */
     public void deleteProduct(int productID) {
         try {
             String deleteQuery = queryLoader.getQuery("deleteProduct");
@@ -379,6 +499,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Checks if an employee is a manager.
+     *
+     * @param employeeID The ID of the employee.
+     * @return true if the employee is a manager, false otherwise.
+     */
     public boolean isManager(int employeeID) {
         boolean isManager = false;
         try {
@@ -392,6 +518,12 @@ public class DatabaseManager {
         return isManager;
     }
 
+    /**
+     * Retrieves the name of an employee based on their ID.
+     *
+     * @param employeeID The ID of the employee.
+     * @return The name of the employee.
+     */
     public String getEmployeeName(int employeeID) {
         String employeeName = "";
         try {
@@ -404,6 +536,12 @@ public class DatabaseManager {
         return employeeName;
     }
 
+
+    /**
+     * Retrieves a list of products.
+     *
+     * @return A list of Product objects.
+     */
     public List<Product> getProductsList() {
         HashMap<Integer, String> ingredientNameMap = new HashMap<>();
         ResultSet resultSet2 = this.query("getIngredients");
@@ -445,6 +583,9 @@ public class DatabaseManager {
         return productsList;
     }
 
+    /**
+     * Refreshes the product costs in the database.
+     */
     public void refreshProductCosts() {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("refreshProductCosts"));
@@ -457,6 +598,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves the name of an ingredient by its ID.
+     *
+     * @param ingredientId The ID of the ingredient.
+     * @return The name of the ingredient, or "Ingredient not found" if not found.
+     */
     public String getIngredientNameByID(int ingredientId) {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getIngredientNameByID"));
@@ -473,6 +620,12 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+
+    /**
+     * Retrieves a map of drinks where the key is the product ID and the value is the product name.
+     *
+     * @return A map of drinks.
+     */
     public HashMap<Integer, String> getDrinks() {
         HashMap<Integer, String> drinks = new HashMap<>();
         try {
@@ -488,6 +641,14 @@ public class DatabaseManager {
         }
         return drinks;
     }
+
+    /**
+     * Retrieves a list of multi-orders within a specified time range.
+     *
+     * @param startTime The start time for the time range.
+     * @param endTime   The end time for the time range.
+     * @return A list of lists, where each inner list contains the product IDs of multi-orders.
+     */
     public List<List<Integer>> getMultiOrders(Timestamp startTime, Timestamp endTime) {
         List<List<Integer>> multiOrders = new ArrayList<>();
         HashMap<Integer, String> drinks = getDrinks();

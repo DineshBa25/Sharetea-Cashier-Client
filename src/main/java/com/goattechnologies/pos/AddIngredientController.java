@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class serves as the controller for the add-ingredient view in a Point of Sale (POS) application.
+ * It allows users to add a new ingredient to the inventory.
+ */
 public class AddIngredientController {
     @FXML
     private TextField ingredientNameField;
@@ -28,6 +32,9 @@ public class AddIngredientController {
     @FXML
     private Label cost;
 
+    /**
+     * Initializes the AddIngredientController, setting fonts and alignments for labels and fields.
+     */
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
         addIngredient.setFont(customFont);
@@ -44,6 +51,9 @@ public class AddIngredientController {
         costField.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Handles the action of adding a new ingredient to the inventory.
+     */
     public void addIngredient() {
         try {
             String name = ingredientNameField.getText();
@@ -66,6 +76,9 @@ public class AddIngredientController {
         backToInventory();
     }
 
+    /**
+     * Handles the action of returning to the inventory view.
+     */
     public void backToInventory() {
         try {
             Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
@@ -75,11 +88,23 @@ public class AddIngredientController {
         }
     }
 
+    /**
+     * Handles the action of returning to the inventory view when the "Back" button is clicked.
+     *
+     * @throws IOException If there is an issue loading the inventory view.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
         Main.getMainController().setView(node);
     }
 
+    /**
+     * Checks if an ingredient with the given name exists in the provided ingredient list.
+     *
+     * @param ingredientList         The list of ingredients to search.
+     * @param ingredientNameToFind   The name of the ingredient to find.
+     * @return True if the ingredient with the specified name exists in the list; otherwise, false.
+     */
     public boolean ingredientExists(List<Ingredient> ingredientList, String ingredientNameToFind) {
         for (Ingredient ingredient : ingredientList) {
             if (ingredient.getIngredientName().equalsIgnoreCase(ingredientNameToFind)) {

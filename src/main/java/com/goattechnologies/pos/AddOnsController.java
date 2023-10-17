@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class serves as the controller for the add-ons view in a Point of Sale (POS) application.
+ * It allows users to select add-ons, sweetness levels, and ice levels for a selected drink
+ * and add the customized item to the shopping cart.
+ */
 public class AddOnsController {
 
     @FXML
@@ -22,6 +27,9 @@ public class AddOnsController {
     private ComboBox<String> iceComboBox;
     private String selectedDrinkName;
 
+    /**
+     * Initializes the AddOnsController, populating the add-ons list and combo boxes with options.
+     */
     @FXML
     public void initialize() {
         // Add-ons are fetched from db, other values are not
@@ -37,10 +45,20 @@ public class AddOnsController {
         iceComboBox.getItems().addAll("Less Ice", "Regular Ice", "More Ice");
     }
 
+    /**
+     * Sets the name of the selected drink for which add-ons are being customized.
+     *
+     * @param drinkName The name of the selected drink.
+     */
     public void setSelectedDrinkName(String drinkName) {
         this.selectedDrinkName = drinkName;
     }
 
+    /**
+     * Handles the action of adding the customized item to the shopping cart.
+     *
+     * @throws IOException If there is an issue loading another view.
+     */
     @FXML
     protected void addToCart() throws IOException {
         List<String> selectedAddOns = new ArrayList<>(addOnsListView.getSelectionModel().getSelectedItems());
@@ -64,6 +82,11 @@ public class AddOnsController {
         }
     }
 
+    /**
+     * Handles the action of returning to the main menu view.
+     *
+     * @throws IOException If there is an issue loading the main menu view.
+     */
     @FXML
     protected void handleBackButton() throws IOException {
         Node menuView = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu-view.fxml")));

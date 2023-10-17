@@ -13,6 +13,11 @@ import javafx.scene.text.Font;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+
+/**
+ * This class serves as the controller for the "Add Product" view in a Point of Sale (POS) application.
+ * It allows users to add a new product to the inventory, specifying its name, ingredients, and sale price.
+ */
 public class AddProductController implements Initializable {
     @FXML
     private Label addProduct;
@@ -34,6 +39,12 @@ public class AddProductController implements Initializable {
     public List<Ingredient> productIngredients;
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
 
+    /**
+     * Initializes the AddProductController, setting fonts and alignments for labels and fields.
+     *
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Font customFont = Font.font("Arial", 20);
         addProduct.setFont(customFont);
@@ -66,6 +77,9 @@ public class AddProductController implements Initializable {
         selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
     }
 
+    /**
+     * Handles the action of adding a new product to the database.
+     */
     public void addProduct() {
         try {
             productName = productNameField.getText();
@@ -94,6 +108,9 @@ public class AddProductController implements Initializable {
         backToProducts();
     }
 
+    /**
+     * Handles the action of returning to the products view.
+     */
     public void backToProducts() {
         try {
             Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
@@ -103,6 +120,9 @@ public class AddProductController implements Initializable {
         }
     }
 
+    /**
+     * Handles the action of removing selected ingredients from the product's ingredient list.
+     */
     public void removeSelectedIngredients() {
         // Get the selected items from the ListView
         List<String> selectedItems = new ArrayList<>(selectedIngredientsListView.getSelectionModel().getSelectedItems());
@@ -122,6 +142,12 @@ public class AddProductController implements Initializable {
         productIngredients.removeAll(ingredientsToRemove);
     }
 
+    /**
+     * Finds an ingredient in the product's ingredient list by its name.
+     *
+     * @param name The name of the ingredient to find.
+     * @return The ingredient object if found, or null if not found.
+     */
     public Ingredient findIngredientByName(String name) {
         for(Ingredient x : productIngredients) {
             if (Objects.equals(x.getIngredientName(), name)) {
@@ -131,6 +157,9 @@ public class AddProductController implements Initializable {
         return null;
     }
 
+    /**
+     * Opens a dialog for selecting an ingredient to add to the product.
+     */
     public void openAddIngredientDialog() {
         List<String> productIngredientNames = new ArrayList<>();
         for(Ingredient x: productIngredients) {
@@ -159,11 +188,24 @@ public class AddProductController implements Initializable {
             }
         });
     }
+
+    /**
+     * Handles the action of returning to the products view when the "Back" button is clicked.
+     *
+     * @throws IOException If there is an issue loading the products view.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
         Main.getMainController().setView(node);
     }
 
+    /**
+     * Checks if a product with the given name exists in the provided product list.
+     *
+     * @param productList The list of products to search.
+     * @param productNameToFind The name of the product to find.
+     * @return True if the product with the specified name exists in the list
+     */
     public boolean productExists(List<Product> productList, String productNameToFind) {
         for (Product x : productList) {
             if (x.getProductName().equalsIgnoreCase(productNameToFind)) {

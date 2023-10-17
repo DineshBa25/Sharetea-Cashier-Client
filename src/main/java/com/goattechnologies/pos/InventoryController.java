@@ -14,7 +14,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 
-
+/**
+ * This class serves as the controller for the inventory view in a Point of Sale (POS) application.
+ * It manages the display and interaction with a table of ingredients and provides functionality for
+ * updating, adding, and navigating within the inventory.
+ */
 public class InventoryController {
     @FXML
     private TableView<Ingredient> ingredientTableView;
@@ -29,6 +33,10 @@ public class InventoryController {
 
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
 
+    /**
+     * Initializes the InventoryController, setting up the table, binding the "Update" button's
+     * disable property, and centering text in the columns.
+     */
     @FXML
     public void initialize() {
         Main.inventoryController = this;
@@ -48,6 +56,11 @@ public class InventoryController {
         centerTextInDoubleColumn(costColumn);
     }
 
+    /**
+     * Centers text in a TableColumn containing String data.
+     *
+     * @param column The FXML column for strings taken from an ingredient, to be centered.
+     */
     private void centerTextInStringColumn(TableColumn<Ingredient, String> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, String> cell = new TableCell<>() {
@@ -68,6 +81,11 @@ public class InventoryController {
         });
     }
 
+    /**
+     * Centers text in a TableColumn containing Integer data.
+     *
+     * @param column The FXML column for integers taken from an ingredient, to be centered.
+     */
     private void centerTextInIntegerColumn(TableColumn<Ingredient, Integer> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, Integer> cell = new TableCell<>() {
@@ -88,6 +106,11 @@ public class InventoryController {
         });
     }
 
+    /**
+     * Centers text in a TableColumn containing Double data.
+     *
+     * @param column The FXML column for doubles taken from an ingredient, to be centered.
+     */
     private void centerTextInDoubleColumn(TableColumn<Ingredient, Double> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, Double> cell = new TableCell<>() {
@@ -108,6 +131,10 @@ public class InventoryController {
         });
     }
 
+    /**
+     * Handles the action of editing the selected ingredient. Opens a new view for editing the
+     * selected ingredient's details.
+     */
     @FXML
     private void editSelectedIngredient() {
         Ingredient selectedIngredient = ingredientTableView.getSelectionModel().getSelectedItem();
@@ -126,13 +153,23 @@ public class InventoryController {
         }
     }
 
-
+    /**
+     * Handles the action of adding a new ingredient. Opens a new view for entering details of the
+     * new ingredient.
+     *
+     * @throws IOException If there is an issue loading the "add-ingredient-view.fxml" file.
+     */
     @FXML
     private void addIngredient() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("add-ingredient-view.fxml")));
         Main.getMainController().setView(node);
     }
 
+    /**
+     * Handles the action of returning to the main manager view.
+     *
+     * @throws IOException If there is an issue loading the "manager-view.fxml" file.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("manager-view.fxml")));
         Main.getMainController().setView(node);
