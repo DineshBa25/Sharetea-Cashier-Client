@@ -13,13 +13,13 @@
                     <PropertyValueFactory property="productName"/>
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Popularity">
+            <TableColumn text="Popularity in Usage Count">
                 <cellValueFactory>
                     <PropertyValueFactory property="popularity"/>
                 </cellValueFactory>
             </TableColumn>
         </columns>
     </TableView>
-    <Button text="Load Data" onAction="#loadData"/>
+    <Button text="Back" styleClass="black-btn-sm" onAction="#handleBackButton"/>
 </VBox>
 

@@ -534,9 +534,12 @@ public class DatabaseManager {
                 if (resultSet2.next()) {
                     productNamesPopularity.put(resultSet2.getString("productname"), popularity);
                 }
-                else {
-                    AlertUtil.showWarning("Warning!", "Unable to get product name", "Product name not found");
-                }
+            }
+            if (productNamesPopularity.size() < numItems) {
+                AlertUtil.showWarning("Warning!", "Item Count Limitation", "Actual Item Count for TimeWindow is: " + productNamesPopularity.size());
+            }
+            else if (productNamesPopularity.isEmpty()) {
+                AlertUtil.showWarning("Warning!", "No Popularity Data", "No Data for this TimeWindow");
             }
             return productNamesPopularity;
         } catch (SQLException e) {
