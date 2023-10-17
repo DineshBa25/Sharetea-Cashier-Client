@@ -90,15 +90,17 @@
         WHERE productname = ?;
     </query>
     <query id="orderPopularity">
+        <![CDATA[
         SELECT product_id, COUNT(*) as popularity
         FROM (
         SELECT orderid, unnest(productids) as product_id
         FROM orders
-        WHERE transactiontime &#62;= ? AND transactiontime &#60;= ?
+        WHERE transactiontime >= ? AND transactiontime <= ?
         ) subquery
         GROUP BY product_id
         ORDER BY popularity DESC
         LIMIT ?;
+        ]]>
     </query>
     <query id="getProductName">
         SELECT productname

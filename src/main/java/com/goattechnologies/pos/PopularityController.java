@@ -52,15 +52,30 @@ public class PopularityController {
 
     public void generatePopularityReport(Timestamp startTime, Timestamp endTime, Integer numItems) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("popularity-table-view"));
-            System.out.println("Here!!!");
-            Node updateView = loader.load();
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("popularity-table-view.fxml"));
+            Node updateView = loader.load(); // Only load once!
+
+            // Get the controller
             PopularityTableController popularityTableController = loader.getController();
 
+            //printout the popularity map
+            System.out.println(Main.dbManager.getPopularity(startTime, endTime, numItems));
+
+            // Set the data in the controller
             popularityTableController.setPopularityMap(Main.dbManager.getPopularity(startTime, endTime, numItems));
+
+            // Load the data
+            popularityTableController.loadData();
+
+            // Update the main view
             Main.getMainController().setView(updateView);
         } catch (IOException e) {
-            AlertUtil.showWarning("Warning!", "Unable to Load Product Popularities", "Please try again!");
+            // Handle the IOException - You can enhance this section if you want to give a specific error message or log the error.
+            AlertUtil.showWarning("Invalid Input", "Date-Time or Number Issue", "Make sure times are in HH:MM format" );
+        } catch (NullPointerException e) {
+            // Handle if the FXML file is not found.
+            AlertUtil.showWarning("Unable to generate report", "Failed to load FXML file", "Please try again later.");
         }
     }
 

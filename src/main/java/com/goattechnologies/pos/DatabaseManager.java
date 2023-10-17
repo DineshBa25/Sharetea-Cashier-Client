@@ -463,16 +463,15 @@ public class DatabaseManager {
 
     public HashMap<String, Integer> getPopularity(Timestamp startTime, Timestamp endTime, Integer numItems) {
         try {
-            System.out.println("Here?");
             HashMap<Integer, Integer> productIDPopularity = new HashMap<>();
             HashMap<String, Integer> productNamesPopularity = new HashMap<>();
             PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("orderPopularity"));
-            preparedStatement.setString(1, startTime.toString());
-            preparedStatement.setString(2, endTime.toString());
+            preparedStatement.setTimestamp(1, startTime);
+            preparedStatement.setTimestamp(2, endTime);
             preparedStatement.setInt(3, numItems);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
-                productIDPopularity.put(resultSet.getInt("productid"), resultSet.getInt("popularity"));
+                productIDPopularity.put(resultSet.getInt("product_id"), resultSet.getInt("popularity"));
             }
             for (Integer productID : productIDPopularity.keySet()) {
                 Integer popularity = productIDPopularity.get(productID);
