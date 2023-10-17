@@ -4,3 +4,4 @@ src/main/java/com/goattechnologies/pos/dbSetup.java
 target
 dbSetup.java
 .idea
+.DS_Store

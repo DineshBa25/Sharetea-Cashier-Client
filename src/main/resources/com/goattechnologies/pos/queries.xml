@@ -8,6 +8,11 @@
         SELECT *
         FROM products;
     </query>
+    <query id="getProductIngredients">
+        SELECT ingredientids
+        FROM products
+        WHERE productname = ?;
+    </query>
     <query id="getIngredientNameByID">
         SELECT *
         FROM ingredients
