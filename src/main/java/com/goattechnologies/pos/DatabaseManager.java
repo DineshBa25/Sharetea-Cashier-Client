@@ -476,8 +476,37 @@ public class DatabaseManager {
         }
     }
 
-
-
+    public HashMap<String, Integer> getPopularity(Timestamp startTime, Timestamp endTime, Integer numItems) {
+        try {
+            System.out.println("Here?");
+            HashMap<Integer, Integer> productIDPopularity = new HashMap<>();
+            HashMap<String, Integer> productNamesPopularity = new HashMap<>();
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("orderPopularity"));
+            preparedStatement.setString(1, startTime.toString());
+            preparedStatement.setString(2, endTime.toString());
+            preparedStatement.setInt(3, numItems);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                productIDPopularity.put(resultSet.getInt("productid"), resultSet.getInt("popularity"));
+            }
+            for (Integer productID : productIDPopularity.keySet()) {
+                Integer popularity = productIDPopularity.get(productID);
+                PreparedStatement preparedStatement2 = conn.prepareStatement(queryLoader.getQuery("getProductName"));
+                preparedStatement2.setInt(1, productID);
+                ResultSet resultSet2 = preparedStatement2.executeQuery();
+                if (resultSet2.next()) {
+                    productNamesPopularity.put(resultSet2.getString("productname"), popularity);
+                }
+                else {
+                    AlertUtil.showWarning("Warning!", "Unable to get product name", "Product name not found");
+                }
+            }
+            return productNamesPopularity;
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get products popularity", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
 }
 
 

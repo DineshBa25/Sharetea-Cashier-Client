@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextBoundsType;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -15,6 +16,8 @@ import java.util.Objects;
 
 public class PopularityController {
     @FXML
+    private TextField numberOfItems;
+    @FXML
     private DatePicker startDatePicker;
     @FXML
     private TextField startTimeTextField;
@@ -24,7 +27,9 @@ public class PopularityController {
     private TextField endTimeTextField;
 
     public void generateTimeWindow() {
+        Main.popularityController = this;
         try {
+            Integer numberItems = Integer.parseInt(numberOfItems.getText());
             String startDateStr = startDatePicker.getValue().toString();
             String startTimeStr = startTimeTextField.getText();
             String endDateStr = endDatePicker.getValue().toString();
@@ -37,18 +42,26 @@ public class PopularityController {
             Timestamp startTime = new Timestamp(startDateTime.getTime());
             Timestamp endTime = new Timestamp(endDateTime.getTime());
 
-            // Use startTime and endTime for your time window calculations or other processing
             System.out.println("Start Time: " + startTime);
             System.out.println("End Time: " + endTime);
-            generatePopularityReport(startTime, endTime);
-
+            generatePopularityReport(startTime, endTime, numberItems);
         } catch (ParseException e) {
-            System.err.println("Invalid date/time format.");
+            AlertUtil.showWarning("Invalid Input", "Date-Time or Number Issue", "Make sure times are in HH:MM format");
         }
     }
 
-    public void generatePopularityReport(Timestamp startTime, Timestamp endTime) {
-        //TODO generate report and display it
+    public void generatePopularityReport(Timestamp startTime, Timestamp endTime, Integer numItems) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("popularity-table-view"));
+            System.out.println("Here!!!");
+            Node updateView = loader.load();
+            PopularityTableController popularityTableController = loader.getController();
+
+            popularityTableController.setPopularityMap(Main.dbManager.getPopularity(startTime, endTime, numItems));
+            Main.getMainController().setView(updateView);
+        } catch (IOException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Load Product Popularities", "Please try again!");
+        }
     }
 
     public void handleBackButton() throws IOException {
@@ -56,5 +69,3 @@ public class PopularityController {
         Main.getMainController().setView(node);
     }
 }
-
-
