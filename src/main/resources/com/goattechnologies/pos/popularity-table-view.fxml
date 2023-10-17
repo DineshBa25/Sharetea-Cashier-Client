@@ -13,7 +13,7 @@
                     <PropertyValueFactory property="productName"/>
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Popularity in Usage Count">
+            <TableColumn text="Popularity">
                 <cellValueFactory>
                     <PropertyValueFactory property="popularity"/>
                 </cellValueFactory>

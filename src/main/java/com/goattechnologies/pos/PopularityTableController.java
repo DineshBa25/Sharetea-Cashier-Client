@@ -31,7 +31,7 @@ public class PopularityTableController {
         }
         TableColumn<ProductPopularity, String> productNameColumn = new TableColumn<>("Product Name");
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        TableColumn<ProductPopularity, Integer> popularityColumn = new TableColumn<>("Popularity");
+        TableColumn<ProductPopularity, Integer> popularityColumn = new TableColumn<>("Popularity in Order Count");
         popularityColumn.setCellValueFactory(new PropertyValueFactory<>("popularity"));
         // Compare in Descending order
         popularityColumn.setComparator((pop1, pop2) -> Integer.compare(pop2, pop1));

@@ -677,6 +677,14 @@ public class DatabaseManager {
         return multiOrders;
     }
 
+    /**
+     * Retrieves a Map of a ProductNames with their Popularity within a specified time range for a specific number of items.
+     *
+     * @param startTime The start time for the time range.
+     * @param endTime   The end time for the time range.
+     * @param numItems The number of items for which we limit the query to
+     * @return A Map of ProductName with its respective Popularity in terms of how often it was ordered
+     */
     public HashMap<String, Integer> getPopularity(Timestamp startTime, Timestamp endTime, Integer numItems) {
         try {
             HashMap<Integer, Integer> productIDPopularity = new HashMap<>();
