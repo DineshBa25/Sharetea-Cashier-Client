@@ -33,7 +33,7 @@ public class StatisticsController {
 
     @FXML
     protected void onWhatSellsClick() throws IOException {
-        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("pairs-view.fxml")));
         Main.getMainController().setView(node);
     }
 
