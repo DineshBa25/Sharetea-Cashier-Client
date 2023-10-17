@@ -230,12 +230,18 @@ public class populate_tables {
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(", ");
 
+                String productList = fields[4];
                 String toppingList = fields[6];
+                String[] productsArray = productList.split("; ");
                 String[] toppingArray = toppingList.split("; ");
+                List<String> products = Arrays.asList(productsArray);
                 List<String> toppings = Arrays.asList(toppingArray);
                 List<Integer> productIDsInteger = new ArrayList<Integer>();
 
-                productIDsInteger.add(productIDs.get(fields[4]));
+                for (int i = 0; i < products.size(); i++) {
+                    if (!(products.get(i).equals("None")))
+                        productIDsInteger.add(productIDs.get(products.get(i)));
+                }
                 for (int i = 0; i < toppings.size(); i++) {
                     if (!(toppings.get(i).equals("None")))
                         productIDsInteger.add(productIDs.get(toppings.get(i)));

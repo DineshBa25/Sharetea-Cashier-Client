@@ -403,6 +403,20 @@ public class DatabaseManager {
         return employeeName;
     }
 
+    public Array getProductIngredients(String product) {
+        Array ingredientIDs = null;
+        ResultSet resultSet = this.query("getProductIngredients", product);
+        try {
+            while (resultSet.next()) {
+                ingredientIDs = resultSet.getArray("ingredientids");
+            }
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Get Product Ingredients", e.getMessage());
+            throw new RuntimeException();
+        }
+        return ingredientIDs;
+    }
+
     public List<Product> getProductsList() {
         HashMap<Integer, String> ingredientNameMap = new HashMap<>();
         ResultSet resultSet2 = this.query("getIngredients");
