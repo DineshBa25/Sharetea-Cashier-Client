@@ -90,6 +90,7 @@ public class AddProductController implements Initializable {
         } catch (Exception e) {
             AlertUtil.showWarning("Product Warning", "Unable to Add Product", "Fields may be empty!");
         }
+        Main.dbManager.refreshProductCosts();
         backToProducts();
     }
 
