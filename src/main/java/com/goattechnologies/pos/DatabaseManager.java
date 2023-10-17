@@ -676,6 +676,48 @@ public class DatabaseManager {
         }
         return multiOrders;
     }
+
+    /**
+     * Retrieves a Map of a ProductNames with their Popularity within a specified time range for a specific number of items.
+     *
+     * @param startTime The start time for the time range.
+     * @param endTime   The end time for the time range.
+     * @param numItems The number of items for which we limit the query to
+     * @return A Map of ProductName with its respective Popularity in terms of how often it was ordered
+     */
+    public HashMap<String, Integer> getPopularity(Timestamp startTime, Timestamp endTime, Integer numItems) {
+        try {
+            HashMap<Integer, Integer> productIDPopularity = new HashMap<>();
+            HashMap<String, Integer> productNamesPopularity = new HashMap<>();
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("orderPopularity"));
+            preparedStatement.setTimestamp(1, startTime);
+            preparedStatement.setTimestamp(2, endTime);
+            preparedStatement.setInt(3, numItems);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                productIDPopularity.put(resultSet.getInt("product_id"), resultSet.getInt("popularity"));
+            }
+            for (Integer productID : productIDPopularity.keySet()) {
+                Integer popularity = productIDPopularity.get(productID);
+                PreparedStatement preparedStatement2 = conn.prepareStatement(queryLoader.getQuery("getProductName"));
+                preparedStatement2.setInt(1, productID);
+                ResultSet resultSet2 = preparedStatement2.executeQuery();
+                if (resultSet2.next()) {
+                    productNamesPopularity.put(resultSet2.getString("productname"), popularity);
+                }
+            }
+            if (productNamesPopularity.size() < numItems) {
+                AlertUtil.showWarning("Warning!", "Item Count Limitation", "Actual Item Count for TimeWindow is: " + productNamesPopularity.size());
+            }
+            else if (productNamesPopularity.isEmpty()) {
+                AlertUtil.showWarning("Warning!", "No Popularity Data", "No Data for this TimeWindow");
+            }
+            return productNamesPopularity;
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get products popularity", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
 }
 
 
