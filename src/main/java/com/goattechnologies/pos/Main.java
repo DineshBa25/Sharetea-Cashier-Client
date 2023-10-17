@@ -22,6 +22,8 @@ public class Main extends Application {
 
     public static ProductsController productsController;
 
+    public static PopularityController popularityController;
+
     public static Cart cart = new Cart();
 
     // Used in supervisor tools to modify ingredients

@@ -108,4 +108,22 @@
     <query id="refreshProductCosts">
         SELECT refresh_product_prices_callable();
     </query>
+    <query id="orderPopularity">
+        <![CDATA[
+        SELECT product_id, COUNT(*) as popularity
+        FROM (
+        SELECT orderid, unnest(productids) as product_id
+        FROM orders
+        WHERE transactiontime >= ? AND transactiontime <= ?
+        ) subquery
+        GROUP BY product_id
+        ORDER BY popularity DESC
+        LIMIT ?;
+        ]]>
+    </query>
+    <query id="getProductName">
+        SELECT productname
+        FROM products
+        WHERE productid = ?;
+    </query>
 </queries>
