@@ -13,6 +13,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class serves as the controller for the menu view in a Point of Sale (POS) application. It manages the display
+ * and interaction with the screen a employee would see after logging in and starting an order.
+ * @Author Dinesh Balakrishnan
+ */
 public class MenuController {
 
     @FXML
@@ -21,6 +26,9 @@ public class MenuController {
     @FXML
     private ListView<CartItem> cartListView;
 
+    /**
+     * Initializes the MenuController, setting up the menu list view.
+     */
     @FXML
     public void initialize() {
         Main.menuController = this;
@@ -56,6 +64,12 @@ public class MenuController {
                 content.setSpacing(10);
                 content.getChildren().addAll(new Label(), deleteLabel);
             }
+            /**
+             * Updates the cell with the specified item and empty status.
+             * @param item the item to display in the cell
+             * @param empty whether or not this cell represents data from the list. If it is empty, then it does not
+             *              represent any domain data, but is a cell being used to render an "empty" row.
+             */
             @Override
             protected void updateItem(CartItem item, boolean empty) {
                 super.updateItem(item, empty);
@@ -73,6 +87,9 @@ public class MenuController {
         });
     }
 
+    /**
+     * Shows the add-ons menu for the selected drink.
+     */
     private void showAddOnsMenu() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("add-ons-view.fxml"));
@@ -87,6 +104,10 @@ public class MenuController {
         }
     }
 
+    /**
+     * Handles the "Proceed to Checkout" button click event, going to order-confirmation-view.
+     * @throws IOException if the order-confirmation-view cannot be loaded
+     */
     @FXML
     protected void proceedToCheckout() throws IOException {
         if(Main.cart.isEmpty()) {
@@ -98,6 +119,10 @@ public class MenuController {
         Main.getMainController().setView(orderConfirmationView);
     }
 
+    /**
+     * Handles the "Back" button click event, returning to the respective employee/manager login view.
+     * @throws IOException if the third login view cannot be loaded
+     */
     @FXML
     protected void handleBackButton() throws IOException {
         Node node;
@@ -110,6 +135,9 @@ public class MenuController {
         Main.getMainController().setView(node);
     }
 
+    /**
+     * Refreshes the cart view.
+     */
     public void refreshCartView() {
         cartListView.setItems(FXCollections.observableArrayList(Main.cart.getItems()));
     }

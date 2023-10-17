@@ -14,7 +14,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 
-
+/** This class serves as the controller for the restock view in a Point of Sale (POS) application. It manages the display
+ * of a table of ingredients that are low on stock and provides functionality for navigating back to the statistics view.
+ * @author Nicholas Dienstbier
+ */
 public class RestockController {
     @FXML
     private TableView<Ingredient> ingredientTableView;
@@ -23,6 +26,8 @@ public class RestockController {
     @FXML
     private TableColumn<Ingredient, Integer> quantityColumn;
 
+    /** Initializes the RestockController, setting up the table view.
+     */
     @FXML
     public void initialize() {
         Main.restockController = this;
@@ -38,6 +43,9 @@ public class RestockController {
         centerTextInStringColumn(ingredientNameColumn);
         centerTextInIntegerColumn(quantityColumn);
     }
+    /** Centers the text in a String column
+     * @param column the column to center the text in
+     */
     private void centerTextInStringColumn(TableColumn<Ingredient, String> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, String> cell = new TableCell<>() {
@@ -57,6 +65,9 @@ public class RestockController {
             return cell;
         });
     }
+    /** Centers the text in an Integer column
+     * @param column the column to center the text in
+     */
     private void centerTextInIntegerColumn(TableColumn<Ingredient, Integer> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, Integer> cell = new TableCell<>() {
@@ -76,6 +87,8 @@ public class RestockController {
             return cell;
         });
     }
+    /** Navigates back to the statistics view.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
         Main.getMainController().setView(node);

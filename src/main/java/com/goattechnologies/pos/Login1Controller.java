@@ -12,6 +12,11 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * This class serves as the controller for the first login view in a Point of Sale (POS) application. It manages the
+ * display and interaction with a text field for entering an employee ID and provides functionality for logging in.
+ * @author Dinesh Balakrishnan
+ */
 public class Login1Controller {
 
     @FXML
@@ -20,6 +25,9 @@ public class Login1Controller {
     @FXML
     private Text idPrompt;
 
+    /**
+     * Initializes the Login1Controller, setting up the text field and text.
+     */
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
         idPrompt.setFont(customFont);
@@ -28,6 +36,10 @@ public class Login1Controller {
         employeeID.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Handles the "Login" button click event, validating the employee ID and logging in if valid.
+     * @throws Exception if the employee ID is invalid
+     */
     @FXML
     protected void onLoginClick() throws Exception {
         try {
