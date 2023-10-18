@@ -15,8 +15,21 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * The ExcessReportController class displays the inventory items that
+ * only sold less than 10% of their inventory from a given timestamp
+ * to the current time.
+ * It provides methods for retrieving the current inventory list and
+ * queries through the orders to find out how much of an inventory
+ * item was sold.
+ *
+ * @author Ilham Aryawan
+ */
 public class ExcessReportController {
 
+    /**
+     * Represents an ingredient and its percentage sold.
+     */
     public static class IngredientPercentageSold {
         private String ingredientName;
         private String percentageSold;
@@ -45,6 +58,11 @@ public class ExcessReportController {
     @FXML
     private TableColumn<IngredientPercentageSold, String> percentSoldColumn;
 
+    /**
+     * Initializes the ExcessReportController with a given timestamp.
+     *
+     * @param timestamp The timestamp from which to calculate excess inventory.
+     */
     public void initialize(Timestamp timestamp) {
         List<Ingredient> inventoryItems = Main.dbManager.getIngredients();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
@@ -70,6 +88,11 @@ public class ExcessReportController {
         centerTextInStringColumn(percentSoldColumn);
     }
 
+    /**
+     * Parses the CSV file containing product ingredients and returns a map of products to their ingredient IDs.
+     *
+     * @return A map of products to their ingredient IDs.
+     */
     private HashMap<String, List<Integer>> getProductIngredientsMap() {
         HashMap<String, List<Integer>> productIngredients = new HashMap<String, List<Integer>>();
         String csvFilePath = "order_gen/products.csv";
@@ -81,7 +104,6 @@ public class ExcessReportController {
             while ((line = reader.readLine()) != null) {
                 List<String> fields = parseCsvLine(line);
 
-                // Extracting the ingredientIds
                 String ingredientList = fields.get(1);
                 if (ingredientList.startsWith("\"") && ingredientList.endsWith("\""))
                     ingredientList = ingredientList.substring(1, ingredientList.length() - 1);
@@ -105,6 +127,12 @@ public class ExcessReportController {
         return productIngredients;
     }
 
+    /**
+     * Parses a CSV line and returns a list of fields.
+     *
+     * @param line The CSV line to be parsed.
+     * @return A list of fields from the CSV line.
+     */
     private static List<String> parseCsvLine(String line) {
         List<String> result = new ArrayList<>();
         boolean inQuotes = false;
@@ -125,6 +153,14 @@ public class ExcessReportController {
         return result;
     }
 
+    /**
+     * Calculates the total quantity of an ingredient sold between two timestamps.
+     *
+     * @param item      The ingredient to calculate sales for.
+     * @param startTime The start time of the sales period.
+     * @param endTime   The end time of the sales period.
+     * @return The total quantity of the ingredient sold.
+     */
     private int calculateTotalQuantitySold(Ingredient item, Timestamp startTime, Timestamp endTime) {
         int totalQuantitySold = 0;
         String csvFilePath = "order_gen/orders.csv";
@@ -194,6 +230,11 @@ public class ExcessReportController {
         return totalQuantitySold;
     }
 
+    /**
+     * Centers the text in a string column of a TableView.
+     *
+     * @param column The TableColumn to center the text in.
+     */
     private void centerTextInStringColumn(TableColumn<IngredientPercentageSold, String> column) {
         column.setCellFactory(tc -> {
             TableCell<IngredientPercentageSold, String> cell = new TableCell<>() {
@@ -214,6 +255,11 @@ public class ExcessReportController {
         });
     }
 
+    /**
+     * Handles the "Back" button click and navigates back to the previous view.
+     *
+     * @throws IOException If an error occurs during navigation.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("excess-view.fxml")));
         Main.getMainController().setView(node);
