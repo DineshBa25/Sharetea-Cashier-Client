@@ -16,6 +16,12 @@ import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
+/**
+ * The ExcessController class handles user interactions and actions for generating
+ * excess reports based on a selected date and time window.
+ *
+ * @author Ilham Aryawan
+ */
 public class ExcessController {
 
     @FXML
@@ -23,6 +29,10 @@ public class ExcessController {
     @FXML
     private TextField timeTextField;
 
+    /**
+     * Generates a time window based on the selected date and time, and initiates
+     * the generation of an excess report.
+     */
     public void generateTimeWindow() {
         try {
             String dateStr = datePicker.getValue().toString();
@@ -39,6 +49,11 @@ public class ExcessController {
         }
     }
 
+    /**
+     * Generates an excess report based on the given start time and displays it to the user.
+     *
+     * @param startTime The timestamp representing the start of the time window.
+     */
     public void generateExcessReport(Timestamp startTime) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("excess-report-view.fxml"));
@@ -54,6 +69,11 @@ public class ExcessController {
         }
     }
 
+    /**
+     * Handles the "Back" button click and navigates back to the previous view.
+     *
+     * @throws IOException If an error occurs during navigation.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
         Main.getMainController().setView(node);
