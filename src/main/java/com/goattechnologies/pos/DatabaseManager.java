@@ -537,26 +537,6 @@ public class DatabaseManager {
     }
 
     /**
-     * Retrieves an array of ingredient IDs for a given product from the database.
-     *
-     * @param product The name of the product for which to retrieve ingredient IDs.
-     * @return An Array containing ingredient IDs for the specified product.
-     */
-    public Array getProductIngredients(String product) {
-        Array ingredientIDs = null;
-        ResultSet resultSet = this.query("getProductIngredients", product);
-        try {
-            while (resultSet.next()) {
-                ingredientIDs = resultSet.getArray("ingredientids");
-            }
-        } catch (SQLException e) {
-            AlertUtil.showWarning("Warning!", "Unable to Get Product Ingredients", e.getMessage());
-            throw new RuntimeException();
-        }
-        return ingredientIDs;
-    }
-
-    /**
      * Retrieves a list of products.
      *
      * @return A list of Product objects.
@@ -619,29 +599,6 @@ public class DatabaseManager {
             preparedStatement.close();
         } catch (SQLException e) {
             AlertUtil.showWarning("Warning!", "Unable to refresh product costs", e.getMessage());
-            throw new RuntimeException();
-        }
-    }
-
-    /**
-     * Retrieves the name of an ingredient by its ID.
-     *
-     * @param ingredientId The ID of the ingredient.
-     * @return The name of the ingredient, or "Ingredient not found" if not found.
-     */
-    public String getIngredientNameByID(int ingredientId) {
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("getIngredientNameByID"));
-            preparedStatement.setInt(1, ingredientId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString("ingredientname");
-            } else {
-                return "Ingredient not found"; // Change this to your desired behavior.
-            }
-
-        } catch (SQLException e) {
-            AlertUtil.showWarning("Warning!", "Unable to get ingredient name", e.getMessage());
             throw new RuntimeException();
         }
     }
