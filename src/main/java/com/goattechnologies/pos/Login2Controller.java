@@ -10,9 +10,12 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.Objects;
 
-/** This class serves as the controller for the second login view in a Point of Sale (POS) application. It manages the
- * display and interaction with a text field for entering an employee ID and provides functionality for logging in.
- * @Author Dinesh Balakrishnan
+/**
+ * The `Login2Controller` class is responsible for handling user interactions and logic
+ * on the second screen of the login process. It welcomes the user and provides options
+ * to start a new order or go back to the previous screen.
+ *
+ * @author Dinesh Balakrishnan, Ilham Aryawan, Moshin Khan
  */
 public class Login2Controller {
 
@@ -20,7 +23,7 @@ public class Login2Controller {
     private Text name;
 
     /**
-     * Initializes the Login2Controller, setting up the text.
+     * Initializes the Login2Controller. Sets the font and displays a welcome message with the user's name.
      */
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
@@ -31,8 +34,10 @@ public class Login2Controller {
     }
 
     /**
-     * Handles the "Login" button click event, validating the employee ID and logging in if valid.
-     * @throws Exception if the employee ID is invalid
+     * Handles the event when the user clicks the "Start New Order" button.
+     * Clears the cart and navigates the user to the menu screen to start a new order.
+     *
+     * @throws IOException if there is an error while navigating to the menu screen.
      */
     @FXML
     protected void onLogin1Click() throws IOException {
@@ -43,10 +48,13 @@ public class Login2Controller {
         Main.getMainController().setView(node);
     }
 
-
-    /** Handles the back button, returning to the first login view.
-    // * @throws IOException if the first login view cannot be loaded
-    // */
+    /**
+     * Handles the event when the user clicks the "Back" button.
+     * Navigates the user back to the previous login screen.
+     *
+     * @param event The event that triggered the action.
+     * @throws IOException if there is an error while navigating back to the previous screen.
+     */
     public void handleBackButton(ActionEvent event) throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login1-view.fxml")));
         Main.getMainController().setView(node);

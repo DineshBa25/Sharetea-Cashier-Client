@@ -9,13 +9,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
 import java.util.Objects;
 
 /**
- * This class serves as the controller for the first login view in a Point of Sale (POS) application. It manages the
- * display and interaction with a text field for entering an employee ID and provides functionality for logging in.
- * @author Dinesh Balakrishnan
+ * The `Login1Controller` class is responsible for handling user interactions and logic
+ * on the first screen of the login process. It allows users to input their employee ID,
+ * performs validation, and directs the user to the appropriate next screen based on their role.
+ *
+ * @author Ilham Aryawan, Dinesh Balakrishnan, Cole Broberg
  */
 public class Login1Controller {
 
@@ -26,7 +27,7 @@ public class Login1Controller {
     private Text idPrompt;
 
     /**
-     * Initializes the Login1Controller, setting up the text field and text.
+     * Initializes the Login1Controller. Sets fonts and alignment for the user interface elements.
      */
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
@@ -37,8 +38,11 @@ public class Login1Controller {
     }
 
     /**
-     * Handles the "Login" button click event, validating the employee ID and logging in if valid.
-     * @throws Exception if the employee ID is invalid
+     * Handles the event when the user clicks the login button.
+     * Validates the entered employee ID, retrieves the employee's name and role,
+     * and navigates the user to the appropriate next screen.
+     *
+     * @throws Exception if there is an error during the login process.
      */
     @FXML
     protected void onLoginClick() throws Exception {

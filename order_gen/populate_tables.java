@@ -16,6 +16,13 @@ import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * The `populate_tables` class is responsible for populating tables in a PostgreSQL database
+ * with data from CSV files. It establishes a database connection and provides methods to insert
+ * data into tables for employees, finances, ingredients, orders, and products.
+ *
+ * @author Ilham Aryawan
+ */
 public class populate_tables {
 
     /**
