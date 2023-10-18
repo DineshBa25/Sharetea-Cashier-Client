@@ -74,8 +74,8 @@ public class ExcessReportController {
             totalQuantitySold = calculateTotalQuantitySold(item, timestamp, currentTime);
 
             // Check if the percentage sold is less than 10%
-            if (totalQuantitySold < 1000) {
-                IngredientPercentageSold ingredientPercentageSold = new IngredientPercentageSold(item.getIngredientName(), (double) totalQuantitySold / 100 + "%");
+            if (totalQuantitySold < 100) {
+                IngredientPercentageSold ingredientPercentageSold = new IngredientPercentageSold(item.getIngredientName(), ((double) totalQuantitySold / 10) + "%");
                 ingredientPercentageSoldList.add(ingredientPercentageSold);
                 //System.out.println("Item: " + item.getIngredientName() + ", Percentage Sold: " + (double) totalQuantitySold / 100 + "%");
             }
