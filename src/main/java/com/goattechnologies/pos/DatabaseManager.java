@@ -538,6 +538,31 @@ public class DatabaseManager {
         return employeeName;
     }
 
+    /**
+     * Retrieves an array of ingredient IDs for a given product from the database.
+     *
+     * @param product The name of the product for which to retrieve ingredient IDs.
+     * @return An Array containing ingredient IDs for the specified product.
+     */
+    public Array getProductIngredients(String product) {
+        Array ingredientIDs = null;
+        ResultSet resultSet = this.query("getProductIngredients", product);
+        try {
+            while (resultSet.next()) {
+                ingredientIDs = resultSet.getArray("ingredientids");
+            }
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to Get Product Ingredients", e.getMessage());
+            throw new RuntimeException();
+        }
+        return ingredientIDs;
+    }
+
+    /**
+     * Retrieves a list of products.
+     *
+     * @return A list of Product objects.
+     */
 
     /**
      * Retrieves a list of products.

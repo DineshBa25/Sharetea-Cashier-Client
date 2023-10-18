@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<?import javafx.geometry.Insets?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.goattechnologies.pos.RestockController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <Label text="Items Needing Restock" styleClass="title"/>
+<TableView fx:id="ingredientTableView" VBox.vgrow="ALWAYS">
+    <columns>
+        <TableColumn fx:id="ingredientNameColumn" text="Name" prefWidth="150">
+            <cellValueFactory>
+                <PropertyValueFactory property="ingredientName" />
+            </cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100">
+            <cellValueFactory>
+                <PropertyValueFactory property="quantity" />
+            </cellValueFactory>
+        </TableColumn>
+<!--        <TableColumn fx:id="costColumn" text="Cost ($)" prefWidth="100">-->
+<!--            <cellValueFactory>-->
+<!--                <PropertyValueFactory property="cost" />-->
+<!--            </cellValueFactory>-->
+<!--        </TableColumn>-->
+    </columns>
+</TableView>
+<Button text="Back" onAction="#handleBackButton" styleClass="black-btn-sm"/>
+</VBox>

@@ -15,13 +15,13 @@ public class StatisticsController {
 
     @FXML
     protected void onExcessReportClick() throws IOException {
-        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("excess-view.fxml")));
         Main.getMainController().setView(node);
     }
 
     @FXML
     protected void onRestockReportClick() throws IOException {
-        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
+        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("restock-view.fxml")));
         Main.getMainController().setView(node);
     }
 

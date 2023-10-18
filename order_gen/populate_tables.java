@@ -16,6 +16,13 @@ import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * The `populate_tables` class is responsible for populating tables in a PostgreSQL database
+ * with data from CSV files. It establishes a database connection and provides methods to insert
+ * data into tables for employees, finances, ingredients, orders, and products.
+ *
+ * @author Ilham Aryawan
+ */
 public class populate_tables {
 
     /**
@@ -45,11 +52,11 @@ public class populate_tables {
 
         // Inserting into tables
         try {
-            //populate_employees(connection);
-            //populate_finances(connection);
-            //populate_ingredients(connection);
+            populate_employees(connection);
+            populate_finances(connection);
+            populate_ingredients(connection);
             populate_orders(connection);
-            //populate_products(connection);
+            populate_products(connection);
         } 
         catch (Exception e) {
             e.printStackTrace();
@@ -230,12 +237,18 @@ public class populate_tables {
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(", ");
 
+                String productList = fields[4];
                 String toppingList = fields[6];
+                String[] productsArray = productList.split("; ");
                 String[] toppingArray = toppingList.split("; ");
+                List<String> products = Arrays.asList(productsArray);
                 List<String> toppings = Arrays.asList(toppingArray);
                 List<Integer> productIDsInteger = new ArrayList<Integer>();
 
-                productIDsInteger.add(productIDs.get(fields[4]));
+                for (int i = 0; i < products.size(); i++) {
+                    if (!(products.get(i).equals("None")))
+                        productIDsInteger.add(productIDs.get(products.get(i)));
+                }
                 for (int i = 0; i < toppings.size(); i++) {
                     if (!(toppings.get(i).equals("None")))
                         productIDsInteger.add(productIDs.get(toppings.get(i)));
@@ -252,7 +265,7 @@ public class populate_tables {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy'W'ww E HH:mm");
                 java.util.Date date = sdf.parse(csvWeek + " " + csvDay + " " + csvTime);
                 preparedStatement.setTimestamp(3, new Timestamp(date.getTime()));
-                preparedStatement.setFloat(4, Float.parseFloat(fields[5]) + Float.parseFloat(fields[7]));
+                preparedStatement.setDouble(4, Double.parseDouble(fields[5]) + Double.parseDouble(fields[7]));
 
                 if(batch < 1000) {
                     preparedStatement.addBatch();
