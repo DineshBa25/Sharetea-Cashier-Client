@@ -718,6 +718,30 @@ public class DatabaseManager {
             throw new RuntimeException();
         }
     }
+
+
+    /**
+     * Retrieves a Map of all the products and the total sales prices for each product within a specified time range.
+     * @param startTime The start time for the time range.
+     * @param endTime The end time for the time range.
+     * @return A Map of ProductName with its respective Total Sales Price
+     */
+    public HashMap<String, Integer> getSalesByItem(Timestamp startTime, Timestamp endTime) {
+        try {
+            HashMap<String, Integer> salesByItem = new HashMap<>();
+            PreparedStatement preparedStatement = conn.prepareStatement(queryLoader.getQuery("salesByItem"));
+            preparedStatement.setTimestamp(1, startTime);
+            preparedStatement.setTimestamp(2, endTime);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                salesByItem.put(resultSet.getString("productname"), resultSet.getInt("total_sales"));
+            }
+            return salesByItem;
+        } catch (SQLException e) {
+            AlertUtil.showWarning("Warning!", "Unable to get sales by item", e.getMessage());
+            throw new RuntimeException();
+        }
+    }
 }
 
 

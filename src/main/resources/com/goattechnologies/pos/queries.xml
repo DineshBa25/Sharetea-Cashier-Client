@@ -121,4 +121,20 @@
         FROM products
         WHERE productid = ?;
     </query>
+    <query id="salesByItem">
+        <![CDATA[
+        SELECT
+            p.productname,
+            p.price * COUNT(o.orderid) as total_sales
+        FROM
+            orders o
+                JOIN products p ON p.productid = ANY(o.productids)
+        WHERE
+            o.transactiontime BETWEEN ? AND ?
+        GROUP BY
+            p.productname, p.price
+        ORDER BY
+            total_sales DESC;
+        ]]>
+    </query>
 </queries>
