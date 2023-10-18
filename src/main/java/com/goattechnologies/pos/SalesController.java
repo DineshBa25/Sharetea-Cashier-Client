@@ -49,8 +49,6 @@ public class SalesController {
             Timestamp endTime = new Timestamp(endDateTime.getTime());
 
             // Use startTime and endTime for your time window calculations or other processing
-            System.out.println("Start Time: " + startTime);
-            System.out.println("End Time: " + endTime);
             generateSalesReport(startTime, endTime);
 
         } catch (ParseException e) {
