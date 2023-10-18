@@ -12,6 +12,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * The `PopularityController` class is responsible for handling user interactions and logic
+ * on the popularity report screen. It provides options to generate a popularity report or go back
+ * to the previous screen.
+ * @Author Mohsin Khan
+ */
 public class PopularityController {
     @FXML
     private TextField numberOfItems;
@@ -24,6 +30,9 @@ public class PopularityController {
     @FXML
     private TextField endTimeTextField;
 
+    /**
+     * Generates a time window based on the user's input and passes it to the popularity report view.
+     */
     public void generateTimeWindow() {
         Main.popularityController = this;
         try {
@@ -45,6 +54,13 @@ public class PopularityController {
         }
     }
 
+    /**
+     * Generates a popularity report view based on the given time window.
+     *
+     * @param startTime The start time of the time window.
+     * @param endTime   The end time of the time window.
+     * @param numItems  The number of items to display
+     */
     public void generatePopularityReport(Timestamp startTime, Timestamp endTime, Integer numItems) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("popularity-table-view.fxml"));
@@ -61,6 +77,10 @@ public class PopularityController {
         }
     }
 
+    /**
+     * Handles the "Back" button click event, returning to the statistics view.
+     * @throws IOException if the statistics view cannot be loaded
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
         Main.getMainController().setView(node);

@@ -12,6 +12,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * The `PairsController` class is responsible for handling user interactions and logic
+ * on the pairs report screen. It provides options to generate a pairs report or go back
+ * to the previous screen.
+ * @author Cole Broberg
+ */
 public class PairsController {
     @FXML
     private DatePicker startDatePicker;
@@ -23,7 +29,9 @@ public class PairsController {
     private TextField endTimeTextField;
 
 
-
+    /**
+     * Generates a time window based on the user's input and passes it to the pairs report view.
+     */
     public void generateTimeWindow() {
         try {
             String startDateStr = startDatePicker.getValue().toString();
@@ -48,6 +56,12 @@ public class PairsController {
         }
     }
 
+    /**
+     * Generates a pairs report view based on the given time window.
+     *
+     * @param startTime The start time of the time window.
+     * @param endTime   The end time of the time window.
+     */
     public void generatePairsReport(Timestamp startTime, Timestamp endTime) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pairs-report-view.fxml"));
@@ -63,6 +77,12 @@ public class PairsController {
         }
     }
 
+    /**
+     * Handles the event when the user clicks the "Back" button.
+     * Navigates the user back to the statistics screen.
+     *
+     * @throws IOException if there is an error while navigating back to the previous screen.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("statistics-view.fxml")));
         Main.getMainController().setView(node);

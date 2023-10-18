@@ -12,20 +12,39 @@ import java.sql.*;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ * This class serves as the controller for the pairs report view in a Point of Sale (POS) application. It manages the
+ * display and interaction with the pairs report view, which displays the drink combos that were ordered most frequently
+ * during a given time window.
+ * @Author Cole Broberg
+ */
 public class PairsReportController {
     public static class PairFrequency {
         private String comboName;
         private int frequency;
 
+        /**
+         * Constructor for PairFrequency
+         * @param comboName The name of the drink combo
+         * @param frequency The frequency of the drink combo
+         */
         public PairFrequency(String comboName, int frequency) {
             this.comboName = comboName;
             this.frequency = frequency;
         }
+
+        /**
+         * Gets the name of the drink combo
+         * @return The name of the drink combo
+         */
         public String getComboName() {
             return comboName;
         }
 
+        /**
+         * Gets the frequency of the drink combo
+         * @return The frequency of the drink combo
+         */
         public int getFrequency() {
             return frequency;
         }
@@ -39,6 +58,11 @@ public class PairsReportController {
     private TableColumn<PairFrequency, Integer> frequencyColumn;
 
 
+    /**
+     * Initializes the PairsReportController, setting up the pairs report view.
+     * @param startTime The start time of the time window.
+     * @param endTime   The end time of the time window.
+     */
     @FXML
     public void initialize(Timestamp startTime, Timestamp endTime) {
         List<List<Integer>> multiDrinkOrders = Main.dbManager.getMultiOrders(startTime, endTime);
@@ -58,6 +82,11 @@ public class PairsReportController {
         centerTextInIntegerColumn(frequencyColumn);
     }
 
+    /**
+     * Gets the drink combos from the database
+     * @param multiDrinkOrders The list of multi-drink orders
+     * @return The list of drink combos
+     */
     private static List<Map.Entry<String, Integer>> getDrinkCombos(List<List<Integer>> multiDrinkOrders) {
         HashMap<Integer, String> drinks = Main.dbManager.getDrinks();
         HashMap<String, Integer> pairFrequencies = new HashMap<>();
@@ -81,6 +110,10 @@ public class PairsReportController {
         return new ArrayList<>(pairFrequencies.entrySet());
     }
 
+    /**
+     * Centers the text in a string column
+     * @param column The column to center the text in
+     */
     private void centerTextInStringColumn(TableColumn<PairFrequency, String> column) {
         column.setCellFactory(tc -> {
             TableCell<PairFrequency, String> cell = new TableCell<>() {
@@ -101,6 +134,10 @@ public class PairsReportController {
         });
     }
 
+    /**
+     * Centers the text in an integer column
+     * @param column The column to center the text in
+     */
     private void centerTextInIntegerColumn(TableColumn<PairFrequency, Integer> column) {
         column.setCellFactory(tc -> {
             TableCell<PairFrequency, Integer> cell = new TableCell<>() {
@@ -121,6 +158,12 @@ public class PairsReportController {
         });
     }
 
+    /**
+     * Handles the event when the user clicks the "Back" button.
+     * Navigates the user back to the initial pairs report screen.
+     *
+     * @throws IOException if there is an error while navigating back to the previous screen.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("pairs-view.fxml")));
         Main.getMainController().setView(node);

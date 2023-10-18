@@ -12,6 +12,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class manages
+ * the display and interaction with the update ingredient view, which allows the user to update an ingredient in the
+ * database.
+ * @Author Mohsin Khan
+ */
 public class UpdateIngredientController {
     @FXML
     private TextField ingredientNameField;
@@ -31,6 +37,9 @@ public class UpdateIngredientController {
     private Ingredient selectedIngredient;
     private String oldName;
 
+    /**
+     * Initializes the UpdateIngredientController, setting up the text fields.
+     */
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
         updateIngredient.setFont(customFont);
@@ -47,6 +56,10 @@ public class UpdateIngredientController {
         costField.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Sets the selected ingredient to be updated.
+     * @param ingredient The ingredient to be updated.
+     */
     public void setSelectedIngredient(Ingredient ingredient) {
         this.selectedIngredient = ingredient;
         this.oldName = ingredient.getIngredientName();
@@ -57,6 +70,9 @@ public class UpdateIngredientController {
         costField.setText(String.valueOf(selectedIngredient.getCost()));
     }
 
+    /**
+     * Updates the ingredient in the database.
+     */
     public void updateIngredient() {
         String newName = ingredientNameField.getText();
         int newQuantity = Integer.parseInt(quantityField.getText());
@@ -77,11 +93,17 @@ public class UpdateIngredientController {
         backToInventory();
     }
 
+    /**
+     * Deletes the ingredient from the database.
+     */
     public void deleteIngredient() {
         Main.dbManager.deleteIngredient(selectedIngredient.getIngredientId());
         backToInventory();
     }
 
+    /**
+     * Navigates back to the inventory view.
+     */
     public void backToInventory() {
         try {
             Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
@@ -91,6 +113,12 @@ public class UpdateIngredientController {
         }
     }
 
+    /**
+     * Checks if an ingredient exists in a list of ingredients.
+     * @param ingredientList The list of ingredients to check.
+     * @param ingredientNameToFind The ingredient name to find.
+     * @return True if the ingredient exists, false otherwise.
+     */
     public boolean ingredientExists(List<Ingredient> ingredientList, String ingredientNameToFind) {
         for (Ingredient ingredient : ingredientList) {
             if (ingredient.getIngredientName().equalsIgnoreCase(ingredientNameToFind)) {

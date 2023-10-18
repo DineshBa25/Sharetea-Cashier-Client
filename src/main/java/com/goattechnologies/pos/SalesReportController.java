@@ -16,7 +16,12 @@ import java.sql.*;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ * This class serves as the controller for the sales report view in a Point of Sale (POS) application. It manages the
+ * display and interaction with the sales report view, which displays the total sales of each product during a given
+ * time window.
+ * @Author Dinesh Balakrishnan
+ */
 public class SalesReportController {
 
     /**

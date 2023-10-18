@@ -23,10 +23,8 @@ public class DatabaseManager {
 
     private final dbSetup myCredentials = new dbSetup();
 
-    /**
-     * A class responsible for loading and managing SQL queries from an external XML file.
-     */
     public static QueryLoader queryLoader;
+
     static {
         try {
             queryLoader = new QueryLoader("src/main/resources/com/goattechnologies/pos/queries.xml");

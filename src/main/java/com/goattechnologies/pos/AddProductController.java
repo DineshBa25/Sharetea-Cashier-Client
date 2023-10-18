@@ -36,6 +36,7 @@ public class AddProductController implements Initializable {
     public TextField salePriceField;
     @FXML
     public ListView<String> selectedIngredientsListView;
+
     public String productName;
     public double productSalePrice;
     public List<Ingredient> productIngredients;

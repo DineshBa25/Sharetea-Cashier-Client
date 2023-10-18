@@ -96,8 +96,7 @@ public class AddIngredientController {
      * @throws IOException If there is an issue loading the inventory view.
      */
     public void handleBackButton() throws IOException {
-        Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("inventory-view.fxml")));
-        Main.getMainController().setView(node);
+        backToInventory();
     }
 
     /**

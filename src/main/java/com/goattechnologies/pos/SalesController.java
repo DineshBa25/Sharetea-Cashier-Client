@@ -12,6 +12,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * The `SalesController` class is responsible for handling user interactions and logic
+ * on the sales report screen. It provides options to generate a sales report or go back
+ * to the previous screen.
+ * @Author Dinesh Balakrishnan
+ */
 public class SalesController {
     @FXML
     private DatePicker startDatePicker;
