@@ -9,9 +9,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * The `Login1Controller` class is responsible for handling user interactions and logic
+ * on the first screen of the login process. It allows users to input their employee ID,
+ * performs validation, and directs the user to the appropriate next screen based on their role.
+ *
+ * @author Ilham Aryawan, Dinesh Balakrishnan, Cole Broberg
+ */
 public class Login1Controller {
 
     @FXML
@@ -20,6 +26,9 @@ public class Login1Controller {
     @FXML
     private Text idPrompt;
 
+    /**
+     * Initializes the Login1Controller. Sets fonts and alignment for the user interface elements.
+     */
     public void initialize() {
         Font customFont = Font.font("Arial", 20);
         idPrompt.setFont(customFont);
@@ -28,6 +37,13 @@ public class Login1Controller {
         employeeID.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Handles the event when the user clicks the login button.
+     * Validates the entered employee ID, retrieves the employee's name and role,
+     * and navigates the user to the appropriate next screen.
+     *
+     * @throws Exception if there is an error during the login process.
+     */
     @FXML
     protected void onLoginClick() throws Exception {
         try {
