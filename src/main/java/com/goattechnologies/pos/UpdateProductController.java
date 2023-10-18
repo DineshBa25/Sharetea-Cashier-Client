@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+/** This class serves as the controller for the "Add Product" view in a Point of Sale (POS) application.
+ * It allows users to add a new product to the inventory, specifying its name, ingredients, and sale price.
+ * @Author Nicholas Dienstbier, Ilham Aryawan
+ */
 public class UpdateProductController implements Initializable{
     @FXML
     private Label editProduct;
@@ -38,6 +42,11 @@ public class UpdateProductController implements Initializable{
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
     private Product selectedProduct;
 
+    /**
+     * Initializes the AddProductController, setting fonts and alignments for labels and fields.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Font customFont = Font.font("Arial", 20);
         editProduct.setFont(customFont);
@@ -69,6 +78,10 @@ public class UpdateProductController implements Initializable{
         selectedIngredientsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> isRowSelected.set(newValue != null));
     }
 
+    /**
+     * Sets the selected product to edit.
+     * @param product the product to edit
+     */
     public void setSelectedProduct(Product product) {
         productIngredients = new ArrayList<>();
         this.selectedProduct = product;
@@ -88,6 +101,9 @@ public class UpdateProductController implements Initializable{
         salePriceField.setText(String.valueOf(selectedProduct.getSalePrice()));
     }
 
+    /**
+     * Updates the selected product with the new data.
+     */
     public void updateProduct() {
         try {
             String newName = productNameField.getText();
@@ -121,11 +137,17 @@ public class UpdateProductController implements Initializable{
         }
     }
 
+    /**
+     * Handles the action of deleting a selected product from the database.
+     */
     public void deleteProduct() {
         Main.dbManager.deleteProduct(selectedProduct.getProductid());
         backToProducts();
     }
 
+    /**
+     * Navigates back to the products view.
+     */
     public void backToProducts() {
         try {
             Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
@@ -135,6 +157,9 @@ public class UpdateProductController implements Initializable{
         }
     }
 
+    /**
+     * Handles the action of removing selected ingredients from the product's ingredient list.
+     */
     public void removeSelectedIngredients() {
         List<String> selectedItems = new ArrayList<>(selectedIngredientsListView.getSelectionModel().getSelectedItems());
 
@@ -150,6 +175,11 @@ public class UpdateProductController implements Initializable{
         productIngredients.removeAll(ingredientsToRemove);
     }
 
+    /**
+     * Finds an ingredient in the product's ingredient list by its name.
+     * @param name the name of the ingredient to find
+     * @return the ingredient with the specified name, or null if not found
+     */
     public Ingredient findIngredientByName(String name) {
         for(Ingredient x : productIngredients) {
             if (Objects.equals(x.getIngredientName(), name)) {
@@ -159,6 +189,9 @@ public class UpdateProductController implements Initializable{
         return null;
     }
 
+    /**
+     * Opens a dialog for selecting an ingredient to add to the product.
+     */
     public void openAddIngredientDialog() {
         List<String> productIngredientNames = new ArrayList<>();
         for(Ingredient x: productIngredients) {
@@ -187,11 +220,18 @@ public class UpdateProductController implements Initializable{
             }
         });
     }
+    /** Navigates back to the products view.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("products-view.fxml")));
         Main.getMainController().setView(node);
     }
 
+    /** Checks whether a product already exists in the database
+     * @param productList the list of products to check from
+     * @param productNameToFind the name of the product to check existence of
+     * @return returns a boolean if a product exists already within the database
+     */
     public boolean productExists(List<Product> productList, String productNameToFind) {
         for (Product x : productList) {
             if (x.getProductName().equalsIgnoreCase(productNameToFind)) {

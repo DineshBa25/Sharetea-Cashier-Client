@@ -12,11 +12,14 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Objects;
 
+/** This class serves as the controller for the products view in a Point of Sale (POS) application. It manages the display
+ * and interaction with a table of products and provides functionality for updating and adding products. It also provides
+ * functionality for navigating back to the manager view.
+ * @author Nicholas Dienstbier
+ */
 public class ProductsController {
     @FXML
     private TableColumn<Ingredient, String> productNameColumn;
-    @FXML
-    private TableColumn<Ingredient, Array> productIngredientsColumn;
     @FXML
     private TableColumn<Ingredient, Double> productSalePriceColumn;
     @FXML
@@ -26,6 +29,9 @@ public class ProductsController {
     @FXML
     private Button addButton;
     private BooleanProperty isRowSelected = new SimpleBooleanProperty(false);
+
+    /** Initializes the ProductsController, setting up the table view and buttons.
+     */
     @FXML
     public void initialize() {
         Main.productsController = this;
@@ -42,16 +48,8 @@ public class ProductsController {
         centerTextInDoubleColumn(productSalePriceColumn);
     }
 
-    @FXML
-    private void updateProduct() throws IOException{
-        Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
-        if (selectedProduct != null) {
-            // TODO
-            Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("update-product-view.fxml")));
-            Main.getMainController().setView(node);
-        }
-    }
-
+    /** Navigates to the edit product view for the selected product.
+     */
     @FXML
     private void editSelectedProduct() {
         Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
@@ -70,17 +68,24 @@ public class ProductsController {
         }
     }
 
+    /** Navigates to the add product view.
+     */
     @FXML
     private void addProduct() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("add-product-view.fxml")));
         Main.getMainController().setView(node);
     }
 
+    /** Navigates back to the manager view.
+     */
     public void handleBackButton() throws IOException {
         Node node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("manager-view.fxml")));
         Main.getMainController().setView(node);
     }
 
+    /** Centers the text in a string column.
+     * @param column the column to center
+     */
     private void centerTextInStringColumn(TableColumn<Ingredient, String> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, String> cell = new TableCell<>() {
@@ -99,6 +104,10 @@ public class ProductsController {
             return cell;
         });
     }
+
+    /** Centers the text in a double column.
+     * @param column the column to center
+     */
     private void centerTextInDoubleColumn(TableColumn<Ingredient, Double> column) {
         column.setCellFactory(tc -> {
             TableCell<Ingredient, Double> cell = new TableCell<>() {

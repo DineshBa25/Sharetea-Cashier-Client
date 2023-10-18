@@ -10,6 +10,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Main class for the POS application.
+ * <p>
+ * This class is responsible for initializing the database connection and loading the initial login view.
+ * <p>
+ * This class also contains static references to the controllers for the various views.
+ * @Author Dinesh Balakrishnan
+ */
 public class Main extends Application {
   
     public static DatabaseManager dbManager = new DatabaseManager();
@@ -33,6 +41,11 @@ public class Main extends Application {
 
     public static List<Product> products;
 
+    /**
+     * Initializes the Main class, setting up the database connection and loading the initial login view.
+     * @param stage the primary stage for this application
+     * @throws IOException if the initial login view cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws IOException {
         dbManager.connect();
@@ -55,15 +68,26 @@ public class Main extends Application {
         mainController.setView(node);
     }
 
+    /**
+     * Stops the application, closing the database connection.
+     */
     @Override
     public void stop() {
         dbManager.disconnect();
     }
 
+    /**
+     * Returns the main controller for this application.
+     * @return the main controller for this application
+     */
     public static MainController getMainController() {
         return mainController;
     }
 
+    /**
+     * Returns the menu controller for this application.
+     * @return the menu controller for this application
+     */
     public static void main(String[] args) {
         launch(args);
     }

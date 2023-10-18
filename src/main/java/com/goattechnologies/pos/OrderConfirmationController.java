@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller for the order confirmation view
+ * @author Dinesh Balakrishnan
+ */
 public class OrderConfirmationController {
 
     @FXML
@@ -20,6 +24,9 @@ public class OrderConfirmationController {
     @FXML
     private CheckBox printReceiptCheckBox;
 
+    /**
+     * Initializes the OrderConfirmationController, setting up the tip ComboBox and custom tip field.
+     */
     @FXML
     public void initialize() {
         // Handle changes in the tip ComboBox
@@ -34,6 +41,10 @@ public class OrderConfirmationController {
         });
     }
 
+    /**
+     * Handles the "Complete Order" button click event, completing the order and returning to the login view.
+     * @throws IOException if the login view cannot be loaded
+     */
     @FXML
     protected void completeOrder() throws IOException {
         double tipPercentage = 0.0;
